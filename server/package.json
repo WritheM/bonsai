@@ -1,0 +1,26 @@
+{
+  "name": "bonsai",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/writhem/Bonsai.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/writhem/Bonsai/issues"
+  },
+  "homepage": "https://github.com/writhem/Bonsai#readme",
+  "dependencies": {
+    "config": "^1.16.0",
+    "sequelize": "^3.9.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5"
+  }
+}

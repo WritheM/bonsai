@@ -1,4 +1,7 @@
-class server {
+import amqp from "amqplib";
+import models from "./models";
+
+export class server {
     constructor(router) {
         this.router = router;
     }
@@ -13,14 +16,16 @@ class server {
             let data = JSON.parse(msg);
             var response = {data: [], status: ""};
 
-            var func = this.router.getRoute(data.path, data.actionType);
+            var func = this.router.getRoute(data.path);
 
-            func(data).then(res => {
+            let auth = models.Auth.findOne({where: {token: data.auth}});
+
+            func(data.data, auth).then(res => {
                 response.data = res;
                 response.status = "OK";
             }).catch(res => {
                 response.status = res.toString();
-            }).finally( () => {
+            }).finally(() => {
                 this.ch.sendToQueue(msg.properties.replyTo, new Buffer(JSON.stringify(response)), {correlationId: msg.properties.correlationId});
                 this.ch.ack(msg);
             });

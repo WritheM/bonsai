@@ -1,7 +1,7 @@
 export default class Router {
     constructor() {
         this.routes = {};
-        this.controllers = {};
+        this.controllers = [];
     }
 
     clearRoutes() {
@@ -9,18 +9,12 @@ export default class Router {
     }
 
     addController(controller) {
-        this.controllers = controller;
+        this.controllers.push(controller);
         controller.addRoutes(this);
     }
 
-    addRoute(path, method, callback) {
-        if (!(path in this.routes)) {
-            this.routes[path] = {};
-        }
-
-        let route = this.routes[path];
-
-        route[method] = callback;
+    addRoute(path, callback) {
+        this.routes[path] = callback;
     }
 
 
@@ -29,17 +23,7 @@ export default class Router {
             throw Error("Invalid path");
         }
 
-        var route = this.routes[path];
-
-        if (method in route) {
-            return route[method];
-        }
-        else if ("default" in route) {
-            return route["default"];
-        }
-        else {
-            throw Error("Invalid method");
-        }
+        return this.routes[path];
     }
 
 }

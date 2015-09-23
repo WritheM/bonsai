@@ -29,4 +29,6 @@ models.forEach(model => {
     //TODO: define relations (https://github.com/WritheM/bonsai/issues/25)
 })(module.exports);
 
+sequelize.sync();
+
 module.exports.sequelize = sequelize;

@@ -1,22 +1,17 @@
-export function Route(path, method) {
+export function Route(path) {
     return function (target, method, descriptor) {
         if (!target.routes) {
             target.routes = [];
         }
 
-        if (typeof method === "undefined") {
-            method = "default";
-        }
-
         target.routes.push({
             path: path,
-            method: method,
             func: descriptor.value
         });
     }
 }
 
-export default class Controller {
+export class Controller {
     constructor() {
     }
 
@@ -24,7 +19,7 @@ export default class Controller {
         if (!this.routes) return;
 
         this.routes.forEach((value) => {
-            this.router.addRoute(value.path, value.method, value.func.bind(this));
+            router.addRoute(value.path, value.method, value.func.bind(this));
         });
     }
 

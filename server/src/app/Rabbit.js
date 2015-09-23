@@ -23,21 +23,16 @@ export class server {
             func(data.data, auth).then(res => {
                 response.data = res;
                 response.status = "OK";
+
+                this.ch.sendToQueue(msg.properties.replyTo, new Buffer(JSON.stringify(response)), {correlationId: msg.properties.correlationId});
+                this.ch.ack(msg);
             }).catch(res => {
                 response.status = res.toString();
-            }).finally(() => {
+
                 this.ch.sendToQueue(msg.properties.replyTo, new Buffer(JSON.stringify(response)), {correlationId: msg.properties.correlationId});
                 this.ch.ack(msg);
             });
-
         });
     }
 
-    //func must be async (promise) based.
-    addAction(actionName, actionType, func) {
-        if (!(actionName in this.actions)) {
-            this.actions[actionName] = {};
-        }
-        this.actions[actionName][actionType] = func;
-    }
 }

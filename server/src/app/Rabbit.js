@@ -1,5 +1,5 @@
 import amqp from "amqplib";
-import models from "./models";
+import models from "./db/models";
 
 export class server {
     constructor(router) {

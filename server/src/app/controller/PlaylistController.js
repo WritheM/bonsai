@@ -1,5 +1,5 @@
 import {Controller,Route} from "./Controller";
-import models from "../models";
+import models from "../db/models";
 
 console.log(Controller);
 

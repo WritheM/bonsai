@@ -1,5 +1,4 @@
 import amqp from "amqplib";
-import models from "./db/models";
 
 export class server {
     constructor(router) {
@@ -12,21 +11,31 @@ export class server {
         this.ch.assertQueue("rpc_queue", {durable: false});
         this.ch.prefetch(1);
 
-        this.ch.consume("rpc_queue", async function (msg) {
-            let data = JSON.parse(msg);
-            var response = {data: [], status: ""};
+        this.ch.consume("rpc_queue", (msg) => {
+            let data = JSON.parse(msg.content.toString());
+            let response = {data: [], status: ""};
+            let func;
+            try {
+                func = this.router.getRoute(data.path);
+            }
+            catch (e) {
+                response.status = e.toString();
 
-            var func = this.router.getRoute(data.path);
+                this.ch.sendToQueue(msg.properties.replyTo, new Buffer(JSON.stringify(response)), {correlationId: msg.properties.correlationId});
+                this.ch.ack(msg);
+            }
 
-            let auth = models.Auth.findOne({where: {token: data.auth}});
+            //let auth = models.Auth.findOne({where: {token: data.auth}});
 
-            func(data.data, auth).then(res => {
+            func(data.data).then(res => {
                 response.data = res;
                 response.status = "OK";
 
                 this.ch.sendToQueue(msg.properties.replyTo, new Buffer(JSON.stringify(response)), {correlationId: msg.properties.correlationId});
                 this.ch.ack(msg);
             }).catch(res => {
+                console.error(res);
+                console.error(res.stack);
                 response.status = res.toString();
 
                 this.ch.sendToQueue(msg.properties.replyTo, new Buffer(JSON.stringify(response)), {correlationId: msg.properties.correlationId});

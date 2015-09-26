@@ -1,8 +1,6 @@
 import {Controller,Route} from "./Controller";
 import models from "../db/models";
 
-console.log(models);
-
 export default class PlaylistController extends Controller {
     @Route("playlist.add")
     async add(msg, conn) {
@@ -21,7 +19,7 @@ export default class PlaylistController extends Controller {
     }
 
     @Route("playlist.patch")
-    async del(msg, conn) {
+    async patch(msg, conn) {
         let playlist = await models.Playlist.findById(msg.id);
         if (msg.name)
             playlist.name = msg.name;

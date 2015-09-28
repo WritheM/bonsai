@@ -1,3 +1,4 @@
+require("babel/polyfill");
 import * as Rabbit from "./Rabbit";
 
 let clients = {};

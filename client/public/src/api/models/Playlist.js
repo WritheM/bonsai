@@ -1,5 +1,11 @@
-import Backbone from "backbone";
+import socket from "../socket.js";
+import PlaylistMedia from "../collections/PlaylistMedia";
 
- export var Playlist = Backbone.Model.extend({
-     url: "playlist"
+ var Playlist = socket.Model.extend({
+     url: "playlist",
+     getMedia: function() {
+         return new PlaylistMedia().fetch({attrs:{id:this.id}});
+     }
  });
+
+export default Playlist;

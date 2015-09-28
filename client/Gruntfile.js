@@ -15,11 +15,11 @@ module.exports = function (grunt) {
         },
         watch: {
             quick: {
-                files: ["public/src/**.js","public/src/*.js"],
+                files: ["public/src/**.js","public/src/**/*.js"],
                 tasks: ["quick"],
                 options: {
                     spawn: false,
-                    atBegin: true
+                    atBegin: false
                 }
             }
         }

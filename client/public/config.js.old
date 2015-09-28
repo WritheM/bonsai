@@ -1,0 +1,15 @@
+require.config({
+  shim: {
+
+  },
+  paths: {
+    backbone: "../bower_components/backbone/backbone",
+    react: "../bower_components/react/react",
+    requirejs: "../bower_components/requirejs/require",
+    "socket.io-client": "../bower_components/socket.io-client/socket.io",
+    underscore: "../bower_components/underscore/underscore.js"
+  },
+  packages: [
+
+  ]
+});

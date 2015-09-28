@@ -87,3 +87,5 @@ crashlytics-build.properties
 #
 bin/
 config/
+
+bower_components/

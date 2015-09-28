@@ -3,6 +3,7 @@ import models from "../db/models";
 
 export default class PlaylistController extends Controller {
     @Route("playlist.add")
+    @Route("playlist.create")
     async add(msg, conn) {
 
         let playlist = await models.Playlist.create({
@@ -26,4 +27,14 @@ export default class PlaylistController extends Controller {
         return await playlist.save();
     }
 
+    @Route("playlist.list")
+    @Route("playlist.read")
+    async list(msg, conn) {
+        let playlists = await models.Playlist.findAll({
+            where: {
+                user_id: msg.user_id || conn.user_id
+            }
+        });
+        return playlists;
+    }
 }

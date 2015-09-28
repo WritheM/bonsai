@@ -1,0 +1,14 @@
+{
+  "apps": [
+    {
+      "name": "worker",
+      "script": "bin/app/app.js",
+      "watch": true
+    },
+    {
+      "name": "bridge",
+      "script": "bin/bridge/main.js",
+      "watch": true
+    }
+  ]
+}

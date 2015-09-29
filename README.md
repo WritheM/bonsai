@@ -55,3 +55,26 @@ We are an open sourced platform with distributed designs to increase stability a
 
 
 And much more...
+
+
+## Vagrant Development - Installation
+
+You can optionally use the vagrant configuration to set up a constructable development environment VM. To begin start by
+downloading [VirtualBox](https://www.virtualbox.org/) and [Vagrants](https://www.vagrantup.com/). Once you have these installed
+if you're not on a POSIX host machine it's reccomended you get a POSIX environment to work from. On windows [Cygwin](https://www.cygwin.com/)
+is a good POSIX terminal that will work. Make sure you install the `openssl` package when installing.
+
+Once you're all installed launch a terminal and navigate to the project folder. To begin execute the following command:
+
+    vagrant up && vagrant ssh
+    
+This will create your VM, configure it and then despoit you in an SSH session on the VM. Once you're done you can exit the
+ssh session and issue this command to stop the vm:
+
+    vagrant halt
+    
+If you'd like to remove the VM entirely you can destroy it:
+
+    vagrant destroy --force
+    
+This should give you a basic environment to work in that you can turn off when you're not using it.

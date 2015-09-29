@@ -7,10 +7,9 @@ pushd /vagrant/client
 
 echo "=== Building Client Project"
 
-npm update
-bower update --allow-root
-
 grunt
+
+pm2 start pm2.json
 
 popd
 
@@ -19,5 +18,7 @@ pushd /vagrant/server
 echo "=== Building Server Project"
 
 grunt
+
+pm2 start pm2.json
 
 popd

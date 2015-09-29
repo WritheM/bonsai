@@ -3,3 +3,6 @@
 
 # override for shell files
 *.sh text eol=lf
+
+# override for bin shell files
+vagrant/ubuntu-virtualbox/bin/* text eol=lf

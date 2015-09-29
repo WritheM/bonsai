@@ -1,0 +1,223 @@
+/*********************************************
+ ** Prototype CSS
+ **
+ ** This file is a stand in for the prototype, we
+ ** should replace it with a proper css preprocessor
+ ** or something at a later date.
+ ********************************************/
+
+body
+{
+    background-color: #333;
+    color: white;
+}
+
+/***** Component: Shell *****/
+
+.c-shell
+{
+    position: fixed;
+
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.c-shell > .e-header
+{
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 50px;
+
+    border-bottom: 1px white solid;
+}
+
+.c-shell > .e-menu
+{
+    position: absolute;
+
+    top: 50px;
+    bottom: 50px;
+    left: 0;
+
+    width: 25%;
+    height: auto;
+
+    border-right: 1px solid white;
+}
+
+.c-shell > .e-content
+{
+    position: absolute;
+
+    top: 50px;
+    bottom: 50px;
+    left: 25%;
+    right: 0;
+
+    height: auto;
+}
+
+.c-shell > .e-footer
+{
+    position: absolute;
+
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    height: 50px;
+
+    border-top: 1px white solid;
+}
+
+/***** Component: Header *****/
+
+.c-shell-header
+{
+    height: 100%;
+}
+
+.c-shell-header:after
+{
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.c-shell-header > .e-banner
+{
+    float: left;
+    width: 20%;
+}
+
+.c-shell-header > .e-search
+{
+    float: left;
+    width: 60%;
+}
+
+.c-shell-header > .e-user
+{
+    float: left;
+    width: 20%;
+}
+
+/***** Component: HeaderBanner *****/
+
+.c-shell-header-banner
+{
+    width: 100%;
+    height: 100%;
+
+    padding: 10px;
+}
+
+.c-shell-header-banner > a,
+.c-shell-header-banner > a:visited,
+.c-shell-header-banner > a:active
+{
+    color: #ddd;
+    font-size: 18px;
+    font-weight: bold;
+
+    line-height: 30px;
+
+    text-decoration: none;
+}
+
+/***** Component: Menu *****/
+
+.c-menu
+{
+
+}
+
+.c-menu > .e-item
+{
+    height: 45px;
+}
+
+/***** Component: Menu *****/
+
+.c-menu-item
+{
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+/***** Component: Footer *****/
+
+.c-shell-footer
+{
+    height: 100%;
+}
+
+.c-shell-footer:after
+{
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.c-shell-footer > .e-room-select
+{
+    float: left;
+    width: 25%;
+}
+
+.c-shell-footer > .e-player
+{
+    float: left;
+    width: 60%;
+}
+
+.c-shell-footer > .e-search
+{
+    float: left;
+    width: 15%;
+}
+
+/***** Component: Player *****/
+.c-player
+{
+    height: 100%;
+}
+
+.c-player > .e-controls
+{
+    float: left;
+    width: 120px;
+}
+
+.c-player > .e-volume
+{
+    float: right;
+    width: 120px;
+}
+
+.c-player > .e-votes
+{
+    float: right;
+    width: 40px;
+}
+
+.c-player > .e-progress
+{
+    margin-left: 120px;
+    margin-right: 160px;
+    width: auto;
+
+    padding: 10px;
+}
+
+.c-player > .e-progress > .e-progress-bar
+{
+    background-color: #006666;
+}
+

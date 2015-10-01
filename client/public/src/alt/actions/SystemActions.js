@@ -1,4 +1,4 @@
-class SystemActions {
+export default class SystemActions {
     /**
      * Action: Initialize
      *
@@ -20,5 +20,3 @@ class SystemActions {
         });
     }
 }
-
-export default SystemActions;

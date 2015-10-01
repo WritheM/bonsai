@@ -1,9 +1,10 @@
 import React from "react"
 
-import * as HeaderBanner from "./headerBanner"
+import Component from "../../Component"
+import * as HeaderBanner from "./HeaderBanner"
 
-var Header = React.createClass({
-    render: function() {
+export default class Header extends Component {
+    render() {
         return (
 
             <div id="bonsaiHeader" className="c-shell-header">
@@ -20,6 +21,4 @@ var Header = React.createClass({
 
         );
     }
-});
-
-export default Header;
+}

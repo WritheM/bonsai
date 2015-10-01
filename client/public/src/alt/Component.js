@@ -1,6 +1,6 @@
 import React from "react"
 
-import * as Utilities from "./utilities"
+import * as Utilities from "./Utilities"
 
 /**
  * Builds the local action cache.
@@ -87,7 +87,7 @@ function buildStores(instance, context, requiredStores) {
  * context which we're using to 'inject' our component dependencies
  * to the various components.
  */
-class BonsaiComponent extends React.Component {
+export default class Component extends React.Component {
 
     constructor(props, context) {
         super(props, context);
@@ -226,5 +226,3 @@ class BonsaiComponent extends React.Component {
 
     }
 }
-
-export default BonsaiComponent;

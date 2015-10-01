@@ -1,6 +1,6 @@
-import * as Constants from "../constants"
+import * as Constants from "../Constants"
 
-class SystemStore {
+export default class SystemStore {
     constructor() {
 
         let systemActions       = this.alt.getActions(Constants.Actions.SYSTEM);
@@ -17,5 +17,3 @@ class SystemStore {
         this.isReady = true;
     }
 }
-
-export default SystemStore;

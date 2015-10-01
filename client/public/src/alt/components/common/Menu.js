@@ -1,9 +1,10 @@
 import React from "react"
 
-import MenuItem from "./menuItem"
+import Component from "../../Component"
+import MenuItem from "./MenuItem"
 
-var Menu = React.createClass({
-    render: function() {
+export default class Menu extends Component {
+    render() {
 
         var items = [
             <MenuItem title="What's new" />,
@@ -28,6 +29,4 @@ var Menu = React.createClass({
 
         );
     }
-});
-
-export default Menu;
+}

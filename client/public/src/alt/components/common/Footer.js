@@ -1,9 +1,10 @@
 import React from "react"
 
-import * as Player from "./player"
+import Component from "../../Component"
+import * as Player from "./Player"
 
-var Header = React.createClass({
-    render: function() {
+export default class Header extends Component {
+    render() {
         return (
 
             <div id="bonsaiFooter" className="c-shell-footer">
@@ -20,6 +21,4 @@ var Header = React.createClass({
 
         );
     }
-});
-
-export default Header;
+}

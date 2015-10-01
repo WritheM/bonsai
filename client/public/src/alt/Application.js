@@ -1,14 +1,14 @@
 import React from "react"
 
-import * as Validators from "./validators"
-import Test from "./components/test"
+import * as Validators  from "./Validators"
+import Shell            from "./components/Shell"
 
 /**
  * Root Component for the site, it's primary job is to inject
  * the flux (Alt) instance into the context so all it's children
  * can access it if needed to fetch stores / actions.
  */
-export default class BonsaiApplication extends React.Component {
+export default class Application extends React.Component {
 
     static propTypes = {
         flux: Validators.isBonsaiInstance
@@ -25,7 +25,7 @@ export default class BonsaiApplication extends React.Component {
     }
 
     render() {
-        return <Test />;
+        return <Shell />;
     }
 
 }

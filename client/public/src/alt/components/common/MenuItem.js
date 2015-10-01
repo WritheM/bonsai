@@ -1,7 +1,9 @@
 import React from "react"
 
-var MenuItem = React.createClass({
-    render: function() {
+import Component from "../../Component"
+
+export default class MenuItem extends Component {
+    render() {
 
         return (
 
@@ -11,6 +13,4 @@ var MenuItem = React.createClass({
 
         );
     }
-});
-
-export default MenuItem;
+}

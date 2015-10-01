@@ -1,7 +1,9 @@
 import React from "react"
 
-var Player = React.createClass({
-    render: function() {
+import Component from "../../Component"
+
+export default class Player extends Component {
+    render() {
         return (
 
             <div id="player" className="c-player">
@@ -26,6 +28,4 @@ var Player = React.createClass({
 
         );
     }
-});
-
-export default Player;
+}

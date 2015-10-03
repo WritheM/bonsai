@@ -23,7 +23,7 @@ export default class Session extends Controller {
             user_id: user.id,
             token: this.makeId(),
             created: Date.now(),
-            last: Date.()
+            last: Date.now()
         });
 
         return {user: user, session: s};

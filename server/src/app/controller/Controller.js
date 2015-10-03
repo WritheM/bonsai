@@ -19,7 +19,7 @@ export class Controller {
         if (!this.routes) return;
 
         this.routes.forEach((value) => {
-            console.log("Added route "+value.path)
+            console.log("Added route "+value.path);
             router.addRoute(value.path, value.func.bind(this));
         });
     }

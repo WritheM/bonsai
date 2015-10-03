@@ -1,0 +1,9 @@
+@import "variables";
+@import "mixins";
+
+
+body
+{
+    background-color: $theme-color-darkest;
+    color: $theme-color-light;
+}

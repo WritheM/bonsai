@@ -1,0 +1,37 @@
+.c-player
+{
+    height: 100%;
+    color: $theme-color-accent;
+
+    & > .e-controls
+    {
+        float: left;
+        width: 120px;
+    }
+
+    & > .e-volume
+    {
+        float: right;
+        width: 120px;
+    }
+
+    & > .e-votes
+    {
+        float: right;
+        width: 40px;
+    }
+
+    & > .e-progress
+    {
+        margin-left: 120px;
+        margin-right: 160px;
+        width: auto;
+
+        padding: 10px;
+
+        & > .e-progress-bar
+        {
+            background-color: $theme-color-accent;
+        }
+    }
+}

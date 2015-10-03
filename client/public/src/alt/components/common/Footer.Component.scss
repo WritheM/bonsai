@@ -1,0 +1,26 @@
+.c-shell-footer
+{
+    @include clearfix();
+
+    height: 100%;
+
+    background-color: $theme-color-dark;
+
+    & > .e-room-select
+    {
+        float: left;
+        width: 25%;
+    }
+
+    & > .e-player
+    {
+        float: left;
+        width: 60%;
+    }
+
+    & > .e-search
+    {
+        float: left;
+        width: 15%;
+    }
+}

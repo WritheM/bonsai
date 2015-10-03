@@ -1,0 +1,165 @@
+///////////////////////////////////////////
+// Component: Login Form
+
+.c-login-form
+{
+    $component-width: in-rems(400);
+    $component-content-width: in-rems(250);
+    $overlay-gutter: in-rems(10);
+    $overlay-spinner-size: in-rems(50);
+
+    width: $component-width;
+
+    & > .e-overlay
+    {
+        position: absolute;
+        z-index: 1200;
+
+        top: $overlay-gutter;
+        bottom: $overlay-gutter;
+        left: $overlay-gutter;
+        right: $overlay-gutter;
+
+        background-color: black;
+        opacity: 0.75;
+
+        & > .e-spinner
+        {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+
+            transform: translate(-50%, -50%);
+
+            height: $overlay-spinner-size;
+
+            img, span
+            {
+                display: inline-block;
+                vertical-align: middle;
+
+                height: $overlay-spinner-size;
+            }
+
+            img
+            {
+                width: $overlay-spinner-size;
+            }
+
+            span
+            {
+                line-height: $overlay-spinner-size;
+                font-size: 120%;
+
+                color: $theme-color-accent;
+                font-weight: bold;
+            }
+        }
+    }
+
+    & > .e-inner
+    {
+        width: $component-content-width;
+        margin: 0 auto;
+
+        & > .e-header
+        {
+            text-align: center;
+
+            h1
+            {
+                margin: in-rems(25) 0 in-rems(35) 0;
+
+                font-size: 300%;
+                font-weight: bold;
+
+                color: $theme-color-highlight;
+            }
+        }
+
+        & > .e-form
+        {
+            & > .e-username,
+            & > .e-password,
+            & > .e-button
+            {
+                padding-bottom: in-rems(10);
+            }
+
+            & > .e-username,
+            & > .e-password
+            {
+                input
+                {
+                    border: 1px solid $theme-color-accent;
+                    background-color: $theme-color-darkest;
+                    border-radius: in-rems(5);
+                    box-sizing: border-box;
+                    display: block;
+
+                    padding: in-rems(6) in-rems(3);
+
+                    width: 100%;
+                    text-align: center;
+
+                    color: $theme-color-light;
+
+                    @include placeholder-style {
+                        color: $theme-color-dark;
+                    }
+                }
+            }
+
+            & > .e-button
+            {
+                display: block;
+                width: 100%;
+
+                border-radius: in-rems(5);
+                padding: in-rems(6) in-rems(3);
+                text-align: center;
+
+                background-color: $theme-color-highlight;
+                color: $theme-color-darkest;
+
+                cursor: pointer;
+
+                &.m-disabled
+                {
+                    background-color: $theme-color-darkest;
+                    color: $theme-color-dark;
+
+                    cursor: not-allowed;
+                }
+            }
+        }
+
+        & > .e-info
+        {
+            text-align: center;
+
+            p:first-child
+            {
+                padding: in-rems(5) 0;
+            }
+
+            p:last-child
+            {
+                padding: in-rems(25) 0 0 0;
+
+                font-size: 120%;
+            }
+        }
+    }
+
+    & > .e-copy
+    {
+        padding-top: in-rems(80);
+        font-size: 80%;
+
+        color: white;
+
+        text-align: center;
+    }
+
+}

@@ -1,0 +1,17 @@
+///////////////////////////////////////////////////////////////
+// Components Adapted from Zurb Foundation
+// http://foundation.zurb.com/
+//
+// no-units, in-rems
+
+@function no-units($num) {
+    @return $num / ($num * 0 + 1);
+}
+
+@function in-rems($px, $base: $typeface-base-size) {
+
+    $value: no-units($px) / no-units($base) * 1rem;
+    @if ($value == 0rem) { $value: 0; } // Turn 0rem into 0
+    @return $value;
+
+}

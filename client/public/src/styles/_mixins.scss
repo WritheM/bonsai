@@ -7,3 +7,13 @@
         clear: both;
     }
 }
+
+@mixin placeholder-style() {
+    &:-ms-input-placeholder,
+    &:-moz-placeholder,
+    &::-moz-placeholder,
+    &::-webkit-input-placeholder
+    {
+        @content
+    }
+}

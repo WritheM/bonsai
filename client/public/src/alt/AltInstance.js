@@ -5,6 +5,9 @@ import * as Constants from "./Constants"
 import SystemActions from "./actions/SystemActions"
 import SystemStore from "./stores/SystemStore"
 
+import SessionActions from "./actions/SessionActions"
+import SessionStore from "./stores/SessionStore"
+
 /**
  * This is our "container" for the application. It's the Alt object (flux)
  * that will be provided to every view that needs to get something from
@@ -21,9 +24,11 @@ export default class AltInstance extends Alt {
 
     registerActions() {
         this.addActions(Constants.Actions.SYSTEM, SystemActions);
+        this.addActions(Constants.Actions.SESSION, SessionActions);
     }
 
     registerStores() {
         this.addStore(Constants.Stores.SYSTEM, SystemStore);
+        this.addStore(Constants.Stores.SESSION,SessionStore);
     }
 }

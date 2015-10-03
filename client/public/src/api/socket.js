@@ -47,3 +47,17 @@ export var Model = Backbone.Model.extend({
         });
     }
 });
+
+export function call(method, data) {
+    return new Promise(function(success, fail) {
+        var payload = {path: method, data: data};
+        socket.emit("rpc", payload, function(response) {
+            if (response.status === "ok") {
+                success(response.data);
+            }
+            else {
+                fail(response.status);
+            }
+        });
+    });
+}

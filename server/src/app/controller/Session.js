@@ -16,7 +16,7 @@ export default class Session extends Controller {
 
     @Route("Session:login");
     async login(msg, conn) {
-        let s = await models.User.findOne({where: {username: msg.username}});
+        let user = await models.User.findOne({where: {username: msg.username}});
         //TODO: password
 
         let s = await models.Auth.create({

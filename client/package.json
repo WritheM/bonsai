@@ -15,8 +15,10 @@
     "grunt": "^0.4.5",
     "grunt-bower-requirejs": "^2.0.0",
     "grunt-browserify": "^4.0.1",
+    "grunt-contrib-concat": "^0.5.1",
     "grunt-contrib-copy": "^0.8.1",
     "grunt-contrib-watch": "^0.6.1",
+    "grunt-sass": "^1.0.0",
     "grunt-shell": "^1.1.2",
     "serve-static": "^1.10.0"
   }

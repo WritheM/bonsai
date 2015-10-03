@@ -18,6 +18,24 @@
 # Add TrustyUpdates
 # -- These are required for updates to function properly on ubuntu 14.04
 
+echo "=== Adding Hosts"
+
+if [ -e /vagrant/vagrant/ubuntu-virtualbox/hosts.local ]
+then
+
+    sudo cat /vagrant/vagrant/ubuntu-virtualbox/hosts.local >> /etc/hosts
+
+fi
+
+echo "=== Adding Proxy"
+
+if [ -e /vagrant/vagrant/ubuntu-virtualbox/proxy.local ]
+then
+
+    sudo cp /vagrant/vagrant/ubuntu-virtualbox/proxy.local /etc/apt/apt.conf.d/01proxy
+
+fi
+
 echo "=== Selecting the best Mirror"
 
 sudo mv /etc/apt/sources.list /etc/apt/sources.list.bakup

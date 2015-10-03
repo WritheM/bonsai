@@ -92,5 +92,5 @@ bower_components/
 
 # Vagrants & Provisioning
 .vagrant/
-vagrant/ubuntu-virtualbox/package-mirrors.local
+vagrant/ubuntu-virtualbox/*.local
 !vagrant/ubuntu-virtualbox/bin/

@@ -1,0 +1,26 @@
+.c-shell-header
+{
+    @include clearfix();
+
+    height: 100%;
+    background-color: $theme-color-dark;
+    color: $theme-color-accent;
+
+    & > .e-banner
+    {
+        float: left;
+        width: 20%;
+    }
+
+    & > .e-search
+    {
+        float: left;
+        width: 60%;
+    }
+
+    & > .e-user
+    {
+        float: left;
+        width: 20%;
+    }
+}

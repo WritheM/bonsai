@@ -1,4 +1,5 @@
 module.exports = function (grunt) {
+
     grunt.initConfig({
         bowerRequirejs: {
             target: {
@@ -13,6 +14,26 @@ module.exports = function (grunt) {
                 command: "node node_modules/babel/bin/babel.js --stage 0 --modules amd --out-dir public/bin public/src"
             }
         },
+        sass: {
+            options: {
+                sourceMap: true
+            },
+            common: {
+                files: {
+                    'public/bin/styles/common.css': 'public/src/styles/common.scss'
+                }
+            },
+            components: {
+                options: {
+                    includePaths: [
+                        'public/src/styles'
+                    ]
+                },
+                files: {
+                    'public/bin/styles/components.css': 'public/bin/styles/components.scss'
+                }
+            }
+        },
         copy: {
             temp_css: {
                 files: [
@@ -20,10 +41,24 @@ module.exports = function (grunt) {
                 ]
             }
         },
+        concat: {
+            combine_components: {
+                src: ['public/src/styles/_componentsHeader.scss', 'public/src/alt/**/*.Component.scss'],
+                dest: 'public/bin/styles/components.scss',
+            }
+        },
         watch: {
-            quick: {
-                files: ["public/src/**.js","public/src/**/*.js", "public/src/styles/*.css"],
-                tasks: ["quick"],
+            'quick-js': {
+                files: ["public/src/**/*.js"],
+                tasks: ["quick-js"],
+                options: {
+                    spawn: false,
+                    atBegin: false
+                }
+            },
+            'quick-css': {
+                files: ["public/src/**/*.scss"],
+                tasks: ["quick-css"],
                 options: {
                     spawn: false,
                     atBegin: false
@@ -32,11 +67,19 @@ module.exports = function (grunt) {
         }
 
     });
-    grunt.loadNpmTasks('grunt-bower-requirejs');
+
+    // We don't need this and it's really slow to load right now
+    // so we'll comment it for the time being
+    // grunt.loadNpmTasks('grunt-bower-requirejs');
     grunt.loadNpmTasks('grunt-shell');
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-sass');
 
-    grunt.registerTask('quick', ['shell', 'copy:temp_css']);
+    grunt.registerTask('quick-js', ['shell:babel']);
+    grunt.registerTask('quick-css', ['concat:combine_components', 'sass']);
+
+    grunt.registerTask('quick', ['quick-js', 'quick-css']);
     grunt.registerTask('default', ['quick']);
 };

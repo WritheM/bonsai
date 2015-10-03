@@ -1,0 +1,9 @@
+{
+  "apps": [
+    {
+      "name": "frontend",
+      "script": "static-host.js",
+      "watch": true
+    }
+  ]
+}

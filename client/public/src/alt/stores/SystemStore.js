@@ -9,11 +9,16 @@ export default class SystemStore {
         this.connectionState    = Constants.ConnectionStates.NOT_CONNECTED;
 
         this.bindListeners({
-            handleInitialize: systemActions.initialize
+            handleInitialize: systemActions.initialize,
+            handleConnectionStateChanged: systemActions.connectionStateChanged
         });
     }
 
     handleInitialize() {
         this.isReady = true;
+    }
+
+    handleConnectionStateChanged(payload) {
+        this.connectionState = payload.newState;
     }
 }

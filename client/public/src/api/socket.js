@@ -1,7 +1,7 @@
 import io from "socket.io-client";
 import Backbone from "backbone";
 
-var socket = io("http://localhost:1337");
+export var socket = io("http://localhost:1337");
 window.socket = socket;
 
 export var Collection = Backbone.Collection.extend({
@@ -60,4 +60,8 @@ export function call(method, data) {
             }
         });
     });
+}
+
+export function on() {
+    return socket.on(...arguments);
 }

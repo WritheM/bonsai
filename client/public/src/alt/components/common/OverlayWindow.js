@@ -19,6 +19,7 @@ export default class OverlayWindow extends Component {
     static propTypes = {
         isShown: React.PropTypes.func.isRequired,
         requiredStores: React.PropTypes.object.isRequired,
+        preventExit: React.PropTypes.bool,
         exit: React.PropTypes.func
     };
 
@@ -47,8 +48,13 @@ export default class OverlayWindow extends Component {
 
         var preventBubble = (ev) => ev.stopPropagation();
         var exitOverlay = (ev) => {
+
+            if (this.props.preventExit) {
+                return;
+            }
+
             if (this.props.exit) {
-                exit();
+                this.props.exit();
             } else {
                 this.setState({
                     show: false

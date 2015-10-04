@@ -2,6 +2,13 @@ import * as Constants from "../Constants"
 
 export default class SessionActions {
 
+    updateSession(token, user) {
+        this.dispatch({
+            token: token,
+            user: user
+        });
+    }
+
     registerBegin() {
         this.actions.registerUpdateView(
             Constants.RegisterStates.OPEN,
@@ -61,13 +68,24 @@ export default class SessionActions {
             null
         );
 
-        // Temp
-        setTimeout(() => {
-            this.actions.loginUpdateView(
-                Constants.LoginStates.NONE,
-                null
-            );
-        }, 5000);
+        var payload = {
+            username: username,
+            password: password
+        };
+
+        this.alt.socket.call("Session:login", payload)
+            .then((result) => {
+                this.actions.loginUpdateView(
+                    Constants.LoginStates.NONE,
+                    null
+                );
+            })
+            .catch((reason) => {
+                this.actions.loginUpdateView(
+                    Constants.LoginStates.OPEN,
+                    reason
+                )
+            });
 
     }
 

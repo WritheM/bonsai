@@ -52,7 +52,7 @@ export default class LoginForm extends Component {
 
     render() {
 
-        var errorBlock = this.state.message && this.sate.message !== ''
+        var errorBlock = this.state.message && this.state.message !== ''
             ? (
                 <div className="e-message">
                     <p>

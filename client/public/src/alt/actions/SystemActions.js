@@ -19,4 +19,16 @@ export default class SystemActions {
             newState: newState
         });
     }
+
+    /**
+     * Action: Connection Error
+     *
+     * Called when the connection encounters an error.
+     * @param error The error data
+     */
+    connectionError(error) {
+        this.dispatch({
+            error: error
+        });
+    }
 }

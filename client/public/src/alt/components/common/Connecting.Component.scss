@@ -1,0 +1,33 @@
+.c-connecting
+{
+    width: in-rems(300);
+    padding: in-rems(10);
+
+    & > .e-title
+    {
+        padding-bottom: in-rems(15);
+    }
+
+    & > .e-animation
+    {
+        margin: 0 auto;
+        width: in-rems(180);
+
+        img, span
+        {
+            display: inline-block;
+            height: in-rems(50);
+            vertical-align: middle;
+        }
+
+        img
+        {
+            width: in-rems(50);
+        }
+
+        span
+        {
+            line-height: in-rems(50);
+        }
+    }
+}

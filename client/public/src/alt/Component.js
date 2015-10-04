@@ -104,6 +104,10 @@ export default class Component extends React.Component {
         flux: React.PropTypes.any.isRequired
     };
 
+    get socket() {
+        return this.flux.socket;
+    }
+
     getChildContext() {
         return {
             flux: this.context.flux

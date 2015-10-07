@@ -1,9 +1,9 @@
-$theme-color-light: #A8EDD8;
-$theme-color-darkest: #0D1215;
-$theme-color-dark: #232C32;
-$theme-color-accent: #1AB667;
-$theme-color-accent-light: #15A25A;
-$theme-color-highlight: #108D4E;
+// Typesetting
+$typeface-base-size: $base-size;
+$typeface-base-height: 1.2em;
+$typeface-base-family: Arial;
 
-$typeface-base-size: 12px;
-$typeface-family: Arial;
+// Dimensions & Helper
+$theme-edge-width: in-rems(60);
+$theme-menu-width: in-rems(180);
+$theme-social-width: in-rems(250);

@@ -1,5 +1,9 @@
 .c-shell
 {
+    @include display(flex);
+    @include flex-wrap();
+    @include flex-direction(column);
+
     position: fixed;
 
     top: 0;
@@ -9,49 +13,16 @@
 
     & > .e-header
     {
-        position: absolute;
-
-        top: 0;
-        left: 0;
-        right: 0;
-
-        height: 50px;
-    }
-
-    & > .e-menu
-    {
-        position: absolute;
-
-        top: 50px;
-        bottom: 50px;
-        left: 0;
-
-        width: 25%;
-        height: auto;
-
-        border-right: 1px solid $theme-color-dark;
+        height: $theme-edge-width;
     }
 
     & > .e-content
     {
-        position: absolute;
-
-        top: 50px;
-        bottom: 50px;
-        left: 25%;
-        right: 0;
-
-        height: auto;
+        @include flex(1);
     }
 
     & > .e-footer
     {
-        position: absolute;
-
-        bottom: 0;
-        left: 0;
-        right: 0;
-
-        height: 50px;
+        height: $theme-edge-width;
     }
 }

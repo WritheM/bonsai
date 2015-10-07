@@ -1,7 +1,11 @@
 import React from "react"
 
-import Component from "../../Component"
-import * as HeaderBanner from "./HeaderBanner"
+import Component        from "../../Component"
+
+import HeaderBanner     from "./HeaderBanner"
+import Search           from "./Search"
+import Notifications    from "./Notifications"
+import ProfileMenu      from "./ProfileMenu"
 
 export default class Header extends Component {
     render() {
@@ -12,10 +16,13 @@ export default class Header extends Component {
                     <HeaderBanner />
                 </div>
                 <div className="e-search">
-                    /* Search */
+                    <Search />
+                </div>
+                <div className="e-notifications">
+                    <Notifications />
                 </div>
                 <div className="e-user">
-                    /* User Info */
+                    <ProfileMenu />
                 </div>
             </div>
 

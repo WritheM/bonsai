@@ -26,7 +26,8 @@ module.exports = function (grunt) {
             components: {
                 options: {
                     includePaths: [
-                        'public/src/styles'
+                        'public/src/styles',
+                        'bower_components/bourbon/app/assets/stylesheets'
                     ]
                 },
                 files: {

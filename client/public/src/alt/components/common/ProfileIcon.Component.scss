@@ -1,0 +1,101 @@
+.c-profile-icon
+{
+    $profile-icon-gutter: in-rems(10);
+    $profile-icon-size: $theme-edge-width - (2 * $profile-icon-gutter);
+
+    // For now let's hard code this, solve the problem of
+    // flex-size later
+    width: $theme-edge-width;
+    height: $theme-edge-width;
+    
+    position: relative;
+
+    & > .e-icon
+    {
+        position: relative;
+        top: $profile-icon-gutter;
+        left: $profile-icon-gutter;
+        width: $profile-icon-size;
+        height: $profile-icon-size;
+
+        // Temp:
+        background-color: white;
+    }
+
+    & > .e-overlay
+    {
+        position: absolute;
+        z-index: 5;
+
+        height: $profile-icon-size;
+
+        bottom: $profile-icon-gutter;
+        left: $profile-icon-gutter;
+        right: $profile-icon-gutter;
+
+        & > .e-status
+        {
+            position: absolute;
+            z-index: 10;
+
+            right: -1 * in-rems(2);
+            top: -1 * in-rems(2);
+
+            width: in-rems(10);
+            height: in-rems(10);
+
+            background-color: white;
+            border: in-rems(1) solid $color-base-darkest;
+
+            border-radius: 50%;
+
+            &.m-synced
+            {
+                background-color: cyan;
+            }
+
+            &.m-online
+            {
+                background-color: greenyellow;
+            }
+
+            &.m-dnd
+            {
+                background-color: #c00;
+            }
+        }
+
+        & > .e-notifications
+        {
+            position: absolute;
+            z-index: 10;
+
+            right: -1 * in-rems(2);
+            bottom: -1 * in-rems(2);
+
+            background-color: #c00;
+            border-radius: 25%;
+
+            font-size: in-rems(9);
+            line-height: 1.2em;
+            padding: in-rems(1) in-rems(3);
+            color: white;
+        }
+    }
+
+    &.m-user
+    {
+        & > .e-icon
+        {
+            border-radius: 50%;
+        }
+    }
+
+    &.m-room
+    {
+        & > .e-icon
+        {
+            border-radius: 20%;
+        }
+    }
+}

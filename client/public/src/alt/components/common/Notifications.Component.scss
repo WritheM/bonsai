@@ -1,0 +1,24 @@
+.c-notifications
+{
+    background-color: $color-base-dark;
+
+    & > .e-button
+    {
+        width: $theme-edge-width;
+        height: $theme-edge-width;
+
+        span
+        {
+            position: relative;
+            display: inline-block;
+
+            top: in-rems(10);
+            left: in-rems(10);
+
+            background-color: white;
+
+            width: $theme-edge-width - in-rems(20);
+            height: $theme-edge-width - in-rems(20);
+        }
+    }
+}

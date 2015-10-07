@@ -1,32 +1,6 @@
-@import "variables";
+@import "settings";
 @import "functions";
+@import "variables";
 @import "mixins";
 
-
-html, body
-{
-    font-size: $typeface-base-size;
-    line-height: 1.2em;
-
-    font-family: $typeface-family;
-}
-
-body
-{
-    background-color: $theme-color-darkest;
-    color: $theme-color-light;
-}
-
-a,
-a:visited,
-a:active
-{
-    color: $theme-color-accent-light;
-    text-decoration: none;
-}
-
-a:hover
-{
-    color: $theme-color-light;
-    text-decoration: underline;
-}
+@import "bourbon"; // External Dependency

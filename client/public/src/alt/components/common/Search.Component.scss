@@ -1,0 +1,67 @@
+.c-search
+{
+    $search-input-height: in-rems(30);
+    $search-input-gutter: ($theme-edge-width - $search-input-height) / 2;
+
+    @include display(flex);
+    @include flex-wrap();
+    @include flex-direction(row);
+
+    height: 100%;
+
+    & > .e-menu-button
+    {
+        width: $theme-edge-width;
+        height: $theme-edge-width;
+
+        padding: in-rems(10);
+
+        span
+        {
+            display: block;
+
+            background-color: white;
+            width: 100%;
+            height: 100%;
+
+            cursor: pointer;
+        }
+    }
+
+    & > .e-search-input
+    {
+        @include flex(1);
+
+        padding: $search-input-gutter;
+        padding-left: 0;
+
+        input
+        {
+            // Start Fresh, TODO: Optimize this later
+            margin: 0;
+            padding: 0;
+            border: 0;
+
+            box-sizing: border-box;
+
+            width: 80%;
+            min-width: in-rems(200);
+
+            height: $search-input-height;
+            line-height: $search-input-height;
+
+            padding-left: in-rems(5);
+            padding-right: in-rems(5);
+
+            border: in-rems(1) solid $color-accent;
+            background-color: $color-base-darker;
+            color: $color-base-lightest;
+            border-radius: in-rems(4);
+
+            @include placeholder-style
+            {
+                color: $color-base-light;
+            }
+        }
+    }
+}

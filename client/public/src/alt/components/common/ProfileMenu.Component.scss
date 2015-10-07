@@ -1,0 +1,52 @@
+.c-profile-menu
+{
+    $profile-menu-name-size: 150%;
+    $profile-menu-button-size: in-rems(10);
+    $profile-menu-button-v-gutter: ($theme-edge-width - $profile-menu-button-size) / 2;
+    $profile-menu-button-h-gutter: in-rems(5);
+
+    @include display(flex);
+    @include flex-wrap();
+    @include flex-direction(row);
+
+    width: in-rems(250);
+    height: $theme-edge-width;
+
+    cursor: pointer;
+
+    background-color: $color-base-darker;
+
+    & > .e-name
+    {
+        @include flex(1);
+
+        font-size: $profile-menu-name-size;
+        line-height: $theme-edge-width - (in-rems(15) * 2);
+        padding: in-rems(15);
+
+        color: white;
+        font-weight: bold;
+
+        text-align: right;
+    }
+
+    & > .e-button
+    {
+        width: (2 * $profile-menu-button-h-gutter) + $profile-menu-button-size;
+        padding: $profile-menu-button-v-gutter $profile-menu-button-h-gutter;
+
+        span
+        {
+            display: inline-block;
+            width: $profile-menu-button-size;
+            height: $profile-menu-button-size;
+
+            background-color: white;
+        }
+    }
+
+    & > .e-avatar
+    {
+        width: $theme-edge-width;
+    }
+}

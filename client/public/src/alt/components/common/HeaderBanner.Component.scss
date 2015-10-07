@@ -1,20 +1,58 @@
 .c-shell-header-banner
 {
-    width: 100%;
+    $header-banner-icon-gutter: in-rems(10);
+    $header-banner-icon-size: $theme-edge-width - (2 * $header-banner-icon-gutter);
+
     height: 100%;
 
-    padding: 10px;
+    background-color: $color-accent-light;
+    color: white;
+    cursor: pointer;
 
-    & > a,
-    & > a:visited,
-    & > a:active
+    & > .e-icon,
+    & > .e-title
     {
-        color: $theme-color-highlight;
-        font-size: 18px;
+        vertical-align: middle;
+
+        height: $theme-edge-width;
+    }
+
+    & > .e-icon
+    {
+        display: inline-block;
+
+        width: $theme-edge-width;
+
+        span
+        {
+            display: block;
+
+            margin: $header-banner-icon-gutter;
+            width: $header-banner-icon-size;
+            height: $header-banner-icon-size;
+
+            background-color: white;
+        }
+    }
+
+    & > .e-title
+    {
+        display: none;
+
+        padding: $header-banner-icon-gutter (2 * $header-banner-icon-gutter) $header-banner-icon-gutter 0;
+
+        line-height: $header-banner-icon-size;
+        font-size: 150%;
         font-weight: bold;
 
-        line-height: 30px;
+        width: $theme-menu-width - $theme-edge-width;
+    }
 
-        text-decoration: none;
+    &.m-expanded
+    {
+        & > .e-title
+        {
+            display: inline-block;
+        }
     }
 }

@@ -1,26 +1,30 @@
 .c-shell-header
 {
-    @include clearfix();
+    @include display(flex);
+    @include flex-wrap();
+    @include flex-direction(row);
 
     height: 100%;
-    background-color: $theme-color-dark;
-    color: $theme-color-accent;
+
+    background-color: $color-base;
 
     & > .e-banner
     {
-        float: left;
-        width: 20%;
+        width: auto;
     }
 
     & > .e-search
     {
-        float: left;
-        width: 60%;
+        @include flex(1);
+    }
+
+    & > .e-notifications
+    {
+        width: auto;
     }
 
     & > .e-user
     {
-        float: left;
-        width: 20%;
+        width: auto;
     }
 }

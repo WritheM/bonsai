@@ -1,0 +1,57 @@
+.c-player-volume
+{
+    $icon-size: in-rems(25);
+    $bar-size: in-rems(15);
+
+    $icon-spacing: in-rems(5);
+
+    width: 100%;
+    height: $theme-edge-width;
+
+    @include display(flex);
+    @include flex-direction(row);
+    @include flex-wrap();
+
+    & > .e-mute,
+    & > .e-slider
+    {
+        display: inline-block;
+        vertical-align: middle;
+
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    & > .e-mute
+    {
+        margin-right: ($icon-spacing / 2);
+
+        width: $icon-size;
+        height: $icon-size;
+
+        background-color: white;
+        cursor: pointer;
+    }
+
+    & > .e-slider
+    {
+        height: $bar-size;
+        margin-left: ($icon-spacing / 2);
+
+        background-color: $color-accent;
+
+        @include flex(1);
+
+        & > .e-slider-fill
+        {
+            position: relative;
+            top: 0;
+            left: 0;
+
+            height: $bar-size;
+            // Width from style
+            background-color: $color-accent-light;
+        }
+    }
+}

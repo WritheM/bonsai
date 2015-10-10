@@ -51,7 +51,7 @@
                 line-height: $overlay-spinner-size;
                 font-size: 120%;
 
-                color: $theme-color-accent;
+                color: $color-accent;
                 font-weight: bold;
             }
         }
@@ -73,7 +73,7 @@
                 font-size: 300%;
                 font-weight: bold;
 
-                color: $theme-color-highlight;
+                color: $color-accent-light;
             }
         }
 
@@ -91,8 +91,8 @@
             {
                 input
                 {
-                    border: 1px solid $theme-color-accent;
-                    background-color: $theme-color-darkest;
+                    border: 1px solid $color-accent;
+                    background-color: $color-base-darkest;
                     border-radius: in-rems(5);
                     box-sizing: border-box;
                     display: block;
@@ -102,10 +102,10 @@
                     width: 100%;
                     text-align: center;
 
-                    color: $theme-color-light;
+                    color: $color-base-lightest;
 
                     @include placeholder-style {
-                        color: $theme-color-dark;
+                        color: $color-base;
                     }
                 }
             }
@@ -119,15 +119,15 @@
                 padding: in-rems(6) in-rems(3);
                 text-align: center;
 
-                background-color: $theme-color-highlight;
-                color: $theme-color-darkest;
+                background-color: $color-accent;
+                color: $color-base-darkest;
 
                 cursor: pointer;
 
                 &.m-disabled
                 {
-                    background-color: $theme-color-darkest;
-                    color: $theme-color-dark;
+                    background-color: $color-base-dark;
+                    color: $color-base-light;
 
                     cursor: not-allowed;
                 }

@@ -1,0 +1,29 @@
+.c-player-controls
+{
+    height: $theme-edge-width;
+    width: auto; // for now
+
+    background-color: $color-accent-dark;
+
+    padding: 0 in-rems(10);
+
+    & > .e-prev,
+    & > .e-play-pause,
+    & > .e-next,
+    & > .e-info,
+    & > .e-video
+    {
+        display: inline-block;
+
+        height: $theme-edge-width;
+        width: in-rems(40);
+
+        .temp-button
+        {
+            width: in-rems(30);
+            height: in-rems(30);
+            margin: in-rems(15) in-rems(5);
+            background-color: white;
+        }
+    }
+}

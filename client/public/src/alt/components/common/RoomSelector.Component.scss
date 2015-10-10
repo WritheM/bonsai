@@ -1,0 +1,46 @@
+.c-room-selector
+{
+    $title-width: $theme-menu-width - $theme-edge-width;
+
+    background-color: $color-base;
+
+    height: $theme-edge-width;
+
+    & > .e-room,
+    & > .e-title
+    {
+        vertical-align: middle;
+    }
+
+    & > .e-room
+    {
+        display: inline-block;
+
+        width: $theme-edge-width;
+        height: $theme-edge-width;
+    }
+
+    & > .e-title
+    {
+        display: inline-block;
+
+        width: $title-width;
+        height: $theme-edge-width;
+
+        font-size: 120%;
+        font-weight: bold;
+        color: white;
+
+        line-height: $theme-edge-width - in-rems(30);
+        padding: in-rems(15);
+        padding-left: 0;
+    }
+
+    &.m-expanded
+    {
+        & > .e-title
+        {
+            display: inline-block;
+        }
+    }
+}

@@ -1,0 +1,15 @@
+.c-player-time-index
+{
+    height: $theme-edge-width;
+    padding: 0 in-rems(10);
+
+    & > .e-text
+    {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+
+        color: $color-highlight;
+        font-size: 110%;
+    }
+}

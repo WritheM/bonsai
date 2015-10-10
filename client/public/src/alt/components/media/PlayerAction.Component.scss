@@ -1,0 +1,26 @@
+.c-player-actions
+{
+    width: in-rems(250); // Temp
+    height: $theme-edge-width;
+    padding: 0 in-rems(5);
+
+    background-color: $color-accent-dark;
+    color: white;
+
+    @include display(flex);
+    @include flex-direction(row);
+    @include flex-wrap();
+
+    & > .e-votes,
+    & > .e-volume,
+    & > .e-playback-modes
+    {
+        height: $theme-edge-width;
+        width: auto;
+    }
+
+    & > .e-volume
+    {
+        @include flex(1);
+    }
+}

@@ -1,7 +1,7 @@
 .c-player
 {
     height: 100%;
-    color: $theme-color-accent;
+    color: $color-accent;
 
     & > .e-controls
     {
@@ -31,7 +31,7 @@
 
         & > .e-progress-bar
         {
-            background-color: $theme-color-accent;
+            background-color: $color-accent;
         }
     }
 }

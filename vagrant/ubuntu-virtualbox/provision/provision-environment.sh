@@ -16,6 +16,8 @@ then
   sudo rm provision
 fi
 
+sudo ln -s /vagrant/vagrant/ubuntu-virtualbox/bin/provision provision
+
 echo "=== Creating Bonsai Tool Link"
 if [ -f "/home/vagrant/bin/provision" ]
 then

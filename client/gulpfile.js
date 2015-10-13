@@ -23,6 +23,12 @@ var gulp            = require('gulp'),
     // Helpers
     cli             = gulpUtil.env;
 
+function onError(error) {
+    gulpUtil.log(error.toString());
+
+    this.emit('end');
+}
+
 var includePaths = {
     commonScss: 'public/src/styles',
     appScss: 'public/src/alt',
@@ -62,7 +68,7 @@ gulp.task('styles-common', function() {
     return gulp
         .src(commonGlob)
 
-        .pipe(plumber())
+        .pipe(plumber(onError))
         .pipe(gulpIf(cli.debug, debug({title: '[PROCESS:styles-common]'})))
 
         // SASS Compilation
@@ -85,7 +91,7 @@ gulp.task('styles-components', function() {
 
     return gulp
         .src(componentsGlob)
-        .pipe(plumber())
+        .pipe(plumber(onError))
         .pipe(gulpIf(cli.debug, debug({title: '[PROCESS:styles-components]'})))
 
         // Bootstrap
@@ -130,7 +136,7 @@ gulp.task('build:styles', ['styles'], function() {
 
     return gulp
         .src('public/bin/styles/*.css')
-        .pipe(plumber())
+        .pipe(plumber(onError))
         .pipe(concat('site.css'))
         .pipe(gulp.dest(paths.bin.styles))
         .pipe(uglifyCSS())
@@ -165,7 +171,7 @@ gulp.task('deps', function() {
     return gulp
         .src(depPaths)
 
-        .pipe(plumber())
+        .pipe(plumber(onError))
         .pipe(gulpIf(cli.debug, debug({title: '[PROCESS:Dependency]'})))
 
         // Flatten the file paths
@@ -188,7 +194,7 @@ gulp.task('build:deps', ['deps'], function() {
 
     return gulp
         .src(files)
-        .pipe(plumber())
+        .pipe(plumber(onError))
         .pipe(concat('deps.js'))
         .pipe(gulp.dest(paths.bin.deps))
         .pipe(uglifyJS())
@@ -214,7 +220,7 @@ gulp.task('app', function() {
     return gulp
         .src(glob)
 
-        .pipe(plumber())
+        .pipe(plumber(onError))
         .pipe(gulpIf(cli.debug, debug({title: '[PROCESS:App]'})))
 
         .pipe(newer(paths.bin.root))
@@ -244,7 +250,7 @@ gulp.task('build:app', ['app'], function() {
 
     return gulp
         .src('public/bin/main.js')
-        .pipe(plumber())
+        .pipe(plumber(onError))
         .pipe(requireJs(config))
         .pipe(debug('require-js-output'))
         .pipe(gulp.dest(paths.bin.out))

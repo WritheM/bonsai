@@ -10,7 +10,7 @@ import Footer           from "./common/Footer"
 import OverlayWindow    from "./common/OverlayWindow"
 
 import Connecting       from "./common/Connecting"
-import RegisterForm     from "./session/RegisterForm.js"
+import RegisterForm     from "./session/RegisterForm"
 import LoginForm        from "./session/LoginForm"
 
 

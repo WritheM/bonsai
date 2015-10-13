@@ -46,6 +46,10 @@ function makeScssBootstrap(opts) {
 
             var componentRef = path.join(pathInfo.dir, pathInfo.name);
 
+            if (opts.pathPrefix) {
+                componentRef = path.join(opts.pathPrefix, componentRef);
+            }
+
             contents += '@import "' + componentRef + '";\n';
         }
 

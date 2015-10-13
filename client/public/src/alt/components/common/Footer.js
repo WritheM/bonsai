@@ -5,7 +5,7 @@ import Component from "../../Component"
 import PlayerControls   from "../media/PlayerControls"
 import PlayerProgress   from "../media/PlayerProgress"
 import PlayerActions    from "../media/PlayerActions"
-import RoomSelector     from "./RoomSelector.js"
+import RoomSelector     from "./RoomSelector"
 
 export default class Header extends Component {
     render() {

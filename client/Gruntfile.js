@@ -1,5 +1,7 @@
 module.exports = function (grunt) {
 
+    throw "Please use gulp to build this project.";
+
     grunt.initConfig({
         bowerRequirejs: {
             target: {

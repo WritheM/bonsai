@@ -7,20 +7,19 @@
     <link href="./bin/styles/common.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="./bin/styles/components.css" rel="stylesheet" type="text/css" media="screen" />
 
-    <script data-main="config" src="../bower_components/requirejs/require.js"></script>
-    <script>
-        require(["config"], function() {
-            require(["bin/main"], function() {
-
-            });
-        });
-    </script>
-    <!--<script src="bower_components/react/react.js"></script>
-    <script src="bower_components/react/JSXTransformer.js"></script>-->
+    <script data-main="config" src="./bin/deps/require.js"></script>
 </head>
 <body>
     <div id="root">
         <!-- Site Goes Here! -->
     </div>
+
+    <script src="./bin/deps/external-helpers.js"></script>
+    <script>
+        require(["config"], function(cfg) {
+            require(["main"], function() { });
+        });
+    </script>
+
 </body>
 </html>

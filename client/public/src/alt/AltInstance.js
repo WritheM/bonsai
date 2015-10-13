@@ -1,4 +1,4 @@
-import Alt from "alt"
+import Alt from "altlib"
 
 import * as Constants from "./Constants"
 import { debug } from "./Utilities"

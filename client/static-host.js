@@ -5,5 +5,5 @@ var connect     = require('connect'),
     serveStatic = require('serve-static');
 
 connect()
-    .use(serveStatic('.'))
+    .use(serveStatic('./public/'))
     .listen(8080);

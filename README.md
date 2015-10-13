@@ -78,3 +78,38 @@ If you'd like to remove the VM entirely you can destroy it:
     vagrant destroy --force
     
 This should give you a basic environment to work in that you can turn off when you're not using it.
+
+## Vagrant Development - Commands
+
+Everything in your project directory should be visible at the `/vagrant` path on the VM. Globally there's a number of
+commands that are available to you.
+
+**provision command**
+
+The `provision` command is a simple command that lets you re-run a provisioner. Mostly used for testing changes to the
+provisioners but can also be used to re-install a component.
+
+USAGE:
+
+    provision [<provisioner>]
+    
+If no provisioner is specified it will list the available provisioners.
+
+**bonsai command**
+
+The `bonsai` command is a tool used to perform common client-level actions for developing with bonsai. Unfortunately the
+provisioners can't do all the work for you, some actions should be run from the shell. This is where the `bonsai` command 
+comes in. This will give you quick access to common operations so you don't have to remember / type common commands over 
+and over.
+ 
+USAGE:
+
+    bonsai [<action>]
+    
+If no action is specified it will list the actions that are available.
+
+* install - This should be the first thing you run, it'll make sure all the dependencies for the frontend and backend are installed.
+* build - This will build both projects
+* start - This will start the hosts for both projects
+* stop - This will stop the hosts for both projects
+* watch - This will build both projects and then watch for changes and run incremental builds when files change. (NOTE: Server project does not have it's watch tied into this)

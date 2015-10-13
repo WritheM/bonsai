@@ -5,7 +5,7 @@
 
 if [ ! -d "/home/vagrant/bin" ]
 then
-  mkdir "/home/vagrant/bin"
+  sudo mkdir "/home/vagrant/bin"
 fi
 
 pushd "/home/vagrant/bin"
@@ -13,9 +13,17 @@ pushd "/home/vagrant/bin"
 echo "=== Creating Provision Tool Link"
 if [ -f "/home/vagrant/bin/provision" ]
 then
-  rm provision
+  sudo rm provision
 fi
 
-ln -s /vagrant/vagrant/ubuntu-virtualbox/bin/provision provision
+echo "=== Creating Bonsai Tool Link"
+if [ -f "/home/vagrant/bin/provision" ]
+then
+  sudo rm bonsai
+fi
+
+sudo ln -s /vagrant/vagrant/ubuntu-virtualbox/bin/bonsai bonsai
+
+sudo chown -R vagrant:vagrant .
 
 popd

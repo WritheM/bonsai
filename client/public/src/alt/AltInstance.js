@@ -9,6 +9,9 @@ import SystemStore from "./stores/SystemStore"
 import SessionActions from "./actions/SessionActions"
 import SessionStore from "./stores/SessionStore"
 
+import UIActions from "./actions/UIActions"
+import UIStore from "./stores/UIStore"
+
 /**
  * This is our "container" for the application. It's the Alt object (flux)
  * that will be provided to every view that needs to get something from
@@ -37,11 +40,13 @@ export default class AltInstance extends Alt {
     registerActions() {
         this.addActions(Constants.Actions.SYSTEM, SystemActions);
         this.addActions(Constants.Actions.SESSION, SessionActions);
+        this.addActions(Constants.Actions.UI, UIActions);
     }
 
     registerStores() {
         this.addStore(Constants.Stores.SYSTEM, SystemStore);
         this.addStore(Constants.Stores.SESSION,SessionStore);
+        this.addStore(Constants.Stores.UI, UIStore);
     }
 
     attachSocket() {

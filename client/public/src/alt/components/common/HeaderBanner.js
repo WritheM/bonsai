@@ -1,6 +1,7 @@
 import React from "react"
 
-import Component from "../../Component"
+import * as Constants   from "../../Constants"
+import Component        from "../../Component"
 
 export default class HeaderBanner extends Component {
 
@@ -10,16 +11,22 @@ export default class HeaderBanner extends Component {
         this.state = {
             isExpanded: false
         };
-
-        this.onClicked = this.onClicked.bind(this);
     }
 
-    onClicked() {
+    getRequiredStores() {
+        return {
+            'ui': Constants.Stores.UI
+        }
+    }
 
-        // TODO: Fire global event instead
+    onStoreUpdated(storeKey, state) {
+        if (storeKey === Constants.Stores.UI)
+            return this.onUIUpdated(state);
+    }
 
+    onUIUpdated(state) {
         this.setState({
-            isExpanded: !this.state.isExpanded
+            isExpanded: state.menu.isOpen
         });
     }
 
@@ -32,7 +39,7 @@ export default class HeaderBanner extends Component {
 
         return (
 
-            <div className={classes} onClick={this.onClicked}>
+            <div className={classes}>
                 <div className="e-icon">
                     <span>{/* Temp */}</span>
                 </div>

@@ -1,6 +1,7 @@
 import React from "react"
 
-import Component from "../../Component"
+import * as Constants   from "../../Constants"
+import Component        from "../../Component"
 
 export default class Search extends Component {
 
@@ -10,8 +11,14 @@ export default class Search extends Component {
         this.onToggleMenu = this.onToggleMenu.bind(this);
     }
 
+    getRequiredActions() {
+        return {
+            'ui': Constants.Actions.UI
+        }
+    }
+
     onToggleMenu() {
-        // TODO
+        this.actions.ui.toggleMenu();
     }
 
     render() {

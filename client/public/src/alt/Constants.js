@@ -3,12 +3,14 @@
  */
 export const Actions = {
     SESSION:    'SESSION',
-    SYSTEM:     'SYSTEM'
+    SYSTEM:     'SYSTEM',
+    UI:         'UI'
 };
 
 export const Stores = {
     SESSION:    'SESSION',
-    SYSTEM:     'SYSTEM'
+    SYSTEM:     'SYSTEM',
+    UI:         'UI'
 };
 
 /**
@@ -38,3 +40,9 @@ export const LoginStates = {
     OPEN:           'OPEN',
     AUTHENTICATING: 'AUTHENTICATING'
 };
+
+export const SocialPaneStates = {
+    MIN:            'MIN',
+    COMPACT:        'COMPACT',
+    MAX:            'MAX'
+}

@@ -1,13 +1,13 @@
 import React from "react"
 
-import Component        from "../../Component"
+import { DumbComponent }    from "../../Components"
 
-import HeaderBanner     from "./HeaderBanner"
-import Search           from "./Search"
-import Notifications    from "./Notifications"
-import ProfileMenu      from "./ProfileMenu"
+import HeaderBanner         from "./HeaderBanner"
+import Search               from "./Search"
+import Notifications        from "./Notifications"
+import ProfileMenu          from "./ProfileMenu"
 
-export default class Header extends Component {
+export default class Header extends DumbComponent {
     render() {
         return (
 

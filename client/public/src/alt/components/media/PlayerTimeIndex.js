@@ -1,8 +1,8 @@
-import React            from "react"
+import React                from "react"
 
-import Component        from "../../Component"
+import { DumbComponent }    from "../../Components"
 
-export default class PlayerTimeIndex extends Component {
+export default class PlayerTimeIndex extends DumbComponent {
 
     formatSeconds(seconds) {
         if (seconds > 3600) {

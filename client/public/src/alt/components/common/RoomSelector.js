@@ -1,10 +1,10 @@
-import React            from "react"
+import React                from "react"
 
-import * as Constants   from "../../Constants"
-import Component        from "../../Component"
-import ProfileIcon      from "./ProfileIcon"
+import * as Constants       from "../../Constants"
+import { SmartComponent }   from "../../Components"
+import ProfileIcon          from "./ProfileIcon"
 
-export default class RoomSelector extends Component {
+export default class RoomSelector extends SmartComponent {
 
     constructor() {
         super(...arguments);

@@ -1,9 +1,9 @@
 import React from "react"
 
 import * as Constants   from "../../Constants"
-import Component        from "../../Component"
+import { SmartComponent }    from "../../Components"
 
-export default class Search extends Component {
+export default class Search extends SmartComponent {
 
     constructor() {
         super(...arguments);

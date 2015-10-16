@@ -1,9 +1,9 @@
 import React from "react"
 
-import Component from "../../Component"
-import YoutubePlayer from "./YoutubePlayer"
+import { DumbComponent }    from "../../Components"
+import YoutubePlayer        from "./YoutubePlayer"
 
-export default class Player extends Component {
+export default class Player extends DumbComponent {
 
     constructor() {
         super(...arguments);

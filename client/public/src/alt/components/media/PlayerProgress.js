@@ -1,9 +1,9 @@
-import React            from "react"
+import React                from "react"
 
-import Component        from "../../Component"
-import PlayerTimeIndex  from "./PlayerTimeIndex"
+import { DumbComponent }    from "../../Components"
+import PlayerTimeIndex      from "./PlayerTimeIndex"
 
-export default class PlayerProgress extends Component {
+export default class PlayerProgress extends DumbComponent {
 
     constructor() {
         super(...arguments);

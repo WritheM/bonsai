@@ -1,8 +1,8 @@
-import React            from "react"
+import React                from "react"
 
-import Component        from "../../Component"
+import { DumbComponent }    from "../../Components"
 
-export default class Notifications extends Component {
+export default class Notifications extends DumbComponent {
 
     constructor() {
         super(...arguments);

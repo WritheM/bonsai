@@ -1,25 +1,27 @@
-import React            from "react"
+import React                from "react"
 
-import * as Constants   from "../Constants"
-import Component        from "../Component"
+import * as Constants       from "../Constants"
+import { SmartComponent }   from "../Components"
 
-import Header           from "./common/Header"
-import Content          from "./common/Content"
-import Footer           from "./common/Footer"
+import Header               from "./common/Header"
+import Content              from "./common/Content"
+import Footer               from "./common/Footer"
 
-import OverlayWindow    from "./common/OverlayWindow"
+import OverlayWindow        from "./common/OverlayWindow"
 
-import Connecting       from "./common/Connecting"
-import RegisterForm     from "./session/RegisterForm"
-import LoginForm        from "./session/LoginForm"
+import Connecting           from "./common/Connecting"
+import RegisterForm         from "./session/RegisterForm"
+import LoginForm            from "./session/LoginForm"
 
 
-export default class Shell extends Component {
+export default class Shell extends SmartComponent {
 
-    getRequiredActions() {
-        return {
+    constructor() {
+        super(...arguments);
+
+        this.addActions({
             'session': Constants.Actions.SESSION
-        };
+        });
     }
 
     render() {

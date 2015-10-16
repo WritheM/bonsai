@@ -1,8 +1,8 @@
 import React from "react"
 
-import Component from "../../Component"
+import { SmartComponent } from "../../Components"
 
-export default class RegisterForm extends Component {
+export default class RegisterForm extends SmartComponent {
     render() {
         return (
 

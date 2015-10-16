@@ -1,9 +1,9 @@
-import React            from "react"
+import React                from "react"
 
-import Component        from "../../Component"
-import ProfileIcon      from "./ProfileIcon"
+import { DumbComponent }    from "../../Components"
+import ProfileIcon          from "./ProfileIcon"
 
-export default class ProfileMenu extends Component {
+export default class ProfileMenu extends DumbComponent {
 
     render() {
 

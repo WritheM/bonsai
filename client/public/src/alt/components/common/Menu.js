@@ -1,9 +1,9 @@
 import React from "react"
 
-import Component from "../../Component"
+import { DumbComponent } from "../../Components"
 import MenuItem from "./MenuItem"
 
-export default class Menu extends Component {
+export default class Menu extends DumbComponent {
     render() {
 
         var items = [

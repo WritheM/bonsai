@@ -1,6 +1,6 @@
 import React from "react"
 
-import Component from "../../Component"
+import { SmartComponent } from "../../Components"
 
 /**
  * Renders an overlay window when a condition is met
@@ -14,7 +14,7 @@ import Component from "../../Component"
  *     <ControlToRender />
  * </OverlayWindow>
  */
-export default class OverlayWindow extends Component {
+export default class OverlayWindow extends SmartComponent {
 
     static propTypes = {
         isShown: React.PropTypes.func.isRequired,

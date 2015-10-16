@@ -1,11 +1,11 @@
-import React            from "react"
+import React                from "react"
 
-import Component        from "../../Component"
-import PlayerVotes      from "./PlayerVotes"
-import PlayerVolume     from "./PlayerVolume"
-import PlayerPlayModes  from "./PlayerPlayModes"
+import { DumbComponent }    from "../../Components"
+import PlayerVotes          from "./PlayerVotes"
+import PlayerVolume         from "./PlayerVolume"
+import PlayerPlayModes      from "./PlayerPlayModes"
 
-export default class PlayerActions extends Component {
+export default class PlayerActions extends DumbComponent {
 
     render() {
 

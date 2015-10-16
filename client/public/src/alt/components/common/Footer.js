@@ -1,13 +1,13 @@
 import React from "react"
 
-import Component from "../../Component"
+import { DumbComponent }    from "../../Components"
 
-import PlayerControls   from "../media/PlayerControls"
-import PlayerProgress   from "../media/PlayerProgress"
-import PlayerActions    from "../media/PlayerActions"
-import RoomSelector     from "./RoomSelector"
+import PlayerControls       from "../media/PlayerControls"
+import PlayerProgress       from "../media/PlayerProgress"
+import PlayerActions        from "../media/PlayerActions"
+import RoomSelector         from "./RoomSelector"
 
-export default class Header extends Component {
+export default class Header extends DumbComponent {
     render() {
         return (
 

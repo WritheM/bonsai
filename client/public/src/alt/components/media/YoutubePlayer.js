@@ -1,8 +1,8 @@
 import React from "react"
 
-import Component from "../../Component"
+import { DumbComponent } from "../../Component"
 
-export default class YoutubePlayer extends Component {
+export default class YoutubePlayer extends DumbComponent {
     render() {
         return (
 

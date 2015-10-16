@@ -10,4 +10,4 @@ sudo rabbitmq-plugins enable rabbitmq_management_agent
 
 echo "=== Configuring RabbitMQ For Server"
 
-cp /vagrant/vagrant/ubuntu-virtualbox/rabbitmq.json /vagrant/server/config/default.json
+#cp /vagrant/vagrant/ubuntu-virtualbox/rabbitmq.json /vagrant/server/config/default.json

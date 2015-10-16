@@ -1,5 +1,5 @@
 export default function (sequelize, S) {
-    return sequelize.define("Conn", {
+    return sequelize.define("Auth", {
             user_id: S.INTEGER,
             token: S.STRING,
             created: S.DATE,

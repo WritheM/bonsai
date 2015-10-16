@@ -72,8 +72,12 @@ export default class PlaylistMedia extends Controller {
 
         if (after instanceof models.PlaylistMedia.Instance)
             media.next_id = after.id;
+        else
+            media.next_id = null;
         if (before instanceof models.PlaylistMedia.Instance)
             media.previous_id = before.id;
+        else
+            media.previous_id = null;
 
         before.next_id = media.id;
         after.previous_id = media.id;

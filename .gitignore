@@ -86,7 +86,9 @@ crashlytics-build.properties
 
 #
 bin/
-config/
+!config/default.json
+!config/sequelize.json
+config/*
 
 bower_components/
 

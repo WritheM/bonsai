@@ -1,8 +1,10 @@
-require("babel/polyfill");
-
 import Router from "./Router";
-import * as Rabbit from "./Rabbit";
+import * as Rabbit from "../Rabbit";
 import models from "./db/models";
+
+process.on('unhandledRejection', function(error, promise) {
+    console.error("UNHANDLED REJECTION", error.stack);
+});
 
 models.sequelize.sync();
 
@@ -17,5 +19,9 @@ router.addController(new Playlists());
 router.addController(new PlaylistMedia());
 router.addController(new Session());
 
-let server = new Rabbit.server(router);
-server.listen();
+let server = new Rabbit.Server(router);
+server.listen().then(() => {
+    console.log("listening");
+}).catch(e => {
+    console.error(e.stack);
+});

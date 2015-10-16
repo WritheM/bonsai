@@ -1,0 +1,20 @@
+{
+  "database": {
+    "name": "bonsai",
+    "username": "bonsai",
+    "password": "bonsai",
+    "options": {
+      "host": "localhost",
+      "dialect": "mysql"
+    }
+  },
+  "rabbit": {
+    "host": "amqp://localhost",
+    "rpcqueue": "rpc_queue",
+    "call_timeout": 0,
+    "broadcastqueue": "broadcast_queue"
+  },
+  "bridge": {
+    "port": 1337
+  }
+}

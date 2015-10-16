@@ -14,7 +14,7 @@ export default class Session extends Controller {
         return user;
     }
 
-    @Route("Session:login");
+    @Route("Session:login")
     async login(msg, conn) {
         let user = await models.User.findOne({where: {username: msg.username}});
         //TODO: password
@@ -41,6 +41,19 @@ export default class Session extends Controller {
         let s = await models.Auth.findOne({where: {token: msg.token}});
         await s.destroy();
         return true;
+    }
+
+    @Route("Session:joinRoom")
+    async joinRoom(msg, conn) {
+        return {
+            room: {
+                id: 1337,
+                slug: "writhem",
+                name: "writhem"
+            },
+            connections: [],
+            media: []
+        }
     }
 
     //http://stackoverflow.com/a/1349426

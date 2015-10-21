@@ -5,15 +5,16 @@ import * as Utilities from "./Utilities"
 /**
  * Generate a store listener method.
  * @param key The store key to populate in the master state object
+ * @param callback {Function} The method to execute with the state object.
  * @returns {Function} The Listener function
  */
-function getListener(key) {
+function getListener(key, callback) {
     return (storeState) => {
 
         let state = {};
         state[key] = storeState;
 
-        return state;
+        return callback(state);
     }
 }
 
@@ -42,14 +43,14 @@ function getInitialState(stores) {
 /**
  * Attaches the store listeners to the stores.
  */
-function attachStoreListeners(stores, storeListeners) {
+function attachStoreListeners(stores, storeListeners, callback) {
 
     Object
         .keys(stores)
         .forEach((key) => {
 
-            let listener        = getListener(key);
-            let store           = this.stores[key];
+            let listener        = getListener(key, callback);
+            let store           = stores[key];
             storeListeners[key] = listener;
 
             store.listen(listener);
@@ -91,7 +92,7 @@ export class BaseComponent extends React.Component {
         super(...arguments);
     }
 
-    static contextTypes = { 
+    static contextTypes = {
         flux: React.PropTypes.any.isRequired
     };
 
@@ -107,6 +108,33 @@ export class BaseComponent extends React.Component {
         return {
             flux: this.context.flux
         }
+    }
+
+    /**
+     * Rebinds a bunch of methods to always fire against this object.
+     * @param methodList array An array of method names or prototype methods to rebind.
+     */
+    selfBindMethods(methodList) {
+
+        if (typeof methodList === "object" && !Array.isArray(methodList)) {
+            methodList = Object.keys(methodList).map((item) => methodList[item]);
+            console.warn(
+                this.constructor.name +
+                ' is using selfBindMethods with an object. This is not ' +
+                'recommended as the results are unpredictable');
+        } else if (typeof methodList === "function") {
+            methodList = [methodList];
+        }
+
+        methodList.forEach((item) => {
+
+            var itemIsMethod    = typeof item === "function",
+                method          = itemIsMethod ? item : this[item],
+                methodName      = itemIsMethod ? item.name : item;
+
+            this[methodName] = method.bind(this);
+        });
+
     }
 
 }
@@ -158,6 +186,10 @@ export class SmartComponent extends BaseComponent {
         this.actions = {};
         this.stores = {};
         this.storeListeners = {};
+
+        this.selfBindMethods([
+            this.onNewState
+        ]);
     }
 
     addActions(actionMap) {
@@ -192,14 +224,16 @@ export class SmartComponent extends BaseComponent {
 
     componentDidMount() {
         if (this.storeListeners){
-            this.attachStoreListeners();
+            attachStoreListeners(this.stores, this.storeListeners, this.onNewState);
+
             this.onNewState(getInitialState(this.stores));
         }
     }
 
     componentWillUnmount() {
         if (this.storeListeners) {
-            this.detachStoreListeners();
+            detachStoreListeners(this.stores, this.storeListeners);
+
             this.storeListeners = {}; // Reset
         }
     }

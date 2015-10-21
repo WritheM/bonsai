@@ -1,26 +1,24 @@
 import React                from "react"
+import classnames           from "classnames"
 
 import { DumbComponent }    from "../../Components"
 
 export default class PlayerVolume extends DumbComponent {
 
-    constructor() {
-        super(...arguments);
-
-        this.state = {
-            volume: 70
-        };
-    }
-
     render() {
 
         var fillStyles = {
-            'width': this.state.volume + '%'
+            'width': this.props.level + '%'
         };
+
+        var muteClasses = classnames({
+            'e-mute': true,
+            'm-active': this.props.level === 0
+        });
 
         return (
             <div className="c-player-volume">
-                <div className="e-mute">
+                <div className={muteClasses} onClick={this.props.callbacks.muteToggle}>
 
                 </div>
                 <div className="e-slider">

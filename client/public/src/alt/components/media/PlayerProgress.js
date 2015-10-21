@@ -5,20 +5,9 @@ import PlayerTimeIndex      from "./PlayerTimeIndex"
 
 export default class PlayerProgress extends DumbComponent {
 
-    constructor() {
-        super(...arguments);
-
-        this.state = {
-            songName: 'Never gonna give you up',
-            artistName: 'Rick Astley',
-            currentSecond: 50,
-            totalSeconds: 189
-        }
-    }
-
     render() {
 
-        var progress = (this.state.currentSecond / this.state.totalSeconds) * 100;
+        var progress = (this.props.current / this.props.total) * 100;
         var progressStyles = {
             width: progress + '%'
         };
@@ -34,16 +23,16 @@ export default class PlayerProgress extends DumbComponent {
                     <div className="e-text">
                         <div className="e-text-container">
                             <span className="e-song-name">
-                                {this.state.songName}
+                                {this.props.title}
                             </span>
                             <span className="e-artist-name">
-                                {this.state.artistName}
+                                {this.props.artist}
                             </span>
                         </div>
                     </div>
                 </div>
                 <div className="e-time-index">
-                    <PlayerTimeIndex current={this.state.currentSecond} total={this.state.totalSeconds} />
+                    <PlayerTimeIndex current={this.props.current} total={this.props.total} />
                 </div>
             </div>
         );

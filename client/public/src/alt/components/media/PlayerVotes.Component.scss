@@ -7,7 +7,7 @@
     height: $theme-edge-width;
 
     & > .e-leaf,
-    & > .e-burn
+    & > .e-spark
     {
         display: inline-block;
         vertical-align: middle;
@@ -27,7 +27,7 @@
         margin-right: ($icon-spacing / 2);
     }
 
-    & > .e-burn
+    & > .e-spark
     {
         margin-left: ($icon-spacing / 2);
     }

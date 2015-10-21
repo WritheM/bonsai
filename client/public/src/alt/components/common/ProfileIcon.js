@@ -1,4 +1,5 @@
 import React                from "react"
+import classnames           from "classnames"
 
 import { DumbComponent }    from "../../Components"
 
@@ -6,7 +7,7 @@ export default class ProfileIcon extends DumbComponent {
 
     render() {
 
-        var classes = React.addons.classSet({
+        var classes = classnames({
             'c-profile-icon': true,
             'm-user': !!this.props.user,
             'm-room': !!this.props.room
@@ -29,7 +30,7 @@ export default class ProfileIcon extends DumbComponent {
     renderStatus() {
 
         // TODO: Connect this to props
-        var classes = React.addons.classSet({
+        var classes = classnames({
             'e-status': true,
             'm-synced': false,
             'm-online': true,

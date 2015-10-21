@@ -17,6 +17,7 @@ var gulp            = require('gulp'),
     // Utils
     path            = require('path'),
     lazypipe        = require('lazypipe'),
+    mainBowerFiles  = require('main-bower-files'),
 
     makeScssBoot    = require('./tasks/make-scss-bootstrap'),
 
@@ -148,52 +149,39 @@ gulp.task('build:styles', ['styles'], function() {
 /////////////////////////////////////////////
 // Javascript
 
-/**
- * Dependencies to care about, in the order they're required
- */
-var depPaths = [
-    'bower_components/jquery/dist/jquery.js',
-    'bower_components/underscore/underscore.js',
-    'bower_components/backbone/backbone.js',
-    'bower_components/react/react-with-addons.js',
-    'bower_components/alt/dist/alt-with-addons.js',
-    'bower_components/socket.io-client/socket.io.js',
-    'bower_components/requirejs/require.js',
+gulp.task('deps-bower', function() {
 
-    'node_modules/babel-core/external-helpers.js'
-];
+    return gulp
+        .src(mainBowerFiles(), { base: "./bower_components" })
+        .pipe(debug())
+        .pipe(gulp.dest(paths.bin.deps));
+
+});
+
+gulp.task('deps-node', function() {
+
+    return gulp
+        .src([
+            'node_modules/babel-core/external-helpers.js'
+        ], { base: './node_modules' })
+        .pipe(gulp.dest(paths.bin.deps));
+
+});
 
 /**
  * Migrate the Dependencies
  */
-gulp.task('deps', function() {
-
-    return gulp
-        .src(depPaths)
-
-        .pipe(plumber(onError))
-        .pipe(gulpIf(cli.debug, debug({title: '[PROCESS:Dependency]'})))
-
-        // Flatten the file paths
-        .pipe(rename(function(info) {
-            info.dirname = "";
-        }))
-
-        .pipe(newer(paths.bin.deps)) // Only update the newer files
-        .pipe(gulp.dest(paths.bin.deps))
-        .pipe(gulpIf(cli.debug, debug({title: '[PROCESS:Output]'})))
-
-});
+gulp.task('deps', ['deps-bower', 'deps-node']);
 
 gulp.task('build:deps', ['deps'], function() {
 
-    var files = depPaths
-        .map(function(dep) {
-            return path.join('public/bin/deps/', path.parse(dep).base);
-        });
-
     return gulp
-        .src(files)
+        .src([
+            'public/bin/deps/**/*.js',
+            '!public/bin/deps/deps.js',
+            '!public/bin/deps/deps.min.js'
+        ])
+        // TODO: Order if it matters
         .pipe(plumber(onError))
         .pipe(concat('deps.js'))
         .pipe(gulp.dest(paths.bin.deps))
@@ -242,6 +230,7 @@ gulp.task('build:app', ['app'], function() {
             'backbone',
             'jquery',
             'react',
+            'react-router',
             'altlib',
             'socket.io-client',
             'underscore'
@@ -269,7 +258,10 @@ gulp.task('default', ['build'], function(cb) {
     }
 
     gulp.watch(
-        depPaths,
+        [
+            'bower_components/**/*',
+            'node_modules/**/*'
+        ]
         ['deps']
     );
 

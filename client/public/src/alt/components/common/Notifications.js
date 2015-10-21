@@ -4,20 +4,6 @@ import { DumbComponent }    from "../../Components"
 
 export default class Notifications extends DumbComponent {
 
-    constructor() {
-        super(...arguments);
-
-        this.state = {
-            isExpanded: false
-        };
-
-        this.onToggle = this.onToggle.bind(this);
-    }
-
-    onToggle() {
-        // TODO
-    }
-
     render() {
 
         return (

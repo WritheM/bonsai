@@ -26,17 +26,16 @@ export default class OverlayWindow extends SmartComponent {
     constructor(props, context) {
         super(props, context);
 
+        this.addStores(props.requiredStores);
+
         this.state = {
             show: false
         }
     }
 
-    getRequiredStores() {
-        return this.props.requiredStores;
-    }
 
-    onStoreUpdated(storeKey, state) {
-        var newShown = this.props.isShown(storeKey, state);
+    onNewState(state) {
+        var newShown = this.props.isShown(state);
         if (newShown !== null) {
             this.setState({
                 show: newShown === true // Normalize

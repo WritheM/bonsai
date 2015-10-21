@@ -1,20 +1,26 @@
-.c-shell-footer
+.c-player-bar
 {
     @include display(flex);
     @include flex-wrap();
     @include flex-direction(row);
 
     height: 100%;
+    width: 100%;
 
-    background-color: $color-base;
+    background-color: $color-accent-dark;
 
-    & > .e-room-select
+    & > .e-controls
     {
         width: auto;
     }
 
-    & > .e-player
+    & > .e-progress
     {
         @include flex(1);
+    }
+
+    & > .e-actions
+    {
+        width: auto;
     }
 }

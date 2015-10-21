@@ -3,6 +3,9 @@ import Alt from "altlib"
 import * as Constants from "./Constants"
 import { debug } from "./Utilities"
 
+import PlayerActions from "./actions/PlayerActions"
+import PlayerStore from "./stores/PlayerStore"
+
 import SystemActions from "./actions/SystemActions"
 import SystemStore from "./stores/SystemStore"
 
@@ -18,14 +21,19 @@ import UIStore from "./stores/UIStore"
  * the system.
  */
 export default class AltInstance extends Alt {
-    constructor(config = {}, socket = null) {
+    constructor(config = {}, socket = null, router = null) {
         super(config);
 
         if (!socket) {
             throw "No socket instance."
         }
 
+        if (!router) {
+            throw "No router prototype."
+        }
+
         this._socket = socket;
+        this._router = router;
 
         this.registerActions();
         this.registerStores();
@@ -37,13 +45,19 @@ export default class AltInstance extends Alt {
         return this._socket;
     }
 
+    get router() {
+        return this._router;
+    }
+
     registerActions() {
+        this.addActions(Constants.Actions.PLAYER, PlayerActions);
         this.addActions(Constants.Actions.SYSTEM, SystemActions);
         this.addActions(Constants.Actions.SESSION, SessionActions);
         this.addActions(Constants.Actions.UI, UIActions);
     }
 
     registerStores() {
+        this.addStore(Constants.Stores.PLAYER, PlayerStore);
         this.addStore(Constants.Stores.SYSTEM, SystemStore);
         this.addStore(Constants.Stores.SESSION,SessionStore);
         this.addStore(Constants.Stores.UI, UIStore);

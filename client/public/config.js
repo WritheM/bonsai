@@ -4,12 +4,14 @@ require.config({
 
     },
     paths: {
-        backbone: "deps/backbone",
-        jquery: "deps/jquery",
-        react: "deps/react-with-addons",
-        altlib: "deps/alt-with-addons",
-        "socket.io-client": "deps/socket.io",
-        underscore: "deps/underscore"
+        backbone: "deps/backbone/backbone",
+        jquery: "deps/jquery/dist/jquery",
+        react: "deps/react/react-with-addons",
+        'react-router': "deps/react-router/build/umd/ReactRouter",
+        altlib: "deps/alt/dist/alt-with-addons",
+        "socket.io-client": "deps/socket.io-client/socket.io",
+        underscore: "deps/underscore/underscore",
+        classnames: "deps/classnames/index"
     },
     map: {
         '*': {

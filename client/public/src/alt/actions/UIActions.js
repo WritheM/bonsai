@@ -6,4 +6,10 @@ export default class UIActions {
         this.dispatch();
     }
 
+    updatePageComponent(component) {
+        this.dispatch({
+            component: component
+        });
+    }
+
 }

@@ -26,15 +26,15 @@ export default class Shell extends SmartComponent {
 
     render() {
 
-        var isRegisterShown     = (key, state) => state.register.state !== Constants.RegisterStates.NONE;
-        var isLoginShown        = (key, state) => state.login.state !== Constants.LoginStates.NONE;
-        var isConnectingShown   = (key, state) => state.connectionState === Constants.ConnectionStates.CONNECTING;
+        var isRegisterShown     = (state) => state.session.register.state !== Constants.RegisterStates.NONE;
+        var isLoginShown        = (state) => state.session.login.state !== Constants.LoginStates.NONE;
+        var isConnectingShown   = (state) => state.system.connectionState === Constants.ConnectionStates.CONNECTING;
 
         var cancelRegister      = () => this.actions.session.registerCancel();
         var cancelLogin         = () => this.actions.session.loginCancel();
 
-        var sessionStores       = {'store': Constants.Stores.SESSION};
-        var systemStores        = {'store': Constants.Stores.SYSTEM};
+        var sessionStores       = {'session': Constants.Stores.SESSION};
+        var systemStores        = {'system': Constants.Stores.SYSTEM};
 
         return (
 

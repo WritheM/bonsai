@@ -2,15 +2,17 @@
  * Action Collections (Namespaces)
  */
 export const Actions = {
-    SESSION:    'SESSION',
-    SYSTEM:     'SYSTEM',
-    UI:         'UI'
+    PLAYER:     'ACTIONS_PLAYER',
+    SESSION:    'ACTIONS_SESSION',
+    SYSTEM:     'ACTIONS_SYSTEM',
+    UI:         'ACTIONS_UI'
 };
 
 export const Stores = {
-    SESSION:    'SESSION',
-    SYSTEM:     'SYSTEM',
-    UI:         'UI'
+    PLAYER:     'STORES_PLAYER',
+    SESSION:    'STORES_SESSION',
+    SYSTEM:     'STORES_SYSTEM',
+    UI:         'STORES_UI'
 };
 
 /**

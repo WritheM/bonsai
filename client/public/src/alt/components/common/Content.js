@@ -1,33 +1,60 @@
-import React        from "react"
+import React                from "react"
 
-import * as Constants from "../../Constants"
-import Component    from "../../Component";
+import * as Constants       from "../../Constants"
+import { SmartComponent }   from "../../Components"
 
-export default class Content extends Component {
+export default class Content extends SmartComponent {
 
+    constructor() {
+        super(...arguments);
 
-    getRequiredActions() {
-        return {
+        this.addActions({
             'session': Constants.Actions.SESSION
+        });
+
+        this.addStores({
+            'ui': Constants.Stores.UI
+        });
+
+        this.state = {
+            pageComponent: null
+        };
+    }
+
+
+    onNewState(state) {
+        if (state.ui) {
+            this.setState({
+                pageComponent: state.ui.pageComponent
+            });
         }
     }
 
     render() {
 
-        var goRegister = () => {
-            this.actions.session.registerBegin();
-        };
-
-        var goLogin = () => {
-            this.actions.session.loginBegin();
-        };
+        var PageComponent = this.state.pageComponent;
+        var page = PageComponent ? <PageComponent /> : null;
 
         return (
-            <div>
-                <a href="#" onClick={goRegister}>Register</a>
-                <span>-</span>
-                <a href="#" onClick={goLogin}>Login</a>
-           </div>
+            <div className="c-content">
+                <div className="e-menu">
+                    Menu Standin
+                </div>
+                <div className="e-main">
+                    <div className="e-player">
+                        Player Standin
+                    </div>
+                    <div className="e-page">
+                        {page}
+                    </div>
+                    <div className="e-queue">
+                        Queue Standin
+                    </div>
+                </div>
+                <div className="e-social">
+                    Social Standin
+                </div>
+            </div>
         )
 
     }

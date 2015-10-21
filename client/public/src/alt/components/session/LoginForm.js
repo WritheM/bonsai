@@ -16,21 +16,19 @@ export default class LoginForm extends SmartComponent {
             isAuthenticating: false
         };
 
-        this.updateUsername = this.updateUsername.bind(this);
-        this.updatePassword = this.updatePassword.bind(this);
-        this.doLogin        = this.doLogin.bind(this);
-    }
-
-    getRequiredActions() {
-        return {
+        this.addActions({
             'session': Constants.Actions.SESSION
-        };
-    }
+        });
 
-    getRequiredStores() {
-        return {
+        this.addStores({
             'session': Constants.Stores.SESSION
-        }
+        });
+
+        this.selfBindMethods([
+            this.updateUsername,
+            this.updatePassword,
+            this.doLogin
+        ]);
     }
 
     onStoreUpdated(storeKey, state) {

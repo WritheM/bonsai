@@ -21,14 +21,21 @@ export default class SessionStore {
             mode: Constants.SocialPaneStates.COMPACT
         };
 
+        this.pageComponent = null;
+
         this.bindListeners({
-            handleToggleMenu: uiActions.toggleMenu
+            handleToggleMenu: uiActions.toggleMenu,
+            handleUpdatePageComponent: uiActions.updatePageComponent
         });
 
     }
 
     handleToggleMenu() {
         this.menu.isOpen = !this.menu.isOpen;
+    }
+
+    handleUpdatePageComponent(payload) {
+        this.pageComponent = payload.component;
     }
 
 }

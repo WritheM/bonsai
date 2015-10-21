@@ -1,40 +1,16 @@
-import React from "react"
+import React        from "react"
+import classnames   from "classnames"
 
-import * as Constants   from "../../Constants"
-import { SmartComponent }       from "../../Components"
+import * as Constants           from "../../Constants"
+import { DumbComponent }        from "../../Components"
 
-export default class HeaderBanner extends SmartComponent {
-
-    constructor() {
-        super(...arguments);
-
-        this.state = {
-            isExpanded: false
-        };
-    }
-
-    getRequiredStores() {
-        return {
-            'ui': Constants.Stores.UI
-        }
-    }
-
-    onStoreUpdated(storeKey, state) {
-        if (storeKey === Constants.Stores.UI)
-            return this.onUIUpdated(state);
-    }
-
-    onUIUpdated(state) {
-        this.setState({
-            isExpanded: state.menu.isOpen
-        });
-    }
+export default class HeaderBanner extends DumbComponent {
 
     render() {
 
-        var classes = React.addons.classSet({
+        var classes = classnames({
             'c-shell-header-banner': true,
-            'm-expanded': this.state.isExpanded
+            'm-expanded': this.props.isExpanded
         });
 
         return (

@@ -7,14 +7,14 @@
     <link href="./bin/styles/common.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="./bin/styles/components.css" rel="stylesheet" type="text/css" media="screen" />
 
-    <script data-main="config" src="./bin/deps/require.js"></script>
+    <script data-main="config" src="./bin/deps/requirejs/require.js"></script>
 </head>
 <body>
     <div id="root">
         <!-- Site Goes Here! -->
     </div>
 
-    <script src="./bin/deps/external-helpers.js"></script>
+    <script src="./bin/deps/babel-core/external-helpers.js"></script>
     <script>
         require(["config"], function(cfg) {
             require(["main"], function() { });

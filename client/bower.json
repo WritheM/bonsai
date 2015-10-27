@@ -29,7 +29,6 @@
   "devDependencies": {
     "bourbon": "~4.2.5"
   },
-  // Overrides for gulp
   "overrides": {
     "react": {
       "main": "react-with-addons.js"

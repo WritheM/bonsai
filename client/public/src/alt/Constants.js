@@ -3,6 +3,7 @@
  */
 export const Actions = {
     PLAYER:     'ACTIONS_PLAYER',
+    QUEUE:      'ACTIONS_QUEUE',
     SESSION:    'ACTIONS_SESSION',
     SYSTEM:     'ACTIONS_SYSTEM',
     UI:         'ACTIONS_UI'
@@ -10,6 +11,7 @@ export const Actions = {
 
 export const Stores = {
     PLAYER:     'STORES_PLAYER',
+    QUEUE:      'STORES_QUEUE',
     SESSION:    'STORES_SESSION',
     SYSTEM:     'STORES_SYSTEM',
     UI:         'STORES_UI'

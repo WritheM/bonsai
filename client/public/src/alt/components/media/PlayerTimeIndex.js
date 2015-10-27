@@ -39,8 +39,8 @@ export default class PlayerTimeIndex extends DumbComponent {
 
     render() {
 
-        var current = this.formatSeconds(this.props.current);
-        var total = this.formatSeconds(this.props.total);
+        var current = this.formatSeconds(Math.floor(this.props.current));
+        var total = this.formatSeconds(Math.floor(this.props.total));
 
         return (
             <div className="c-player-time-index">

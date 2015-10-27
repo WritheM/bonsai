@@ -3,6 +3,8 @@ import React                from "react"
 import * as Constants       from "../../Constants"
 import { SmartComponent }   from "../../Components"
 
+import Player               from "../media/Player"
+
 export default class Content extends SmartComponent {
 
     constructor() {
@@ -42,7 +44,7 @@ export default class Content extends SmartComponent {
                 </div>
                 <div className="e-main">
                     <div className="e-player">
-                        Player Standin
+                        <Player />
                     </div>
                     <div className="e-page">
                         {page}

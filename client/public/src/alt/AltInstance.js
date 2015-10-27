@@ -6,6 +6,9 @@ import { debug } from "./Utilities"
 import PlayerActions from "./actions/PlayerActions"
 import PlayerStore from "./stores/PlayerStore"
 
+import QueueActions from "./actions/QueueActions"
+import QueueStore from "./stores/QueueStore"
+
 import SystemActions from "./actions/SystemActions"
 import SystemStore from "./stores/SystemStore"
 
@@ -51,6 +54,7 @@ export default class AltInstance extends Alt {
 
     registerActions() {
         this.addActions(Constants.Actions.PLAYER, PlayerActions);
+        this.addActions(Constants.Actions.QUEUE, QueueActions);
         this.addActions(Constants.Actions.SYSTEM, SystemActions);
         this.addActions(Constants.Actions.SESSION, SessionActions);
         this.addActions(Constants.Actions.UI, UIActions);
@@ -58,6 +62,7 @@ export default class AltInstance extends Alt {
 
     registerStores() {
         this.addStore(Constants.Stores.PLAYER, PlayerStore);
+        this.addStore(Constants.Stores.QUEUE, QueueStore);
         this.addStore(Constants.Stores.SYSTEM, SystemStore);
         this.addStore(Constants.Stores.SESSION,SessionStore);
         this.addStore(Constants.Stores.UI, UIStore);

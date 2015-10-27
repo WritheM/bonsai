@@ -1,7 +1,9 @@
 require.config({
     baseUrl: "bin/",
     shim: {
-
+        youtube: {
+            exports: 'YT'
+        }
     },
     paths: {
         backbone: "deps/backbone/backbone",
@@ -11,7 +13,8 @@ require.config({
         altlib: "deps/alt/dist/alt-with-addons",
         "socket.io-client": "deps/socket.io-client/socket.io",
         underscore: "deps/underscore/underscore",
-        classnames: "deps/classnames/index"
+        classnames: "deps/classnames/index",
+        youtube: "//www.youtube.com/iframe_api?noext"
     },
     map: {
         '*': {

@@ -1,9 +1,16 @@
-import React                from "react"
+import React, { PropTypes } from "react"
 
 import { DumbComponent }    from "../../Components"
 import PlayerTimeIndex      from "./PlayerTimeIndex"
 
 export default class PlayerProgress extends DumbComponent {
+
+    static propTypes = {
+        current: PropTypes.number.isRequired,
+        total: PropTypes.number.isRequired,
+        title: PropTypes.string.isRequired,
+        artist: PropTypes.string.isRequired
+    };
 
     render() {
 

@@ -7,6 +7,10 @@ import ReactRouter, {
     HashLocation,
     RouteHandler }      from "react-router"
 
+// Temp
+import * as Constants       from "./Constants"
+import { SmartComponent }   from "./Components"
+
 /*************** POLYFILLS *****************/
 
 class RoutingRoot extends React.Component {
@@ -17,11 +21,34 @@ class RoutingRoot extends React.Component {
     }
 }
 
-class Dashboard extends React.Component {
+class Dashboard extends SmartComponent {
+
+    constructor() {
+        super(...arguments);
+
+        this.addActions({
+            'queue': Constants.Actions.QUEUE
+        });
+
+        this.selfBindMethods([
+            this.clicked
+        ]);
+    }
+
+    clicked() {
+        this.actions.queue.playSong({
+            'id': '1337',
+            'title': 'Public Domain Music: Aquasky (Electronica)',
+            'artist': 'TheEyeThatSees',
+            'mediaType': 'youtube',
+            'mediaCode': '6JMuxTR1d20'
+        });
+    }
+
     render() {
         return (
             <div className="c-dashboard">
-                  Dashboard
+                  Dashboard - <a href="#" onClick={this.clicked}>Load Public Domain Song</a>
             </div>
         );
     }

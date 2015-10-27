@@ -1,5 +1,6 @@
 import React            from "react"
 
+import * as Constants           from "../../Constants"
 import { SmartComponent }       from "../../Components"
 
 import PlayerControls       from "./PlayerControls"
@@ -16,10 +17,14 @@ export default class PlayerBar extends SmartComponent {
 
         this.addActions({
             // TODO: Add Actions
+            'player': Constants.Actions.PLAYER,
+            'queue': Constants.Actions.QUEUE
         });
 
         this.addStores({
             // TODO: Add Stores
+            'player': Constants.Stores.PLAYER,
+            'queue': Constants.Stores.QUEUE
         });
 
         this.selfBindMethods([
@@ -39,28 +44,56 @@ export default class PlayerBar extends SmartComponent {
 
         this.state = {
             song: {
-                title: 'Never gonna give you up',
-                artist: 'Rick Astley'
+                title: '',
+                artist: ''
             },
             player: {
-                current: 50,
-                total: 189
+                isPlaying: false,
+                current: 0,
+                total: 1
             }
         };
     }
 
-    // Controls
+
+    onNewState(state) {
+
+        if (state.player) {
+            this.setState({
+                player: {
+                    isPlaying: state.player.isPlaying,
+                    current: state.player.position,
+                    total: state.player.total
+                }
+            });
+        }
+
+        if (state.queue) {
+
+            let title = state.queue.current ? state.queue.current.title : '';
+            let artist = state.queue.current ? state.queue.current.artist : '';
+
+            this.setState({
+                song: {
+                    title: title,
+                    artist: artist
+                }
+            })
+        }
+    }
+
+// Controls
 
     onBackPressed() {
-        // TODO: Wire into Action
+        this.actions.queue.prev();
     }
 
     onPlayPausePressed() {
-        // TODO: Wire into Action
+        this.actions.player.playPause();
     }
 
     onNextPressed() {
-        // TODO: Wire into Action
+        this.actions.queue.next();
     }
 
     onQueuePressed() {
@@ -104,7 +137,7 @@ export default class PlayerBar extends SmartComponent {
 
         var controlProps = {
             callbacks: controlCallbacks,
-            isPlaying: false,
+            isPlaying: this.state.player.isPlaying,
             isQueueOpen: false,
             isTheatreOpen: false
         };

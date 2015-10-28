@@ -1,3 +1,5 @@
+require('babel-core/polyfill');
+
 import Router from "./Router";
 import * as Rabbit from "../Rabbit";
 import models from "./db/models";

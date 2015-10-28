@@ -1,4 +1,4 @@
-//require("babel/polyfill");
+require("babel-core/polyfill");
 
 import * as Rabbit from "../Rabbit";
 import {bridge as config} from "config";

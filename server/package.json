@@ -1,7 +1,7 @@
 {
-  "name": "bonsai",
+  "name": "bonsai-server",
   "version": "0.0.1",
-  "description": "",
+  "description": "Bonsai - Server",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/writhem/Bonsai.git"
   },
-  "author": "",
+  "author": "Bonsai Development Team",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/writhem/Bonsai/issues"
@@ -18,6 +18,7 @@
   "homepage": "https://github.com/writhem/Bonsai#readme",
   "dependencies": {
     "amqplib": "^0.4.0",
+    "babel": "^5.8.23",
     "bluebird": "^2.10.1",
     "config": "^1.16.0",
     "mysql": "^2.9.0",
@@ -27,11 +28,15 @@
     "eventemitter2": "^0.4.14"
   },
   "devDependencies": {
-    "babel": "^5.8.23",
-    "grunt": "^0.4.5",
-    "grunt-contrib-clean": "^0.6.0",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-mkdir": "^0.1.2",
-    "grunt-shell": "^1.1.2"
+    "del": "^2.0.2",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.3.0",
+    "gulp-debug": "^2.1.2",
+    "gulp-if": "^2.0.0",
+    "gulp-newer": "^1.0.0",
+    "gulp-plumber": "^1.0.1",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-util": "^3.0.7",
+    "run-sequence": "^1.1.4"
   }
 }

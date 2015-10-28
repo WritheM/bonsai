@@ -28,7 +28,7 @@ export default class Shell extends SmartComponent {
 
         var isRegisterShown     = (state) => state.session.register.state !== Constants.RegisterStates.NONE;
         var isLoginShown        = (state) => state.session.login.state !== Constants.LoginStates.NONE;
-        var isConnectingShown   = (state) => false; //(state) => state.system.connectionState === Constants.ConnectionStates.CONNECTING;
+        var isConnectingShown   = (state) => state.system.connectionState === Constants.ConnectionStates.CONNECTING;
 
         var cancelRegister      = () => this.actions.session.registerCancel();
         var cancelLogin         = () => this.actions.session.loginCancel();

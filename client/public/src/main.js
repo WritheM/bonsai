@@ -2,8 +2,7 @@
 import React from "react"
 
 // App Logic
-// import * as socket          from "./api/socket"
-var socket = { on: () => {}, socket: { io: {} } }; // STAND-IN
+import * as socket          from "./api/socket"
 
 import * as Constants       from "./alt/Constants"
 import * as Utilities       from "./alt/Utilities"
@@ -20,21 +19,10 @@ let fluxConfig = {
     // Nothing here
 };
 
-// Let's configure the router prototype
-/*let Router = ReactRouter.create({
-    routes: Routes,
-    location: HashLocation
-});*/
-
 let flux = new BonsaiAlt(fluxConfig, socket, {});
 let UIActions = flux.getActions(Constants.Actions.UI);
 
 window.Bonsai = flux; // Throw it somewhere publically for now so we can fiddle if needed.
-
-/*Router.run((router, state) => {
-    UIActions
-    Utilities.debug('Got Navigation', state);
-});*/
 
 ReactRouter.run(Routes, HashLocation, function(Handler) {
     UIActions.updatePageComponent(Handler);

@@ -209,9 +209,9 @@ gulp.task('app', function() {
         .src(glob)
 
         .pipe(plumber(onError))
+        .pipe(newer(paths.bin.root))
         .pipe(gulpIf(cli.debug, debug({title: '[PROCESS:App]'})))
 
-        .pipe(newer(paths.bin.root))
         .pipe(sourcemaps.init())
             .pipe(babel(babelOptions))
         .pipe(sourcemaps.write())

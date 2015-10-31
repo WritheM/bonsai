@@ -1,0 +1,20 @@
+.c-register-info
+{
+    padding: in-rems(20) 0;
+
+    & > .e-question
+    {
+        color: white;
+
+        font-size: 90%;
+        text-align: center;
+
+        padding: in-rems(5) 0;
+    }
+
+    & > .e-button
+    {
+        width: in-rems(100);
+        margin: 0 auto;
+    }
+}

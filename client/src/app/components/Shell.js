@@ -10,7 +10,7 @@ import Footer               from "./common/Footer"
 import OverlayWindow        from "./common/OverlayWindow"
 
 import Connecting           from "./common/Connecting"
-import RegisterForm         from "./session/RegisterForm"
+import RegisterOverlay      from "./session/RegisterOverlay"
 import LoginForm            from "./session/LoginForm"
 
 
@@ -52,7 +52,7 @@ export default class Shell extends SmartComponent {
                 </div>
 
                 <OverlayWindow requiredStores={sessionStores} isShown={isRegisterShown} exit={cancelRegister}>
-                    <RegisterForm />
+                    <RegisterOverlay />
                 </OverlayWindow>
 
                 <OverlayWindow requiredStores={sessionStores} isShown={isLoginShown} exit={cancelLogin}>

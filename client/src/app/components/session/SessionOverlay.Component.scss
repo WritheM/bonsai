@@ -1,0 +1,84 @@
+.c-session-overlay
+{
+    $component-width: in-rems(400);
+    $component-content-width: in-rems(250);
+    $overlay-gutter: in-rems(10);
+    $overlay-spinner-size: in-rems(50);
+
+    width: $component-width;
+
+    & > .e-overlay
+    {
+        position: absolute;
+        z-index: 1200;
+
+        top: $overlay-gutter;
+        bottom: $overlay-gutter;
+        left: $overlay-gutter;
+        right: $overlay-gutter;
+
+        background-color: black;
+        opacity: 0.75;
+
+        & > .e-spinner
+        {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+
+            transform: translate(-50%, -50%);
+
+            height: $overlay-spinner-size;
+
+            img, span
+            {
+                display: inline-block;
+                vertical-align: middle;
+
+                height: $overlay-spinner-size;
+            }
+
+            img
+            {
+                width: $overlay-spinner-size;
+            }
+
+            span
+            {
+                line-height: $overlay-spinner-size;
+                font-size: 120%;
+
+                color: $color-accent;
+                font-weight: bold;
+            }
+        }
+    }
+
+    & > .e-inner {
+        width: $component-content-width;
+        margin: 0 auto;
+
+        & > .e-header {
+            text-align: center;
+
+            h1 {
+                margin: in-rems(25) 0 in-rems(35) 0;
+
+                font-size: 300%;
+                font-weight: bold;
+
+                color: $color-accent-light;
+            }
+        }
+    }
+
+    & > .e-copy
+    {
+        padding-top: in-rems(80);
+        font-size: 80%;
+
+        color: white;
+
+        text-align: center;
+    }
+}

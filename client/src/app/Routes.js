@@ -27,11 +27,14 @@ class Dashboard extends SmartComponent {
         super(...arguments);
 
         this.addActions({
-            'queue': Constants.Actions.QUEUE
+            'queue': Constants.Actions.QUEUE,
+            'session': Constants.Actions.SESSION
         });
 
         this.selfBindMethods([
-            this.clicked
+            this.clicked,
+            this.login,
+            this.register
         ]);
     }
 
@@ -45,10 +48,21 @@ class Dashboard extends SmartComponent {
         });
     }
 
+    login() {
+        this.actions.session.loginBegin();
+    }
+
+    register() {
+        this.actions.session.registerBegin();
+    }
+
     render() {
         return (
             <div className="c-dashboard">
-                  Dashboard - <a href="#" onClick={this.clicked}>Load Public Domain Song</a>
+                Dashboard -
+                <a href="#" onClick={this.clicked}>Load Public Domain Song</a> -
+                <a href="#" onClick={this.register}>Register</a> -
+                <a href="#" onClick={this.login}>Login</a>
             </div>
         );
     }

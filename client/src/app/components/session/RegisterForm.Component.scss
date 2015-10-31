@@ -1,0 +1,52 @@
+.c-register-form
+{
+    & > .e-username,
+    & > .e-displayname,
+    & > .e-language,
+    & > .e-password,
+    & > .e-password-again
+    {
+        padding-bottom: in-rems(10);
+
+        input
+        {
+            border: 1px solid $color-accent;
+            background-color: $color-base-darkest;
+            border-radius: in-rems(5);
+            box-sizing: border-box;
+            display: block;
+
+            padding: in-rems(6) in-rems(3);
+
+            width: 100%;
+            text-align: center;
+
+            color: $color-base-lightest;
+
+            @include placeholder-style {
+                color: $color-base;
+            }
+        }
+
+        &.m-invalid
+        {
+            input
+            {
+                border-color: red;
+                color: red;
+            }
+        }
+    }
+
+    & > .e-button
+    {
+        border-radius: in-rems(5);
+        background-color: $color-accent;
+
+        color: white;
+        text-align: center;
+        font-weight: bold;
+
+        padding: in-rems(5);
+    }
+}

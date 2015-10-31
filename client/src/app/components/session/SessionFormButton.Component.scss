@@ -1,0 +1,61 @@
+.c-session-form-button
+{
+    border-radius: in-rems(5);
+    padding: in-rems(5);
+
+    text-align: center;
+
+    cursor: pointer;
+
+    &.m-submit
+    {
+        // Colors
+        color: white;
+        background-color: $color-accent;
+
+        // Text
+        font-size: 110%;
+        font-weight: bold;
+
+        &.m-hovered
+        {
+            background-color: $color-accent-light;
+        }
+
+        &.m-pressed
+        {
+            background-color: $color-base-darker;
+            color: $color-accent;
+        }
+    }
+
+    &.m-alternate
+    {
+        // Colors
+        color: $color-base-dark;
+        background-color: $color-base-lightest;
+
+        &.m-hovered
+        {
+            background-color: $color-base-lighter;
+        }
+
+        &.m-pressed
+        {
+            background-color: $color-base-darker;
+            color: $color-base-lightest;
+        }
+    }
+
+    &.m-submit,
+    &.m-alternate
+    {
+        &.m-disabled
+        {
+            background-color: $color-base-dark;
+            color: $color-base-light;
+
+            cursor: not-allowed;
+        }
+    }
+}

@@ -4,14 +4,14 @@ import React from "react"
 // App Logic
 import * as socket          from "./api/socket"
 
-import * as Constants       from "./alt/Constants"
-import * as Utilities       from "./alt/Utilities"
+import * as Constants       from "./app/Constants"
+import * as Utilities       from "./app/Utilities"
 
-import BonsaiAlt            from "./alt/AltInstance"
-import BonsaiApplication    from "./alt/Application"
+import BonsaiAlt            from "./app/AltInstance"
+import BonsaiApplication    from "./app/Application"
 
 // Routing
-import Routes               from "./alt/Routes"
+import Routes               from "./app/Routes"
 import ReactRouter, {
     HashLocation }          from "react-router"
 

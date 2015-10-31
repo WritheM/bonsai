@@ -11,6 +11,7 @@ var gulp            = require('gulp'),
     plumber         = require('gulp-plumber'),
     sourcemaps      = require('gulp-sourcemaps'),
     newer           = require('gulp-newer'),
+    mocha           = require('gulp-mocha'),
 
 // Utils
     del             = require('del'),
@@ -20,12 +21,15 @@ var gulp            = require('gulp'),
     cli             = gulpUtil.env;
 
 var paths = {
-    bin: 'bin'
+    bin: 'bin/',
+    testsBin: 'bin_tests/'
 };
 
 var globs = {
     javascript: 'src/**/*.js',
-    javascriptBin: 'bin/**/*.js'
+    javascriptBin: 'bin/**/*.js',
+    tests: 'tests/**/*.js',
+    testsBin: 'bin_tests/**/*.js'
 };
 
 /**
@@ -37,6 +41,9 @@ function onError(error) {
 
     this.emit('end');
 }
+
+///////////////////////////////////////////////////////
+// Javascript (App)
 
 /**
  * Clean just the JS files
@@ -63,13 +70,61 @@ gulp.task('js-incremental', function() {
         // Error Handling & Debugging
         .pipe(plumber(onError))
         .pipe(newer(paths.bin))
-        .pipe(debug({title: '[PROCESS:js]'}))
+        .pipe(debug({title: '[App Javascript]'}))
 
         .pipe(sourcemaps.init())
             .pipe(babel(babelOptions))
         .pipe(sourcemaps.write())
 
         .pipe(gulp.dest(paths.bin));
+
+});
+
+/////////////////////////////////////////////////////////
+// Tests
+
+gulp.task('tests-clean', function() {
+    return del([
+        globs.testsBin
+    ]);
+});
+
+gulp.task('tests-incremental', function() {
+
+    var babelOptions = {
+        nonStandard: true,
+        stage: 0
+    };
+
+    return gulp
+        .src(globs.tests)
+
+        // Error Handling & Debugging
+        .pipe(plumber(onError))
+        .pipe(newer(paths.testsBin))
+        .pipe(debug({title: '[Tests]'}))
+
+        .pipe(sourcemaps.init())
+        .pipe(babel(babelOptions))
+        .pipe(sourcemaps.write())
+
+        .pipe(gulp.dest(paths.testsBin));
+
+});
+
+gulp.task('tests-build', function(cb) {
+    runSequence('tests-clean', 'tests-incremental', cb);
+});
+
+gulp.task('test', ['tests-build'], function() {
+
+    var mochaOptions = {
+
+    };
+
+    return gulp
+        .src(globs.testsBin)
+        .pipe(mocha(mochaOptions));
 
 });
 
@@ -81,28 +136,37 @@ gulp.task('clean', ['js-clean']);
 /**
  * Full Build of the project
  */
-gulp.task('build', function(cb) {
+gulp.task('build', ['js-incremental', 'tests-incremental']);
 
-    // We will use the run-sequence plugin to ensure some elements
-    // run not parallelized (so they don't delete things while we're making them)
+gulp.task('default', function(cb) {
+
     runSequence(
         'clean',
-        'js-incremental',
+        'build',
         cb
     );
 
 });
 
-gulp.task('default', ['build'], function(cb) {
-    if (!cli.watch) {
-        cb();
-        return;
-    }
+gulp.task('watch', function(cb) {
+    runSequence(
+        'clean',
+        'build',
+        watch
+    );
+});
 
+function watch() {
     gulp.watch(
         [
             globs.javascript
         ],
         ['js-incremental']
     );
-});
+    gulp.watch(
+        [
+            globs.tests
+        ],
+        ['tests-incremental']
+    )
+}

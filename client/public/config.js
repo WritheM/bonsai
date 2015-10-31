@@ -1,5 +1,5 @@
 require.config({
-    baseUrl: "bin/",
+    baseUrl: "/",
     shim: {
         youtube: {
             exports: 'YT'

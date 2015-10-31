@@ -4,22 +4,33 @@
     <meta charset="UTF-8">
     <title></title>
 
-    <link href="./bin/styles/common.css" rel="stylesheet" type="text/css" media="screen" />
-    <link href="./bin/styles/components.css" rel="stylesheet" type="text/css" media="screen" />
+    <!-- @if PRODUCTION=true -->
+    <link href="/compiled/site.min.css" rel="stylesheet" type="text/css" media="screen" />
 
-    <script data-main="config" src="./bin/deps/requirejs/require.js"></script>
+    <script src="/compiled/deps.min.js"></script>
+    <!-- @endif -->
+    <!-- @if PRODUCTION=false -->
+    <link href="/styles/common.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="/styles/components.css" rel="stylesheet" type="text/css" media="screen" />
+
+    <script data-main="config" src="/deps/requirejs/require.js"></script>
+    <!-- @endif -->
 </head>
 <body>
     <div id="root">
         <!-- Site Goes Here! -->
     </div>
 
-    <script src="./bin/deps/babel-core/external-helpers.js"></script>
+    <!-- @if PRODUCTION=true -->
+    <script src="/compiled/main.js"></script>
+    <!-- @endif -->
+    <!-- @if PRODUCTION=false -->
+    <script src="/deps/babel-core/external-helpers.js"></script>
+    <!-- @endif -->
     <script>
         require(["config"], function(cfg) {
             require(["main"], function() { });
         });
     </script>
-
 </body>
 </html>

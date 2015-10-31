@@ -10,15 +10,19 @@
   "license": "MIT",
   "devDependencies": {
     "bower": "^1.5.3",
+    "chai": "^3.4.0",
     "connect": "^3.4.0",
+    "del": "^2.0.2",
     "gulp": "^3.9.0",
     "gulp-babel": "^5.2.1",
     "gulp-clean": "^0.3.1",
     "gulp-concat": "^2.6.0",
     "gulp-debug": "^2.1.2",
     "gulp-if": "^2.0.0",
+    "gulp-mocha": "^2.1.3",
     "gulp-newer": "^0.5.1",
     "gulp-plumber": "^1.0.1",
+    "gulp-preprocess": "^1.2.0",
     "gulp-rename": "^1.2.2",
     "gulp-requirejs-optimize": "^0.3.0",
     "gulp-sass": "^2.0.4",
@@ -28,6 +32,8 @@
     "gulp-util": "^3.0.6",
     "lazypipe": "^1.0.1",
     "main-bower-files": "^2.9.0",
+    "mocha": "^2.3.3",
+    "run-sequence": "^1.1.4",
     "serve-static": "^1.10.0"
   }
 }

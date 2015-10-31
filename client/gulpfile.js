@@ -10,19 +10,35 @@ var gulp            = require('gulp'),
     sourcemaps      = require('gulp-sourcemaps'),
     newer           = require('gulp-newer'),
     sass            = require('gulp-sass'),
+    mocha           = require('gulp-mocha'),
+    preprocess      = require('gulp-preprocess'),
     uglifyJS        = require('gulp-uglify'),
     uglifyCSS       = require('gulp-uglifycss'),
     requireJs       = require('gulp-requirejs-optimize'),
 
     // Utils
     path            = require('path'),
+    del             = require('del'),
     lazypipe        = require('lazypipe'),
     mainBowerFiles  = require('main-bower-files'),
+    runSequence     = require('run-sequence'),
 
     makeScssBoot    = require('./tasks/make-scss-bootstrap'),
 
     // Helpers
     cli             = gulpUtil.env;
+
+function barrier(count, callback) {
+    var i = 0;
+
+    return function() {
+        i++;
+
+        if (i >= count) {
+            callback();
+        }
+    }
+};
 
 function onError(error) {
     gulpUtil.log(error.toString());
@@ -30,26 +46,86 @@ function onError(error) {
     this.emit('end');
 }
 
-var includePaths = {
-    commonScss: 'public/src/styles',
-    appScss: 'public/src/alt',
-    bourbonIo: 'bower_components/bourbon/app/assets/stylesheets'
-};
-
 var paths = {
+    src: {
+        root: 'src/',
+        app: 'src/app/',
+        api: 'src/api/', // TEMP
+        styles: 'src/styles/',
+        tests: 'tests/',
+        pub: 'public/'
+    },
     bin: {
-        root: 'public/bin/',
-        deps: 'public/bin/deps',
-        styles: 'public/bin/styles/',
-        out: 'public/bin/out/'
+        root: 'bin/',
+        pub: 'bin/public/',
+        tests: 'bin/tests/',
+        app: 'bin/public/app/',
+        api: 'bin/public/api/', // TEMP
+        deps: 'bin/public/deps/',
+        styles: 'bin/public/styles/'
+    },
+    dist: {
+        root: 'dist/',
+        compiled: 'dist/compiled/',
+        image: 'dist/images/'
     },
     tmp: {
-        styles: 'public/tmp/styles'
+        styles: 'bin/tmp/styles/'
     }
 };
 
-/////////////////////////////////////////////
-// Styles
+var includePaths = {
+    commonScss: paths.src.styles,
+    appScss: paths.src.app,
+    bourbonIo: 'bower_components/bourbon/app/assets/stylesheets'
+};
+
+///////////////////////////////////////////////////
+// Dependencies (Deps)
+
+gulp.task('deps-clean', function(cb) {
+    return del([
+        paths.bin.deps + '*.js'
+    ]);
+});
+
+gulp.task('deps-bower', function() {
+
+    return gulp
+        .src(mainBowerFiles(), { base: "./bower_components" })
+        .pipe(debug({title: '[Bower Deps]'}))
+        .pipe(gulp.dest(paths.bin.deps));
+
+});
+
+gulp.task('deps-node', function() {
+
+    return gulp
+        .src([
+            'node_modules/babel-core/external-helpers.js'
+        ], { base: './node_modules' })
+        .pipe(debug({title: '[Node Deps]'}))
+        .pipe(gulp.dest(paths.bin.deps));
+
+});
+
+gulp.task('deps-build', ['deps-bower', 'deps-node']);
+
+gulp.task('deps-dist', ['deps-build'], function() {
+    return gulp
+        .src([
+            paths.bin.deps + '**/*.js'
+        ])
+        .pipe(plumber(onError))
+        .pipe(concat('deps.js'))
+        .pipe(gulp.dest(paths.dist.compiled))
+        .pipe(uglifyJS())
+        .pipe(rename('deps.min.js'))
+        .pipe(gulp.dest(paths.dist.compiled));
+});
+
+///////////////////////////////////////////////////
+// Styles (SCSS / CSS)
 
 var processScss = lazypipe()
     .pipe(sourcemaps.init)
@@ -62,28 +138,33 @@ var processScss = lazypipe()
     })
     .pipe(sourcemaps.write);
 
+gulp.task('styles-clean', function(cb) {
+    return del([
+        paths.bin.styles + '*.css'
+    ]);
+});
+
 gulp.task('styles-common', function() {
 
-    var commonGlob = 'public/src/styles/common.scss';
+    var commonGlob = paths.src.styles + 'common.scss';
 
     return gulp
         .src(commonGlob)
 
         .pipe(plumber(onError))
-        .pipe(gulpIf(cli.debug, debug({title: '[PROCESS:styles-common]'})))
 
         // SASS Compilation
         .pipe(processScss())
 
         // Output
         .pipe(gulp.dest(paths.bin.styles))
-        .pipe(gulpIf(cli.debug, debug({title: '[OUTPUT:styles-common]'})));
+        .pipe(debug({title: '[Common CSS]'}));
 
 });
 
 gulp.task('styles-components', function() {
 
-    var componentsGlob = 'public/src/alt/components/**/*.Component.scss';
+    var componentsGlob = paths.src.app + 'components/**/*.Component.scss';
     var bootstrapOptions = {
         output: 'components.scss',
         header: '@import "component";\n\n',
@@ -93,7 +174,6 @@ gulp.task('styles-components', function() {
     return gulp
         .src(componentsGlob)
         .pipe(plumber(onError))
-        .pipe(gulpIf(cli.debug, debug({title: '[PROCESS:styles-components]'})))
 
         // Bootstrap
         .pipe(makeScssBoot(bootstrapOptions))
@@ -104,97 +184,37 @@ gulp.task('styles-components', function() {
 
         // Output
         .pipe(gulp.dest(paths.bin.styles))
-        .pipe(gulpIf(cli.debug, debug({title: '[OUTPUT:styles-components]'})));
+        .pipe(debug({title: '[Components CSS]'}));
 });
 
-gulp.task('styles', ['styles-common', 'styles-components'], function(cb) {
+gulp.task('styles-build', ['styles-common', 'styles-components']);
 
-    if (cli.production) {
-
-        grunt
-            .src([
-                'public/bin/styles/common.css',
-                'public/bin/styles/components.css'
-            ])
-
-            // Combined
-            .pipe(concat('site.css'))
-            .pipe(gulp.dest(paths.bin.styles))
-
-            // Minified
-            .pipe(uglifyCSS())
-            .pipe(rename('site.min.css'))
-            .pipe(gulp.dest(paths.bin.styles))
-            .on('end', function() { cb() });
-
-    } else {
-        cb();
-    }
-
-});
-
-gulp.task('build:styles', ['styles'], function() {
-
+gulp.task('styles-dist', ['styles-build'], function() {
     return gulp
-        .src('public/bin/styles/*.css')
+        .src(paths.bin.styles + '*.css')
         .pipe(plumber(onError))
         .pipe(concat('site.css'))
-        .pipe(gulp.dest(paths.bin.styles))
+        .pipe(gulp.dest(paths.dist.compiled))
         .pipe(uglifyCSS())
         .pipe(rename('site.min.css'))
-        .pipe(gulp.dest(paths.bin.styles));
-
+        .pipe(gulp.dest(paths.dist.compiled));
 });
 
-/////////////////////////////////////////////
-// Javascript
+///////////////////////////////////////////////////
+// Application (JS)
 
-gulp.task('deps-bower', function() {
-
-    return gulp
-        .src(mainBowerFiles(), { base: "./bower_components" })
-        .pipe(debug())
-        .pipe(gulp.dest(paths.bin.deps));
-
-});
-
-gulp.task('deps-node', function() {
-
-    return gulp
-        .src([
-            'node_modules/babel-core/external-helpers.js'
-        ], { base: './node_modules' })
-        .pipe(gulp.dest(paths.bin.deps));
-
-});
-
-/**
- * Migrate the Dependencies
- */
-gulp.task('deps', ['deps-bower', 'deps-node']);
-
-gulp.task('build:deps', ['deps'], function() {
-
-    return gulp
-        .src([
-            'public/bin/deps/**/*.js',
-            '!public/bin/deps/deps.js',
-            '!public/bin/deps/deps.min.js'
-        ])
-        // TODO: Order if it matters
-        .pipe(plumber(onError))
-        .pipe(concat('deps.js'))
-        .pipe(gulp.dest(paths.bin.deps))
-        .pipe(uglifyJS())
-        .pipe(rename('deps.min.js'))
-        .pipe(gulp.dest(paths.bin.deps));
-
+gulp.task('app-clean', function(cb) {
+    return del([
+        paths.bin.pub + 'main.js',
+        paths.bin.app + '**/*.js',
+        paths.bin.api + '**/*.js' // Temp
+    ]);
 });
 
 /**
  * Compile the Application JS
  */
-gulp.task('app', function() {
+gulp.task('app-incremental', function() {
 
     var babelOptions = {
         nonStandard: true,
@@ -203,28 +223,32 @@ gulp.task('app', function() {
         externalHelpers: true
     };
 
-    var glob = 'public/src/**/*.js';
+    var glob = [
+        '**/*.js'
+    ];
 
     return gulp
-        .src(glob)
+        .src(glob, {
+            cwd: paths.src.root
+        })
 
         .pipe(plumber(onError))
-        .pipe(newer(paths.bin.root))
-        .pipe(gulpIf(cli.debug, debug({title: '[PROCESS:App]'})))
+        .pipe(newer(paths.bin.pub))
 
         .pipe(sourcemaps.init())
-            .pipe(babel(babelOptions))
+        .pipe(babel(babelOptions))
         .pipe(sourcemaps.write())
-        .pipe(gulp.dest(paths.bin.root))
-        .pipe(gulpIf(cli.debug, debug({title: '[OUTPUT:App]'})));
+        .pipe(gulp.dest(paths.bin.pub))
+        .pipe(debug({title: '[Application JS]'}));
 
 });
 
-gulp.task('build:app', ['app'], function() {
+gulp.task('app-build', ['app-incremental'/*, additional app compile steps here */]);
 
+gulp.task('app-dist', ['public-build', 'app-build'], function() {
     var config = {
-        baseUrl: 'public/bin/',
-        mainConfigFile: 'public/config.js',
+        baseUrl: 'bin/public/',
+        mainConfigFile: 'bin/public/config.js',
         optimize: 'none',
         exclude: [
             'backbone',
@@ -238,48 +262,253 @@ gulp.task('build:app', ['app'], function() {
     };
 
     return gulp
-        .src('public/bin/main.js')
+        .src('bin/public/main.js')
         .pipe(plumber(onError))
         .pipe(requireJs(config))
-        .pipe(debug('require-js-output'))
-        .pipe(gulp.dest(paths.bin.out))
+        .pipe(debug('[RequireJS]'))
+        .pipe(gulp.dest(paths.dist.compiled))
         .pipe(uglifyJS())
         .pipe(rename('main.min.js'))
-        .pipe(gulp.dest(paths.bin.out));
+        .pipe(gulp.dest(paths.dist.compiled));
+});
+
+
+///////////////////////////////////////////////////
+// Images
+
+gulp.task('images-clean', function(cb) {
+    // TODO: When images matter
+    cb();
+});
+
+gulp.task('images-build', function(cb) {
+    // TODO: When images matter
+    cb();
+});
+
+///////////////////////////////////////////////////
+// Public Root (Html / Etc...)
+
+gulp.task('public-clean', function(cb) {
+    return del([
+        paths.bin.pub + '*.html',
+        paths.bin.pub + '*.js'
+    ]);
+});
+
+gulp.task('public-build', function(cb) {
+
+    var wait = barrier(2, cb);
+
+    var context = {
+        PRODUCTION: false
+    };
+
+    gulp
+        .src(paths.src.pub + 'index.html')
+        .pipe(preprocess({context: context}))
+        .pipe(gulp.dest(paths.bin.pub))
+        .on('end', wait);
+
+    gulp
+        .src(paths.src.pub + 'config.js')
+        .pipe(gulp.dest(paths.bin.pub))
+        .on('end', wait);
+
 
 });
 
-gulp.task('build', ['deps', 'app', 'styles']);
+gulp.task('public-dist', function(cb) {
 
-gulp.task('default', ['build'], function(cb) {
-    if (!cli.watch) {
-        cb();
-        return;
-    }
+    var wait = barrier(2, cb);
+
+    var context = {
+        PRODUCTION: true
+    };
+
+    gulp
+        .src([
+            paths.src.pub + 'index.html'
+        ])
+        .pipe(preprocess({context: context}))
+        .pipe(gulp.dest(paths.dist.root))
+        .on('end', wait);
+
+    gulp
+        .src([
+            paths.src.pub + 'config.js'
+        ])
+        // TODO: Dist transformes?
+        .pipe(uglifyJS())
+        .pipe(gulp.dest(paths.dist.root))
+        .on('end', wait);
+
+});
+
+///////////////////////////////////////////////////
+// Tests
+
+gulp.task('tests-clean', function(cb) {
+    return del([
+        paths.bin.tests + '**/*.js'
+    ]);
+});
+
+gulp.task('tests-incremental', function(cb) {
+
+    var babelOptions = {
+        nonStandard: true,
+        stage: 0
+    };
+
+    var glob = paths.src.tests + '**/*.js';
+
+    return gulp
+        .src(glob)
+
+        .pipe(plumber(onError))
+        .pipe(newer(paths.bin.tests))
+
+        .pipe(babel(babelOptions))
+        .pipe(debug({title: '[Tests]'}))
+        .pipe(gulp.dest(paths.bin.tests));
+
+});
+
+gulp.task('tests-build', ['tests-incremental']);
+
+gulp.task('tests-run', function() {
+
+    var mochaOptions = {
+
+    };
+
+    return gulp
+        .src('bin/tests/**/*.js')
+        .pipe(mocha(mochaOptions));
+
+})
+
+gulp.task('test', function() {
+
+    runSequence(
+        'tests-clean',
+        'tests-incremental',
+        'tests-run'
+    );
+
+});
+
+
+
+///////////////////////////////////////////////////
+// Dist
+
+gulp.task('clean-dist', function() {
+    return del([
+        paths.dist.root
+    ]);
+});
+
+gulp.task('dist', function(cb) {
+
+    runSequence(
+        'clean-dist',
+        'deps-dist',
+        'styles-dist',
+        'app-dist',
+        /* 'images-produce', */
+        'public-dist',
+        cb
+    )
+
+});
+
+///////////////////////////////////////////////////
+// Entry Points & Master Tasks
+
+gulp.task('clean-bin', function() {
+    return del([
+        paths.bin.root
+    ]);
+});
+
+gulp.task('clean-build', ['deps-clean', 'styles-clean', 'app-clean', /* 'images-clean', */ 'public-clean', 'tests-clean', 'clean-dist']);
+
+gulp.task('build', ['deps-build', 'styles-build', 'app-build', /* 'images-build', */ 'public-build', 'tests-build']);
+
+gulp.task('clean', function(cb) {
+
+    runSequence(
+        'clean-build',
+        'clean-bin',
+        'clean-dist',
+        cb
+    );
+
+});
+
+gulp.task('default', function(cb) {
+
+    runSequence(
+        'clean-build',
+        'build',
+        cb
+    );
+
+});
+
+gulp.task('watch', function() {
+
+    runSequence(
+        'clean-build',
+        'build',
+        watch
+    );
+
+});
+
+function watch() {
+
+    var mediumInterval = 500;
+    var responsiveInterval = 200;
+
+    /*
+     * Removing this for now as it's likely going to be slow
+     */
+    //gulp.watch(
+    //    [
+    //        'bower_components/**/*',
+    //        'node_modules/**/*'
+    //    ],
+
+    //    ['deps-build']
+    //);
+
+    gulp.watch(
+        'src/**/*.js',
+        { interval: mediumInterval },
+        ['app-incremental']
+    );
+
+    gulp.watch(
+        'tests/**/*.js',
+        { interval: mediumInterval },
+        ['tests-incremental']
+    );
 
     gulp.watch(
         [
-            'bower_components/**/*',
-            'node_modules/**/*'
-        ]
-        ['deps']
+            'src/styles/*.scss',
+            'src/app/components/**/*.Component.scss'
+        ],
+        { interval: responsiveInterval },
+        ['styles-build']
     );
 
     gulp.watch(
-        'public/src/**/*.js',
-        ['app']
-    );
-
-    gulp.watch(
-        'public/src/styles/*.scss',
-        ['styles-common']
-    );
-
-    gulp.watch(
-        'public/src/alt/components/**/*.Component.scss',
-        ['styles-components']
-    );
-
-});
-
-gulp.task('produce', ['build:deps', 'build:app', 'build:styles']);
+        'public/*',
+        { interval: mediumInterval },
+        ['public-build']
+    )
+}

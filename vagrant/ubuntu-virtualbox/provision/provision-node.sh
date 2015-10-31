@@ -18,4 +18,4 @@ sudo npm install -g npm
 # Development Prerequisites
 
 echo "=== Installing Node.js Modules"
-sudo npm install -g gulp bower http-server pm2
+sudo npm install -g gulp bower http-server pm2 mocha

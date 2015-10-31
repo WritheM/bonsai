@@ -1,0 +1,28 @@
+.c-word-mark
+{
+    color: $color-accent;
+
+    & > em
+    {
+        font-style: normal;
+        color: white;
+    }
+
+    &.m-light
+    {
+        & > em
+        {
+            color: $color-base-darker;
+        }
+    }
+
+    &.m-accent
+    {
+        color: white;
+
+        & > em
+        {
+            color: $color-base-darker;
+        }
+    }
+}

@@ -1,0 +1,26 @@
+.c-login-info
+{
+    text-align: center;
+    padding: 0 0 in-rems(20) 0;
+
+    & > .e-forgot
+    {
+        padding: in-rems(5) 0;
+    }
+
+    & > .e-question
+    {
+        color: white;
+
+        font-size: 90%;
+        text-align: center;
+
+        padding: in-rems(25) 0 in-rems(5) 0;
+    }
+
+    & > .e-button
+    {
+        width: in-rems(200);
+        margin: 0 auto;
+    }
+}

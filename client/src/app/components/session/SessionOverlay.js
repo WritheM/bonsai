@@ -1,6 +1,8 @@
 import React, { PropTypes, Children }   from "react";
 import { DumbComponent }                from "../../Components"
 
+import WordMark                         from "../common/WordMark"
+
 export default class SessionOverlay extends DumbComponent {
 
     static propTypes = {
@@ -24,7 +26,7 @@ export default class SessionOverlay extends DumbComponent {
                 {this.renderOverlay()}
                 <div className="e-inner">
                     <div className="e-header">
-                        <h1>Bonsai</h1>
+                        <WordMark />
                     </div>
                     <div className="e-inner">
                         {this.props.children}
@@ -32,7 +34,7 @@ export default class SessionOverlay extends DumbComponent {
                     {this.renderInfoElement()}
                 </div>
                 <div className="e-copy">
-                    &copy; 2015 BonsaiFM<br/>
+                    &copy; 2015 <WordMark /><br/>
                     Built with love from the contributions to our open-source community
                 </div>
             </div>

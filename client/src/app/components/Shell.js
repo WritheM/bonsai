@@ -11,7 +11,7 @@ import OverlayWindow        from "./common/OverlayWindow"
 
 import Connecting           from "./common/Connecting"
 import RegisterOverlay      from "./session/RegisterOverlay"
-import LoginForm            from "./session/LoginForm"
+import LoginOverlay         from "./session/LoginOverlay"
 
 
 export default class Shell extends SmartComponent {
@@ -56,7 +56,7 @@ export default class Shell extends SmartComponent {
                 </OverlayWindow>
 
                 <OverlayWindow requiredStores={sessionStores} isShown={isLoginShown} exit={cancelLogin}>
-                    <LoginForm />
+                    <LoginOverlay />
                 </OverlayWindow>
 
                 <OverlayWindow requiredStores={systemStores} isShown={isConnectingShown} preventExit={true}>

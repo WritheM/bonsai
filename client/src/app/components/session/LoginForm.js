@@ -1,196 +1,99 @@
-import React from "react"
+import React, { PropTypes } from "react"
+import classnames           from "classnames"
 
-import * as Constants from "../../Constants"
-import { SmartComponent } from "../../Components"
+import { DumbComponent }    from "../../Components"
 
-export default class LoginForm extends SmartComponent {
+import SessionFormButton    from "./SessionFormButton"
+//import FormInput from "./FormInput"
+
+let formInputShape = PropTypes.shape({
+    'value': PropTypes.string,
+    'isValid': PropTypes.bool.isRequired,
+    'problem': PropTypes.string
+});
+
+export default class LoginForm extends DumbComponent {
+
+    static propTypes = {
+        'data': PropTypes.shape({
+            'username': formInputShape.isRequired,
+            'password': formInputShape.isRequired,
+            'isReady': PropTypes.bool.isRequired
+        }).isRequired,
+
+        'message': PropTypes.string,
+
+        'onValueChanged': PropTypes.func.isRequired,
+        'onSubmit': PropTypes.func.isRequired
+    };
 
     constructor() {
         super(...arguments);
 
-        this.state = {
-            username: '',
-            password: '',
-            canContinue: false,
-            message: null,
-            isAuthenticating: false
-        };
-
-        this.addActions({
-            'session': Constants.Actions.SESSION
-        });
-
-        this.addStores({
-            'session': Constants.Stores.SESSION
-        });
-
         this.selfBindMethods([
-            this.updateUsername,
-            this.updatePassword,
-            this.doLogin
+            this.getInputAttributes,
+            this.updateTextValue
         ]);
     }
 
-    onStoreUpdated(storeKey, state) {
+    getInputAttributes(key, rootClass) {
 
-        console.log('IsAuth', state.login.state);
+        var classDef = {
+            'm-invalid': !this.props.data[key].isValid
+        };
 
-        if (storeKey !== Constants.Stores.SESSION) {
-            return;
-        }
+        classDef[rootClass] = true;
 
-        var isAuthenticating = state.login.state === Constants.LoginStates.AUTHENTICATING;
+        var classes = classnames(classDef);
 
-        this.setState({
-            message: state.login.errorMessage,
-            isAuthenticating: isAuthenticating
-        });
+        return {
+            className: classes,
+            title: this.props.data[key].problem
+        };
+    }
 
+    updateTextValue(key, event) {
+        this.props.onValueChanged(key, event.target.value);
     }
 
     render() {
 
-        var errorBlock = this.state.message && this.state.message !== ''
-            ? (
-                <div className="e-message">
-                    <p>
-                        {this.state.message}
-                    </p>
-                </div>
-            )
-            : null;
-
-
-
         return (
-
-            <div className="c-login-form">
-                {this.renderOverlay()}
-                <div className="e-inner">
-                    <div className="e-header">
-                        <h1>Bonsai</h1>
-                    </div>
-                    {errorBlock}
-                    <div className="e-form">
-                        {this.renderUsername()}
-                        {this.renderPassword()}
-                        {this.renderButton()}
-                    </div>
-                    <div className="e-info">
-                        <p>
-                            <a href="#">
-                                Forgot Password?
-                            </a>
-                        </p>
-                        <p>
-                            Don't have an account?<br/>
-                            <a href="#">
-                                Create an account!
-                            </a>
-                        </p>
-                    </div>
-                </div>
-                <div className="e-copy">
-                    &copy; 2015 BonsaiFM<br/>
-                    Built with love from the contributions to our open-source community
-                </div>
+            <div className="c-register-form">
+                {this.renderInput('username', 'Username or E-Mail', 'e-username')}
+                {this.renderInput('password', 'Password', 'e-password')}
+                <SessionFormButton
+                    type="submit"
+                    text="Sign In"
+                    isDisabled={!this.props.data.isReady}
+                    onClick={this.props.onSubmit} />
             </div>
-
         );
     }
 
-    renderOverlay() {
-
-        if (!this.state.isAuthenticating) {
-            return null;
-        }
-
+    renderInput(key, placeholder, rootClass) {
         return (
-            <div className="e-overlay">
-                <div className="e-spinner">
-                    {/* TODO: Incorrect Location */}
-                    <img src="/public/src/images/ripple.svg" alt="Ripple" />
-                    <span>Signing In</span>
-                </div>
-
+            <div {...this.getInputAttributes(key, rootClass)}>
+                <input
+                    type="text"
+                    placeholder={placeholder}
+                    value={this.props.data[key].value}
+                    onChange={(event) => this.updateTextValue(key, event)} />
             </div>
         )
-
     }
 
-    renderUsername() {
-
-        return (
-            <div className="e-username">
-                <input type="text"
-                       placeholder="Username"
-                       value={this.state.username}
-                       onChange={this.updateUsername} />
-            </div>
-        );
-
-    }
-
-    renderPassword() {
-
-        return (
-            <div className="e-password">
-                <input type="password"
-                       placeholder="Password"
-                       value={this.state.password}
-                       onChange={this.updatePassword} />
-            </div>
-        );
-
-    }
-
-    renderButton() {
-
-        var classes = React.addons.classSet({
-            'e-button': true,
-            'm-disabled': !this.state.canContinue
-        });
-
-        return (
-            <div className={classes}>
-                <div onClick={this.doLogin}>
-                    Sign In
+    renderMessageBlock() {
+        if (this.props.message) {
+            return (
+                <div className="e-message">
+                    <p>
+                        {this.props.message}
+                    </p>
                 </div>
-            </div>
-        );
-    }
-
-
-    getCanContinue(username, password) {
-        return username && password;
-    }
-
-    updateUsername(event) {
-
-        this.setState({
-            username: event.target.value,
-            canContinue: this.getCanContinue(event.target.value, this.state.password)
-        });
-    }
-
-    updatePassword(event) {
-
-        this.setState({
-            password: event.target.value,
-            canContinue: this.getCanContinue(this.state.username, event.target.value)
-        });
-    }
-
-    doLogin(event) {
-
-        if (!this.state.canContinue) {
-            return;
+            );
+        } else {
+            return null;
         }
-
-        this.actions.session.login(
-            this.state.username,
-            this.state.password
-        );
-
     }
 }

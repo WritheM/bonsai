@@ -18,6 +18,7 @@ export default class RegisterForm extends DumbComponent {
         'data': PropTypes.shape({
             'username': formInputShape.isRequired,
             'displayname': formInputShape.isRequired,
+            'email': formInputShape.isRequired,
             'language': formInputShape.isRequired,
             'password': formInputShape.isRequired,
             'passwordAgain': formInputShape.isRequired,
@@ -65,6 +66,7 @@ export default class RegisterForm extends DumbComponent {
             <div className="c-register-form">
                 {this.renderInput('username', 'Username', 'e-username')}
                 {this.renderInput('displayname', 'Display Name', 'e-displayname')}
+                {this.renderInput('email', 'E-Mail', 'e-email')}
                 {this.renderInput('language', 'Language', 'e-language')}
                 {this.renderInput('password', 'Password', 'e-password')}
                 {this.renderInput('passwordAgain', 'Password Again', 'e-password-again')}

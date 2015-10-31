@@ -5,7 +5,7 @@ import { SmartComponent }   from "../../Components"
 
 import SessionOverlay       from "./SessionOverlay"
 import SessionFormButton    from "./SessionFormButton"
-import RegisterForm         from "./RegisterForm"
+import LoginForm            from "./LoginForm"
 
 let formFieldTemplate = {
     value: '',
@@ -15,20 +15,16 @@ let formFieldTemplate = {
 
 let formDataTemplate = {
     username: Object.assign({}, formFieldTemplate),
-    displayname: Object.assign({}, formFieldTemplate),
-    email: Object.assign({}, formFieldTemplate),
-    language: Object.assign({}, formFieldTemplate),
     password: Object.assign({}, formFieldTemplate),
-    passwordAgain: Object.assign({}, formFieldTemplate),
     isReady: false
 };
 
-export default class RegisterOverlay extends SmartComponent {
+export default class LoginOverlay extends SmartComponent {
     constructor() {
         super(...arguments);
 
         this.state = {
-            isRegistering: false,
+            isAuthenticating: false,
             formData: Object.assign({}, formDataTemplate)
         };
 
@@ -43,7 +39,7 @@ export default class RegisterOverlay extends SmartComponent {
         this.selfBindMethods([
             this.onValueChanged,
             this.onSubmit,
-            this.onSigninInstead
+            this.onSignupInstead
         ]);
     }
 
@@ -63,7 +59,6 @@ export default class RegisterOverlay extends SmartComponent {
         var hasAllFields =
             data.username.value &&
             data.displayname.value &&
-            data.email.value &&
             data.language.value &&
             data.password.value &&
             data.passwordAgain.value;
@@ -71,7 +66,6 @@ export default class RegisterOverlay extends SmartComponent {
         var isAllValid =
             data.username.isValid &&
             data.displayname.isValid &&
-            data.email.isValid &&
             data.language.isValid &&
             data.password.isValid &&
             data.passwordAgain.isValid;
@@ -97,9 +91,9 @@ export default class RegisterOverlay extends SmartComponent {
 
     }
 
-    onSigninInstead() {
-        this.actions.session.registerCancel();
-        this.actions.session.loginBegin();
+    onSignupInstead() {
+        this.actions.session.loginCancel();
+        this.actions.session.registerBegin();
     }
 
     onSubmit() {
@@ -111,28 +105,33 @@ export default class RegisterOverlay extends SmartComponent {
     render() {
 
         var info = (
-            <div className="c-register-info">
+            <div className="c-login-info">
+                <div className="e-forgot">
+                    <a href="#">
+                        Forgot Password?
+                    </a>
+                </div>
                 <div className="e-question">
-                    Already have an account?
+                    Don't have an account?
                 </div>
                 <div className="e-button">
                     <SessionFormButton
                         type="alternate"
-                        text="Sign In"
-                        onClick={this.onSigninInstead} />
+                        text="Create an account"
+                        onClick={this.onSignupInstead} />
                 </div>
             </div>
         );
 
         var overlayAttributes = {
-            overlayText: 'Registering',
-            overlayShown: this.state.isRegistering,
+            overlayText: 'Logging In...',
+            overlayShown: this.state.isAuthenticating,
             infoElement: info
         };
 
         return (
             <SessionOverlay {...overlayAttributes}>
-                <RegisterForm
+                <LoginForm
                     data={this.state.formData}
                     onValueChanged={this.onValueChanged}
                     onSubmit={this.onSubmit} />

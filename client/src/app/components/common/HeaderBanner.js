@@ -4,6 +4,8 @@ import classnames   from "classnames"
 import * as Constants           from "../../Constants"
 import { DumbComponent }        from "../../Components"
 
+import WordMark                 from "./WordMark"
+
 export default class HeaderBanner extends DumbComponent {
 
     render() {
@@ -20,7 +22,7 @@ export default class HeaderBanner extends DumbComponent {
                     <span>{/* Temp */}</span>
                 </div>
                 <div className="e-title">
-                    Bonsai
+                    <WordMark type="accent" />
                 </div>
             </div>
 

@@ -61,17 +61,14 @@ def stop_bonsai():
 def watch_bonsai():
   print "Watching Bonsai"
 
-  original_path = os.getcwd()
+  os.system('/vagrant/vagrant/ubuntu-virtualbox/watch-both.sh')
 
-  # TODO: Server
+  pass
 
-  os.chdir('/vagrant/client')
-  os.system('gulp watch &')
+def unwatch_bonsai():
+  print "Unwatching Bonsai"
 
-  os.chdir('/vagrant/server')
-  os.system('gulp watch &')
-
-  os.chdir(original_path)
+  os.system('/vagrant/vagrant/ubuntu-virtualbox/unwatch-both.sh')
 
   pass
 
@@ -87,6 +84,8 @@ def run_task(action):
     return stop_bonsai()
   if action == "watch":
     return watch_bonsai()
+  if action == "unwatch":
+      return unwatch_bonsai()
 
   print "ERR: Unknown action %s" % (action)
   exit(-1)
@@ -100,6 +99,7 @@ if __name__ == "__main__":
     print "  start   - Start Bonsai"
     print "  stop    - Stop Bonsai"
     print "  watch   - Build & Incremental Build for Bonsai"
+    print "  unwatch - Stop the previous watch jobs"
     exit(0)
 
   if len(sys.argv) == 2:

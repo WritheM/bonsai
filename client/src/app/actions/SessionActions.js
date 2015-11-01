@@ -23,21 +23,46 @@ export default class SessionActions {
         );
     }
 
-    register(username, slug, language) {
+    register(username, displayname, email, language, password) {
 
         this.actions.registerUpdateView(
             Constants.RegisterStates.REGISTERING,
             null
         );
 
-        // Temp
-        setTimeout(() => {
-            this.actions.registerUpdateView(
-                Constants.RegisterStates.CONFIRMING,
-                null
-            )
-        }, 5000);
+        var payload = {
+            username: username,
+            displayname: displayname,
+            email: email,
+            language: language,
+            password: password
+        };
 
+        this.alt.socket
+            .call("Session:register", payload)
+            .then((result) => {
+
+                var state = Constants.RegisterStates.CONFIRMING;
+                var message = null;
+
+                if (!result.success) {
+                    state = Constants.RegisterStates.OPEN;
+                    message = result.message;
+                }
+
+                this.actions.registerUpdateView(
+                    state,
+                    message
+                );
+            })
+            .catch((reason) => {
+                this.actions.registerUpdateView(
+                    Constants.RegisterStates.OPEN,
+                    reason
+                )
+            });
+
+        this.dispatch();
     }
 
     registerUpdateView(state, message) {

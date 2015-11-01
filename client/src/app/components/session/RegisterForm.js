@@ -62,8 +62,18 @@ export default class RegisterForm extends DumbComponent {
 
     render() {
 
+        var message = null;
+        if (this.props.message) {
+            message = (
+                <div className="e-message">
+                    {this.props.message}
+                </div>
+            )
+        }
+
         return (
             <div className="c-register-form">
+                {message}
                 {this.renderInput('username', 'Username', 'e-username')}
                 {this.renderInput('displayname', 'Display Name', 'e-displayname')}
                 {this.renderInput('email', 'E-Mail', 'e-email')}

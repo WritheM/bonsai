@@ -39,6 +39,15 @@
         }
     }
 
+    & > .e-message
+    {
+        background-color: $color-base-darkest;
+        border-radius: in-rems(4);
+        color: red;
+        padding: in-rems(4);
+        margin-bottom: in-rems(5);
+    }
+
     & > .e-button
     {
         border-radius: in-rems(5);

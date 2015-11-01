@@ -28,8 +28,10 @@ export default class RegisterOverlay extends SmartComponent {
         super(...arguments);
 
         this.state = {
+            isConfirming: false,
             isRegistering: false,
-            formData: Object.assign({}, formDataTemplate)
+            formData: Object.assign({}, formDataTemplate),
+            message: null
         };
 
         this.addActions({
@@ -45,6 +47,20 @@ export default class RegisterOverlay extends SmartComponent {
             this.onSubmit,
             this.onSigninInstead
         ]);
+    }
+
+
+    onNewState(state) {
+        if (state.session) {
+            var registrationState = state.session.register.state;
+            var message = state.session.register.errorMessage;
+
+            this.setState({
+                isConfirming: registrationState == Constants.RegisterStates.CONFIRMING,
+                isRegistering: registrationState == Constants.RegisterStates.REGISTERING,
+                message: message
+            });
+        }
     }
 
     validateNewData(data) {
@@ -104,7 +120,19 @@ export default class RegisterOverlay extends SmartComponent {
 
     onSubmit() {
 
-        // TODO
+        var data = this.state.formData;
+
+        if (!data.isReady) {
+            return;
+        }
+
+        this.actions.session.register(
+            data.username.value,
+            data.displayname.value,
+            data.email.value,
+            data.language.value,
+            data.password.value
+        );
 
     }
 
@@ -132,11 +160,27 @@ export default class RegisterOverlay extends SmartComponent {
 
         return (
             <SessionOverlay {...overlayAttributes}>
-                <RegisterForm
-                    data={this.state.formData}
-                    onValueChanged={this.onValueChanged}
-                    onSubmit={this.onSubmit} />
+                {this.renderInner()}
             </SessionOverlay>
         )
+    }
+
+    renderInner() {
+        if (this.state.isConfirming) {
+            return (
+                <div>
+                    <strong>Thank you for registering!</strong> We've received your registration, please check
+                    your e-mail for instructions.
+                </div>
+            )
+        } else {
+            return (
+                <RegisterForm
+                    data={this.state.formData}
+                    message={this.state.message}
+                    onValueChanged={this.onValueChanged}
+                    onSubmit={this.onSubmit} />
+            )
+        }
     }
 }

@@ -43,9 +43,10 @@ class Bridge {
             this.client.call(data).then((content) => {
                 console.log("response:", content);
 
-                callback(content);
-
+                // Call the emitter early so it can augment the data before sending it back.
                 this.emitter.emit(data.path, connection, data, content.data);
+
+                callback(content);
             }).catch((content) => {
                 console.log("response (err):", content);
                 callback(content);
@@ -126,6 +127,8 @@ class Session {
 
         bridge.on("Session:logout", this.apiLogout);
 
+        bridge.on("Session:ping", this.apiPing);
+
         bridge.on("Session:joinRoom", this.apiJoinRoom);
         bridge.on("Session:leaveRoom", this.apiLeaveRoom);
     }
@@ -155,11 +158,22 @@ class Session {
     };
 
     apiLogout = (connection, data, response) => {
-        connection.user = {};
-        connection.session = {};
-        connection.perms = {}; //maybe cache quest perms somewhere
+
+        // Logout should copy the response values from
+        // the worker in-case the decision was overridden,
+        // this should return as a guest.
+
+        connection.user = response.user;
+        connection.session = response.session;
+        connection.perms = response.perms;
 
         //todo: broadcast logout
+    };
+
+    apiPing = (connection, data, response) => {
+        response.user = connection.user;
+        response.session = connection.session;
+        response.perms = connection.perms;
     };
 
     apiJoinRoom = (connection, data, response) => {
@@ -235,7 +249,7 @@ class Room {
         //trigger joined broadcast msg
         this.broadcast.broadcast(this.token+"join", {
             slug: this.room.slug,
-            user: connection.user
+            user: connection.user.id
         });
 
         console.log("connect (room "+this.room.id+", users: "+this.connections.length+")");
@@ -255,7 +269,7 @@ class Room {
         this.broadcast.broadcast(this.token+"part", {
             event: "part",
             slug: "writhem",
-            user: connection.user,
+            user: connection.user.id,
             reason: reason
         });
     };

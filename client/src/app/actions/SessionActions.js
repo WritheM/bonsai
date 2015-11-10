@@ -1,4 +1,5 @@
 import * as Constants from "../Constants"
+import Storage        from "../Storage"
 
 export default class SessionActions {
 
@@ -100,10 +101,15 @@ export default class SessionActions {
 
         this.alt.socket.call("Session:login", payload)
             .then((result) => {
-                this.actions.loginUpdateView(
-                    Constants.LoginStates.NONE,
-                    null
+
+                this.actions.loginOk(
+                    result.user,
+                    result.session
                 );
+
+                // close the window
+                this.actions.loginCancel();
+
             })
             .catch((reason) => {
                 this.actions.loginUpdateView(
@@ -125,11 +131,33 @@ export default class SessionActions {
         this.dispatch();
     }
 
-    logout() {
-        this.dispatch();
+    loginOk(user, session) {
+        this.dispatch({
+            userId: user.id,
+            sessionToken: session.token
+        });
+    }
 
-        // Temp
-        setTimeout(() => this.logoutOk(), 5000);
+    logout() {
+
+        var token = Storage.sessionToken;
+        if (token) {
+
+            var payload = {
+                token: token
+            };
+
+            this.alt.socket.call("Session:logout", {})
+                .then((result) => {
+                    this.actions.logoutOk();
+                })
+                .catch((reason) => {
+                    console.log('Logout Failed', reason);
+                });
+
+        }
+
+        this.dispatch();
     }
 
     logoutOk() {

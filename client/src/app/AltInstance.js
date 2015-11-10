@@ -2,6 +2,7 @@ import Alt from "altlib"
 
 import * as Constants from "./Constants"
 import { debug } from "./Utilities"
+import Storage from "./Storage"
 
 import PlayerActions from "./actions/PlayerActions"
 import PlayerStore from "./stores/PlayerStore"
@@ -70,11 +71,13 @@ export default class AltInstance extends Alt {
 
     attachSocket() {
 
-        let systemActions = this.getActions(Constants.Actions.SYSTEM);
+        let systemActions   = this.getActions(Constants.Actions.SYSTEM);
 
         this._socket.on('connect', () => {
             debug('Socket: Connect');
             systemActions.connectionStateChanged(Constants.ConnectionStates.CONNECTED);
+
+            this.autoLogin();
         });
 
         this._socket.on('error', (e) => {
@@ -110,8 +113,37 @@ export default class AltInstance extends Alt {
         // Set the initial state
         if (this._socket.socket.io.readyState === "open") {
             systemActions.connectionStateChanged(Constants.ConnectionStates.CONNECTED);
+            this.autoLogin();
         } else {
             systemActions.connectionStateChanged(Constants.ConnectionStates.NOT_CONNECTED);
+        }
+    }
+
+    autoLogin() {
+
+        let sessionActions  = this.getActions(Constants.Actions.SESSION);
+
+        // Auto-Login if we have a token.
+        let token = Storage.sessionToken;
+        debug('Token: ' + token);
+
+        if (token) {
+            this._socket
+                .call("Session:loginToken", {
+                    token: token
+                })
+                .then(function(result) {
+                    sessionActions.loginOk(
+                        result.user,
+                        result.session
+                    );
+                })
+                .catch(function(reason) {
+                    debug('Socket: auto-login failed because: ' + reason);
+
+                    // Clear the token
+                    sessionActions.logoutOk();
+                })
         }
     }
 }

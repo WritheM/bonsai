@@ -34,6 +34,7 @@ class Dashboard extends SmartComponent {
         this.selfBindMethods([
             this.clicked,
             this.login,
+            this.logout,
             this.register
         ]);
     }
@@ -52,6 +53,10 @@ class Dashboard extends SmartComponent {
         this.actions.session.loginBegin();
     }
 
+    logout() {
+        this.actions.session.logout();
+    }
+
     register() {
         this.actions.session.registerBegin();
     }
@@ -62,7 +67,8 @@ class Dashboard extends SmartComponent {
                 Dashboard -
                 <a href="#" onClick={this.clicked}>Load Public Domain Song</a> -
                 <a href="#" onClick={this.register}>Register</a> -
-                <a href="#" onClick={this.login}>Login</a>
+                <a href="#" onClick={this.login}>Login</a> -
+                <a href="#" onClick={this.logout}>Logout</a>
             </div>
         );
     }

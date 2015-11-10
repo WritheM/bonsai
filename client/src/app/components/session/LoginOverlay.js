@@ -25,7 +25,8 @@ export default class LoginOverlay extends SmartComponent {
 
         this.state = {
             isAuthenticating: false,
-            formData: Object.assign({}, formDataTemplate)
+            formData: Object.assign({}, formDataTemplate),
+            message: null
         };
 
         this.addActions({
@@ -43,32 +44,27 @@ export default class LoginOverlay extends SmartComponent {
         ]);
     }
 
-    validateNewData(data) {
+    onNewState(state) {
+        if (state.session) {
 
-        // TODO: I don't like this... re-evaluate
+            var isAuthenticating = state.session.login.state === Constants.LoginStates.AUTHENTICATING;
 
-        if (data.passwordAgain.value && data.password.value !== data.passwordAgain.value) {
-            data.passwordAgain.isValid = false;
-            data.passwordAgain.problem = "Password's don't match.";
-        } else {
-            // TODO: Find a way to not need this?
-            data.passwordAgain.isValid = true;
-            data.passwordAgain.problem = "";
+            this.setState({
+                isAuthenticating: isAuthenticating,
+
+            });
         }
+    }
+
+    validateNewData(data) {
 
         var hasAllFields =
             data.username.value &&
-            data.displayname.value &&
-            data.language.value &&
-            data.password.value &&
-            data.passwordAgain.value;
+            data.password.value;
 
         var isAllValid =
             data.username.isValid &&
-            data.displayname.isValid &&
-            data.language.isValid &&
-            data.password.isValid &&
-            data.passwordAgain.isValid;
+            data.password.isValid;
 
         data.isReady = hasAllFields && isAllValid;
     }
@@ -98,7 +94,16 @@ export default class LoginOverlay extends SmartComponent {
 
     onSubmit() {
 
-        // TODO
+        var data = this.state.formData;
+
+        if (!data.isReady) {
+            return;
+        }
+
+        this.actions.session.login(
+            data.username.value,
+            data.password.value
+        );
 
     }
 

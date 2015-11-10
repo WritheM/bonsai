@@ -1,4 +1,5 @@
-import * as Constants from "../Constants"
+import * as Constants   from "../Constants"
+import Storage          from "../Storage"
 
 export default class SessionStore {
     constructor() {
@@ -16,21 +17,18 @@ export default class SessionStore {
             errorMessage: null
         };
 
-        // Temporary list to resolve the results into for now
-        this.messages = [];
-
         this.token = null;
-        this.userId = null;
 
         this.bindListeners({
             // System
             handleInitialize: systemActions.initialize,
 
-            // Session
-            handleUpdateSession: sessionActions.updateSession,
-
+            // Register
             handleRegisterUpdateView: sessionActions.registerUpdateView,
+
+            // Login
             handleLoginUpdateView: sessionActions.loginUpdateView,
+            handleLoginOk: sessionActions.loginOk,
 
             handleLogoutOk: sessionActions.logoutOk
         });
@@ -38,13 +36,6 @@ export default class SessionStore {
 
     handleInitialize() {
 
-    }
-
-    handleUpdateSession(payload) {
-        let { token, user } = payload;
-
-        this.token = token;
-        this.userId = user.id;
     }
 
     handleRegisterUpdateView(payload) {
@@ -67,7 +58,15 @@ export default class SessionStore {
         }
     }
 
+    handleLoginOk(payload) {
+        this.token
+            = Storage.sessionToken
+            = payload.sessionToken;
+    }
+
     handleLogoutOk() {
-        this.messages.push('Logged Out');
+        this.token
+            = Storage.sessionToken
+            = null;
     }
 }

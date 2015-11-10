@@ -58,8 +58,18 @@ export default class LoginForm extends DumbComponent {
 
     render() {
 
+        var message = null;
+        if (this.props.message) {
+            message = (
+                <div className="e-message">
+                    {this.props.message}
+                </div>
+            )
+        }
+
         return (
             <div className="c-register-form">
+                {message}
                 {this.renderInput('username', 'Username or E-Mail', 'e-username')}
                 {this.renderInput('password', 'Password', 'e-password')}
                 <SessionFormButton

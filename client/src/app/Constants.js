@@ -14,7 +14,12 @@ export const Stores = {
     QUEUE:      'STORES_QUEUE',
     SESSION:    'STORES_SESSION',
     SYSTEM:     'STORES_SYSTEM',
-    UI:         'STORES_UI'
+    UI:         'STORES_UI',
+    USER:       'STORES_USER'
+};
+
+export const Handlers = {
+    SESSION:    'HANDLERS_SESSION'
 };
 
 /**

@@ -95,7 +95,19 @@ export default class Session extends Controller {
 
     @Route("Session:logout")
     async logout(msg, conn) {
-        let s = await models.Auth.findOne({where: {token: msg.token}});
+
+        var token = conn.session.token || msg.token;
+
+        if (!token) {
+            throw new Error("Unknown Session, cannot log out session.");
+        }
+
+        let s = await models.Auth.findOne({where: {token: token}});
+
+        if (!s) {
+            throw new Error("Cannot find session.");
+        }
+
         await s.destroy();
 
         return this.getLoginSnapshot();
@@ -103,7 +115,7 @@ export default class Session extends Controller {
 
     @Route("Session:ping")
     async ping(msg, conn) {
-        return this.getLoginSnapshot();
+        return this.getLoginSnapshot(conn.user, conn.session);
     }
 
     @Route("Session:joinRoom")

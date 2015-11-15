@@ -15,9 +15,12 @@ import SystemStore from "./stores/SystemStore"
 
 import SessionActions from "./actions/SessionActions"
 import SessionStore from "./stores/SessionStore"
+import SessionHandler from "./handlers/SessionHandler"
 
 import UIActions from "./actions/UIActions"
 import UIStore from "./stores/UIStore"
+
+import UserStore from "./stores/UserStore"
 
 /**
  * This is our "container" for the application. It's the Alt object (flux)
@@ -38,9 +41,11 @@ export default class AltInstance extends Alt {
 
         this._socket = socket;
         this._router = router;
+        this._handlers = {};
 
         this.registerActions();
         this.registerStores();
+        this.registerHandlers();
 
         this.attachSocket();
     }
@@ -51,6 +56,14 @@ export default class AltInstance extends Alt {
 
     get router() {
         return this._router;
+    }
+
+    addHandler(key, handler) {
+
+        var handlerInstance = new handler(this);
+        handlerInstance.attach();
+
+        this._handlers[key] = handlerInstance;
     }
 
     registerActions() {
@@ -67,6 +80,11 @@ export default class AltInstance extends Alt {
         this.addStore(Constants.Stores.SYSTEM, SystemStore);
         this.addStore(Constants.Stores.SESSION,SessionStore);
         this.addStore(Constants.Stores.UI, UIStore);
+        this.addStore(Constants.Stores.USER, UserStore);
+    }
+
+    registerHandlers() {
+        this.addHandler(Constants.Handlers.SESSION, SessionHandler);
     }
 
     attachSocket() {
@@ -110,12 +128,30 @@ export default class AltInstance extends Alt {
             debug('Socket: Reconnect Failed');
         });
 
+        this._socket.on('broadcast', (payload) => {
+            let {event, data} = payload;
+
+            this.handleBroadcast(event, data);
+        });
+
         // Set the initial state
         if (this._socket.socket.io.readyState === "open") {
             systemActions.connectionStateChanged(Constants.ConnectionStates.CONNECTED);
             this.autoLogin();
         } else {
             systemActions.connectionStateChanged(Constants.ConnectionStates.NOT_CONNECTED);
+        }
+    }
+
+    handleBroadcast(event, data) {
+
+        debug('Broadcast Received', event, data);
+
+        for (let key of Object.keys(this._handlers)) {
+            let handler = this._handlers[key];
+            if (handler && handler.invoke(event, data)) {
+                break;
+            }
         }
     }
 
@@ -133,16 +169,18 @@ export default class AltInstance extends Alt {
                     token: token
                 })
                 .then(function(result) {
-                    sessionActions.loginOk(
+                    sessionActions.update(
                         result.user,
-                        result.session
+                        result.session,
+                        result.perms
                     );
                 })
                 .catch(function(reason) {
                     debug('Socket: auto-login failed because: ' + reason);
 
                     // Clear the token
-                    sessionActions.logoutOk();
+                    //sessionActions.logoutOk();
+                    // TODO: Something needs to be done here...
                 })
         }
     }

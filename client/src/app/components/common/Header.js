@@ -18,7 +18,8 @@ export default class Header extends SmartComponent {
         });
 
         this.addStores({
-            'ui': Constants.Stores.UI
+            'ui': Constants.Stores.UI,
+            'user': Constants.Stores.USER
         });
 
         this.selfBindMethods([
@@ -26,15 +27,26 @@ export default class Header extends SmartComponent {
         ]);
 
         this.state = {
-            isBannerExpanded: false
+            isBannerExpanded: false,
+            currentUser: null
         };
     }
 
     onNewState(state) {
 
-        if (state.ui) {
+        let {ui, user} = state;
+
+        if (ui) {
             this.setState({
-                isBannerExpanded: state.ui.menu.isOpen
+                isBannerExpanded: ui.menu.isOpen
+            });
+        }
+
+        if (user) {
+            let currentUser = user.users[user.current] || null;
+
+            this.setState({
+                currentUser: currentUser
             });
         }
 
@@ -58,7 +70,7 @@ export default class Header extends SmartComponent {
                     <Notifications />
                 </div>
                 <div className="e-user">
-                    <ProfileMenu />
+                    <ProfileMenu user={this.state.currentUser} />
                 </div>
             </div>
 

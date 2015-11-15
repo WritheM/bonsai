@@ -2,7 +2,7 @@ require("babel-core/polyfill");
 
 import * as Rabbit from "../Rabbit";
 import {bridge as config} from "config";
-import EventEmitter3 from "eventemitter3";
+import {EventEmitter2} from "eventemitter2";
 
 process.on('unhandledRejection', function(error, promise) {
     console.error("UNHANDLED REJECTION", error.stack);
@@ -13,7 +13,7 @@ class Bridge {
         this.client = client;
         this.broadcast = broadcast;
 
-        this.emitter = new EventEmitter3({
+        this.emitter = new EventEmitter2({
             delimiter: ":", //the .'s are for path, : is for action which you're more likely to wildcard
             wildcard: true
         });
@@ -49,6 +49,9 @@ class Bridge {
                 callback(content);
             }).catch((content) => {
                 console.log("response (err):", content);
+
+                this.emitter.emit(data.path + '.fail', connection, data, content.data);
+
                 callback(content);
             });
         });
@@ -70,16 +73,29 @@ class Bridge {
     }
 }
 
+let guestUser = {
+    id: 0,
+    username: 'Guest',
+    displayname: 'Guest'
+};
+
+let guestSession = {
+    id: 0,
+    token: null
+};
+
+let guestPerms = {};
+
 //represents each individual socket.io connection
 class Connection {
     constructor(socket) {
         this.socket = socket;
 
-        this.emitter = new EventEmitter3();
+        this.emitter = new EventEmitter2();
 
-        this.user = {};
-        this.perms = {};
-        this.session = {};
+        this.user = Object.assign({}, guestUser);
+        this.perms = Object.assign({}, guestSession);
+        this.session = Object.assign({}, guestPerms);
         this.rooms = [];
 
         socket.on("send", (data, callback) => {
@@ -90,8 +106,29 @@ class Connection {
     serialize() {
         return {
             user: this.user,
+            session: this.session,
             perms: this.perms
         }
+    }
+
+    update(user, session, perms) {
+        if (user) {
+            this.user = user;
+        }
+
+        if (session) {
+            this.session = session;
+        }
+
+        if (perms) {
+            this.perms = perms;
+        }
+
+        this.send("Session:update", {
+            user: this.user,
+            session: this.session,
+            perms: this.perms
+        });
     }
 
     on(event, listener) {
@@ -124,10 +161,11 @@ class Session {
 
         bridge.on("Session:login", this.apiLogin);
         bridge.on("Session:loginToken", this.apiLogin);
+        // If an automatic token login fails for any reason
+        // just log the user out.
+        bridge.on("Session:loginToken.fail", this.apiLogout);
 
         bridge.on("Session:logout", this.apiLogout);
-
-        bridge.on("Session:ping", this.apiPing);
 
         bridge.on("Session:joinRoom", this.apiJoinRoom);
         bridge.on("Session:leaveRoom", this.apiLeaveRoom);
@@ -150,11 +188,13 @@ class Session {
 
     //in terms of response, loginToken and login are the same
     apiLogin = (connection, data, response) => {
-        connection.user = response.user;
-        connection.session = response.session;
-        connection.perms = response.perms;
 
-        //todo: broadcast login
+        connection.update(
+            response.user,
+            response.session,
+            response.perms
+        );
+
     };
 
     apiLogout = (connection, data, response) => {
@@ -163,17 +203,12 @@ class Session {
         // the worker in-case the decision was overridden,
         // this should return as a guest.
 
-        connection.user = response.user;
-        connection.session = response.session;
-        connection.perms = response.perms;
+        connection.update(
+            Object.assign({}, guestUser),
+            Object.assign({}, guestSession),
+            Object.assign({}, guestPerms)
+        );
 
-        //todo: broadcast logout
-    };
-
-    apiPing = (connection, data, response) => {
-        response.user = connection.user;
-        response.session = connection.session;
-        response.perms = connection.perms;
     };
 
     apiJoinRoom = (connection, data, response) => {

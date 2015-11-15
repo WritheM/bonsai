@@ -1,5 +1,6 @@
 import * as Constants   from "../Constants"
 import Storage          from "../Storage"
+import {debug}          from "../Utilities"
 
 export default class SessionStore {
     constructor() {
@@ -23,19 +24,34 @@ export default class SessionStore {
             // System
             handleInitialize: systemActions.initialize,
 
+            // Session
+            handleUpdate: sessionActions.update,
+
             // Register
             handleRegisterUpdateView: sessionActions.registerUpdateView,
 
             // Login
-            handleLoginUpdateView: sessionActions.loginUpdateView,
-            handleLoginOk: sessionActions.loginOk,
-
-            handleLogoutOk: sessionActions.logoutOk
+            handleLoginUpdateView: sessionActions.loginUpdateView
         });
     }
 
     handleInitialize() {
 
+    }
+
+    handleUpdate(payload) {
+
+        // All we need in this store is the session token
+        var token = payload.session.token;
+        if (token) {
+            debug("Logged In With Token: " + token);
+        } else {
+            debug("Logged Out");
+        }
+
+        this.token
+            = Storage.sessionToken
+            = payload.session.token;
     }
 
     handleRegisterUpdateView(payload) {
@@ -56,17 +72,5 @@ export default class SessionStore {
         if (payload.message) {
             this.login.errorMessage = payload.message;
         }
-    }
-
-    handleLoginOk(payload) {
-        this.token
-            = Storage.sessionToken
-            = payload.sessionToken;
-    }
-
-    handleLogoutOk() {
-        this.token
-            = Storage.sessionToken
-            = null;
     }
 }

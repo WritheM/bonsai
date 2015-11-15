@@ -101,15 +101,8 @@ export default class SessionActions {
 
         this.alt.socket.call("Session:login", payload)
             .then((result) => {
-
-                this.actions.loginOk(
-                    result.user,
-                    result.session
-                );
-
-                // close the window
+                // close the window and wait for the broadcast
                 this.actions.loginCancel();
-
             })
             .catch((reason) => {
                 this.actions.loginUpdateView(
@@ -131,13 +124,6 @@ export default class SessionActions {
         this.dispatch();
     }
 
-    loginOk(user, session) {
-        this.dispatch({
-            userId: user.id,
-            sessionToken: session.token
-        });
-    }
-
     logout() {
 
         var token = Storage.sessionToken;
@@ -149,7 +135,7 @@ export default class SessionActions {
 
             this.alt.socket.call("Session:logout", {})
                 .then((result) => {
-                    this.actions.logoutOk();
+                    // Do nothing, as we're going to wait for the broadcast.
                 })
                 .catch((reason) => {
                     console.log('Logout Failed', reason);
@@ -160,8 +146,12 @@ export default class SessionActions {
         this.dispatch();
     }
 
-    logoutOk() {
-        this.dispatch();
+    update(user, session, perms) {
+        this.dispatch({
+            user: user,
+            session: session,
+            perms: perms
+        });
     }
 
 }

@@ -7,10 +7,12 @@ export default class ProfileMenu extends DumbComponent {
 
     render() {
 
+        var username = this.props.user ? this.props.user.displayname : 'Nobody';
+
         return (
             <div className="c-profile-menu">
                 <div className="e-name">
-                    Test User
+                    {username}
                 </div>
                 <div className="e-button">
                     <span>&nbsp;</span>

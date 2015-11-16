@@ -1,0 +1,32 @@
+.c-content
+{
+    @include display(flex);
+    @include flex-wrap();
+    @include flex-direction(row);
+
+    /* I REALLY HATE THIS */
+    position: fixed;
+    top: $theme-edge-width;
+    bottom: $theme-edge-width;
+    left: 0;
+    right: 0;
+
+    & > .e-menu
+    {
+        width: auto;
+    }
+
+    & > .e-main
+    {
+        @include flex(1);
+    }
+
+    & > .e-social
+    {
+        width: auto;
+
+        @include display(flex);
+        @include flex-wrap();
+        @include flex-direction(row);
+    }
+}

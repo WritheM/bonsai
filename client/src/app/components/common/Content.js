@@ -4,6 +4,7 @@ import * as Constants       from "../../Constants"
 import { SmartComponent }   from "../../Components"
 
 import Player               from "../media/Player"
+import SocialPane           from "../social/SocialPane"
 
 export default class Content extends SmartComponent {
 
@@ -54,7 +55,7 @@ export default class Content extends SmartComponent {
                     </div>
                 </div>
                 <div className="e-social">
-                    Social Standin
+                    <SocialPane />
                 </div>
             </div>
         )

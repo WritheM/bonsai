@@ -1,0 +1,20 @@
+.c-social-list
+{
+    & > .e-item
+    {
+
+    }
+
+    & > .e-splitter
+    {
+        padding: in-rems(3) in-rems(5);
+
+        span
+        {
+            display: block;
+            height: in-rems(2);
+
+            background-color: white;
+        }
+    }
+}

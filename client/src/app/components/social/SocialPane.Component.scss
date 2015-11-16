@@ -1,0 +1,38 @@
+.c-social-pane
+{
+    @include flex(1); // Fill Parent
+
+    @include display(flex);
+    @include flex-wrap();
+    @include flex-direction(row);
+
+    & > .e-social-focus
+    {
+        @include flex(1);
+
+        width: in-rems(250);
+    }
+
+    & > .e-social-bar
+    {
+        width: auto;
+
+        // Fill Height
+        @include display(flex);
+        @include flex-wrap();
+        @include flex-direction(row);
+    }
+
+    &.m-collapsed
+    {
+        display: none;
+    }
+
+    &.m-focus-collapsed
+    {
+        & > .e-social-focus
+        {
+            display: none;
+        }
+    }
+}

@@ -1,0 +1,59 @@
+.c-social-bar
+{
+    $scroll-button-height: in-rems(20);
+
+    @include flex(1);
+
+    width: $theme-edge-width;
+    background-color: $color-base-darker;
+
+    @include display(flex);
+    @include flex-wrap();
+    @include flex-direction(column);
+
+
+    & > .e-scroll-up
+    {
+        height: $scroll-button-height;
+    }
+
+    & > .e-scroll-down
+    {
+        height: $scroll-button-height;
+    }
+
+    & > .e-scroll-up,
+    & > .e-scroll-down
+    {
+        svg
+        {
+            display: block;
+            height: in-rems(12);
+            width: $theme-edge-width - (2 * in-rems(4));
+            margin: in-rems(4);
+            cursor: pointer;
+        }
+    }
+
+    & > .e-buttons
+    {
+        height: $theme-edge-width;
+
+        span
+        {
+            display: block;
+            height: $theme-edge-width - in-rems(20);
+            margin: in-rems(10);
+            background-color: white;
+            cursor: pointer;
+        }
+    }
+
+    & > .e-members
+    {
+
+        @include flex(1);
+
+        overflow: hidden;
+    }
+}

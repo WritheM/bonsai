@@ -5,7 +5,7 @@
 
 // Application Imports
 //import engine               from "bonsai-engine";
-//import {Router}             from "bonsai-engine/routing";
+import {Router}             from "bonsai-engine/routing";
 import {BroadcastClient}    from "bonsai-engine/queue";
 
 // Configuration
@@ -28,7 +28,7 @@ import Session from "./app/controller/Session";
 
 // Register Controllers with the Router
 
-//let router = new Router();
+let router = new Router();
 
 //router.addController(new Playlists());
 //router.addController(new PlaylistMedia());

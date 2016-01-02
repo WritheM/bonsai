@@ -2,7 +2,8 @@ import {EventEmitter2}  from "eventemitter2";
 
 import {
     uuid,
-    isPromise
+    isPromise,
+    debug
 }                       from "../utilities";
 
 import QueueClient      from "./QueueClient";
@@ -115,6 +116,8 @@ export default class BroadcastClient extends QueueClient {
         try {
             var data = JSON.parse(msg.content.toString());
 
+            debug(' [<] RPC RESPONSE', data);
+
             if (data.success) {
                 rpcPromise.resolve(data.response);
             } else {
@@ -136,6 +139,8 @@ export default class BroadcastClient extends QueueClient {
     handleMessage(msg) {
         var pkg = JSON.parse(msg.content.toString());
 
+        debug(' [<]', msg.properties.type == 'rpc' ? 'RPC' : 'BROADCAST', pkg);
+
         try {
             this.routeMessage(pkg.route, pkg.data)
                 .then(
@@ -145,7 +150,7 @@ export default class BroadcastClient extends QueueClient {
                             msg.properties.replyTo) {
                             // Return To RPC
 
-                            console.log(' [*] RPC Response To', msg.properties.replyTo, ', Corr', msg.properties.correlationId);
+                            debug(' [>] RPC RESPONSE To `' + msg.properties.replyTo + '`, Corr `' + msg.properties.correlationId + '`');
 
                             var respMsg = {
                                 success: true,
@@ -169,8 +174,11 @@ export default class BroadcastClient extends QueueClient {
                             // Send failure to RPC
                             var respMsg = {
                                 success: false,
-                                error: error.toString()
+                                error: error.toString(),
+                                stack: error.stack
                             };
+
+                            debug(' [>] RESPONSE To `' + msg.properties.replyTo + '`, Corr `' + msg.properties.correlationId + '`');
 
                             this.channel.sendToQueue(
                                 msg.properties.replyTo,
@@ -179,7 +187,8 @@ export default class BroadcastClient extends QueueClient {
                             );
                         }
 
-                        console.error('Error While Handling Message ' + msg.properties.correlationId, error);
+                        var errorMessage = (error instanceof Error) ? error.stack : error.toString();
+                        console.error('Error While Handling Message ' + msg.properties.correlationId, errorMessage);
                     }
                 );
         } catch (e) {
@@ -187,26 +196,37 @@ export default class BroadcastClient extends QueueClient {
         }
     }
 
-    routeMessage(route, data) {
+    routeMessage(path, data) {
+
+        // TODO: I don't like mixing routing errors with rejections from the route.
+
         return new Promise((res, rej) => {
-            try {
-                var result = {};
-                var handled = this.emitter.emit(route, route, data, result);
-                if (handled) {
-                    console.log(' [+] Emitted, Response', result);
+
+            var route = this.options.router(path, data);
+            if (route) {
+
+                if (isPromise(route)) {
+                    debug(' [^] CLIENT Route is a Promise');
+                    route.then(res, rej);
+                } else {
+                    debug(' [^] CLIENT Route is NOT a Promise');
+                    rej(new Error("Route for `" + path + "` returned a non-promise."));
                 }
 
-                res(result, handled);
-            } catch (e) {
-                // We either had an exception during the emission or the callback(s)
-                // threw exceptions.
-
-                rej(e);
+            } else {
+                rej(new Error("No Route Handler for route `" + path + "`."));
             }
+
         });
+
     }
 
     rpc(route, data) {
+
+        if (!route) {
+            throw new Error('Must RPC to a non-empty route.');
+        }
+
         let pkg = {
             route: route,
             data: data
@@ -226,6 +246,8 @@ export default class BroadcastClient extends QueueClient {
         });
 
         this.rpcPromises[rpcID] = rpcController;
+
+        debug(' [>] RPC Exchange `' + this.options.exchange + '`, reply to `' + this.queues.rpc.queue + '` with route `' + route + '`');
 
         this.channel.publish(
             this.options.exchange,
@@ -260,6 +282,8 @@ export default class BroadcastClient extends QueueClient {
             data: data
         };
 
+        debug(' [>] Broadcast Exchange `' + this.options.exchange + '`, with route `' + route + '`');
+
         this.channel.publish(
             this.options.exchange,
             route,
@@ -270,7 +294,7 @@ export default class BroadcastClient extends QueueClient {
         );
     }
 
-    on(group, route, callback) {
+    watch(route, group = false) {
 
         let queueName;
 
@@ -280,6 +304,8 @@ export default class BroadcastClient extends QueueClient {
             queueName = this.queues.instance.queue;
         }
 
+        debug(' [*] Exchange Watch `' + route + '`, Group = ' + group + ' for queue `' + queueName + '` on exchange `' + this.options.exchange + '`');
+
         this.channel.bindQueue(
             queueName,
             this.options.exchange,
@@ -288,13 +314,13 @@ export default class BroadcastClient extends QueueClient {
                 // TODO ?
             }
         );
-
-        return this.emitter.on(route, callback);
     }
 
-    off(group, route, callback) {
+    unwatch(route, group = false) {
 
         // TODO: Keep track of binds / unbinds incase amqp / rabbit don't like it
+
+        debug(' [*] Exchange Un-Watch `' + route + '`, Group = ' + group + ' for queue `' + queueName + '` on exchange `' + this.options.exchange + '`');
 
         let queueName;
 
@@ -312,7 +338,5 @@ export default class BroadcastClient extends QueueClient {
                 // TODO ?
             }
         );
-
-        return this.emitter.off(route, callback);
     }
 }

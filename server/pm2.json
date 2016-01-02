@@ -2,13 +2,19 @@
   "apps": [
     {
       "name": "worker",
-      "script": "bin/app/app.js",
-      "watch": true
+      "script": "bin/worker.js",
+      "watch": true,
+      "env": {
+        "debug": "bonsai-worker,bonsai-engine"
+      }
     },
     {
       "name": "bridge",
-      "script": "bin/bridge/main.js",
-      "watch": true
+      "script": "bin/bridge.js",
+      "watch": true,
+      "env": {
+        "debug": "bonsai-worker,bonsai-engine"
+      }
     }
   ]
 }

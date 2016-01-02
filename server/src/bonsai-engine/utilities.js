@@ -42,3 +42,14 @@ export function isPromise(target) {
         typeof target === "object" &&
         typeof target.then === "function";
 }
+
+/**
+ * Setup a basic rejection handler to output errors without crashing out the application
+ */
+export function handleDefaultRejections() {
+    process.on('unhandledRejection', function(error, promise) {
+        console.error("UNHANDLED REJECTION", error.stack);
+    });
+}
+
+export const debug = function() { console.log(...arguments); }; // TODO: When debug() works?

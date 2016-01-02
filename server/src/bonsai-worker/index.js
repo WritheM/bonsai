@@ -4,58 +4,54 @@
 // Dependencies
 
 // Application Imports
-//import engine               from "bonsai-engine";
-import {Router}             from "bonsai-engine/routing";
+import models               from "bonsai-engine/db/models";
+import {
+    getRouteMap,
+    route
+}                           from "bonsai-engine/routing";
 import {BroadcastClient}    from "bonsai-engine/queue";
+import {
+    uuid,
+    handleDefaultRejections
+}                           from "bonsai-engine/utilities";
 
 // Configuration
-import * as config from "config";
+import * as config          from "config";
 
-//import models   from "../app/db/models";
+import {
+    getDefaultControllers,
+}                           from "./controller";
+import { debug }            from "./utilities";
 
-// Controller Imports
-// TODO: Automate this?
-/*
-import Playlists from "./app/controller/Playlists";
-import PlaylistMedia from "./app/controller/PlaylistMedia";
-import Session from "./app/controller/Session";
-*/
-
-//engine.setupDefaultRejectionHandler();
+handleDefaultRejections();
 
 // Initialize Database
-// models.sequelize.sync();
+models.sequelize.sync();
 
-// Register Controllers with the Router
+// Routing
+var routeMap = getRouteMap(getDefaultControllers(
+    models
+));
 
-let router = new Router();
-
-//router.addController(new Playlists());
-//router.addController(new PlaylistMedia());
-//router.addController(new Session());
-
-let broadcast = new BroadcastClient({
+var broadcast = new BroadcastClient({
     path: config.rabbit.host,
-    exchange: config.rabbit.broadcastqueue
+    exchange: config.rabbit.broadcastqueue,
+    router: (path, data) => route(routeMap, path, data)
+});
+
+process.on('exit', c => {
+    console.log(' [-] Worker Terminated PID ' + process.pid);
 });
 
 Promise
     .all([broadcast.listen()])
     .then(x => {
-        console.log(' [+] Worker Started');
+        console.log(' [+] Worker Started PID ' + process.pid);
 
-        broadcast.on(false, 'user.*.connect', function(route, data, response) {
-            console.log(' [+] Connect Message', route, data);
-
-            response.value = Math.random();
-        });
-
-        broadcast.on(false, 'user.*.thing', function(route, data, response) {
-            console.log(' [+] Thing Message', route, data);
-
-            response.value = data.num * 100;
-        });
-
+        // Register Routes
+        for (let routePath in routeMap) {
+            broadcast.watch(routePath);
+        }
     })
     .catch(err => {
         console.error(' [X] Unable to start worker.');

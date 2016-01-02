@@ -8,7 +8,7 @@ let defaultConfiguration = {
  */
 export default function Route(configuration, priority) {
 
-    let configSent = typeof configuration === "object"
+    let configSent = typeof configuration === "object";
 
     if (!configSent) {
         configuration = {
@@ -29,9 +29,10 @@ export default function Route(configuration, priority) {
         }
 
         // Clone the config, add the func to it.
-        var route = Object.assign({}, config, {
-            func: descriptor.value
-        });
+        var route = {
+            func: descriptor.value.bind(target),
+            ...config
+        };
 
         target.routes.push(route);
     }

@@ -3,44 +3,41 @@
 
 // Dependencies
 
-// Application Imports
-//import engine               from "bonsai-engine";
-//import {Router}             from "bonsai-engine/routing";
+// Library Imports
 import {BroadcastClient}    from "bonsai-engine/queue";
-import {uuid}               from "bonsai-engine/utilities";
+import {
+    uuid,
+    handleDefaultRejections
+}                           from "bonsai-engine/utilities";
+import {Tracker}            from "bonsai-engine/tracking";
+import {Connection}         from "bonsai-engine/tracking/elements";
+
+// Application Imports
+import SocketServer         from "./io/SocketServer";
 
 // Configuration
 import * as config from "config";
 
-//engine.setupDefaultRejectionHandler();
+// Attach the default handler
+handleDefaultRejections();
 
 let broadcast = new BroadcastClient({
     path: config.rabbit.host,
     exchange: config.rabbit.broadcastqueue
 });
 
+let tracker = new Tracker(broadcast);
+let bridge = new SocketServer(tracker, config.bridge.port);
+
 Promise
-    .all([broadcast.listen()])
+    .all([broadcast.listen(), bridge.listen()])
     .then(x => {
-        console.log(' [+] Worker Started');
+        console.log(' [+] Bridge Started, listening on port ' + config.bridge.port);
 
         setInterval(() => {
-            broadcast.broadcast('user.15.connect', {
-                num: Math.random(),
-                str: uuid()
-            });
-        }, 10000);
-
-        setInterval(() => {
-            broadcast.rpc('user.15.thing', {
-                num: Math.random(),
-                str: uuid()
-            })
-            .then(result => {
-               console.log('RPC Result: ' + result.value);
-            });
-        }, 5000);
-
+            //console.log('========== Clients ==========', bridge.clients);
+            //console.log('========== Tracker ==========', tracker.tracked);
+        }, 30000)
     })
     .catch(err => {
         console.error(' [-] ', err, typeof err);

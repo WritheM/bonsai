@@ -1,5 +1,6 @@
-import {Controller,Route} from "./Controller";
-import models from "../db/models";
+import {Route} from "bonsai-engine/routing"
+import models from "bonsai-engine/db/models"
+import Controller from "./../../bonsai-engine/routing/Controller";
 
 export default class Media extends Controller {
     @Route("media:create")

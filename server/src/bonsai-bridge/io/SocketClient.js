@@ -7,6 +7,7 @@ import { debug } from "../utilities";
 // refactor for the backend
 
 var mapping = {
+    "Session:register": "client.user.register",
     "Session:login" : "client.session.login"
 };
 

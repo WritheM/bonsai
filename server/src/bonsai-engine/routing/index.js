@@ -80,13 +80,18 @@ function createRoute(path, target, func, priority = 0) {
  * @param routes The route mapping
  * @returns {Array} A collection of routes
  */
-function createRoutes(target, routes = {}) {
+function createRoutes(target, routes) {
+
+    if (!routes) {
+        throw new Error('You must provide routes.');
+    }
+
     return Object
         .keys(routes)
         .map(key => {
-            let [ func, priority = 0 ] = routes[key].length
-                ? routes[key]
-                : [routes[key]];
+            let isFunc = typeof routes[key] === "function",
+                func = isFunc ? routes[key] : routes[key][0],
+                priority = (isFunc ? 0 : routes[key][1]) || 0;
 
             return createRoute(key, target, func, priority);
         });
@@ -145,6 +150,8 @@ function mapToPromise(route, data) {
 }
 
 export {
+    createRoute,
+    createRoutes,
     getRouteMap,
     route,
 

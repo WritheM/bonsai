@@ -6,6 +6,8 @@ import {EventEmitter2} from 'eventemitter2';
 export default class TrackedElement {
     constructor(tracker, id, onDeathCallback) {
         this.tracker = tracker;
+        this.store = tracker.store;
+
         this.id = id;
 
         this.onDeathCallback = onDeathCallback;
@@ -41,6 +43,10 @@ export default class TrackedElement {
 
     get context() {
         return {}
+    }
+
+    get state() {
+        return this.store.getState();
     }
 
     on(event, callback) {

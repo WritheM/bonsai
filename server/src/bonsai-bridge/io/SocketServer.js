@@ -41,6 +41,8 @@ export default class SocketServer {
         console.log(' [+] New Connection (' + socket.id + ')');
 
         let connection = this.tracker.connection(socket.id);
+        connection.track();
+
         let client = new SocketClient(socket, connection);
         this.clients[socket.id] = client;
 

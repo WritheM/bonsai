@@ -39,8 +39,9 @@ function makeTrackerFactory(tracker, prefix, Element) {
 }
 
 export default class Tracker {
-    constructor(client) {
+    constructor(client, store) {
         this.client = client;
+        this.store = store;
 
         for(let prefix in mapping) {
             let element = mapping[prefix];

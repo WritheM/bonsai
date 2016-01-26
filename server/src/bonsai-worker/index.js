@@ -11,6 +11,10 @@ import {
 }                           from "bonsai-engine/routing";
 import {BroadcastClient}    from "bonsai-engine/queue";
 import {
+    newStore,
+    Tracker
+}                           from "bonsai-engine/state";
+import {
     uuid,
     handleDefaultRejections
 }                           from "bonsai-engine/utilities";
@@ -29,15 +33,21 @@ handleDefaultRejections();
 models.sequelize.sync();
 
 // Routing
-var routeMap = getRouteMap(getDefaultControllers(
-    models
-));
+var routeMap = [];
 
 var broadcast = new BroadcastClient({
     path: config.rabbit.host,
     exchange: config.rabbit.broadcastqueue,
     router: (path, data) => route(routeMap, path, data)
 });
+
+var store = newStore();
+var tracker = new Tracker(broadcast, store);
+
+routeMap = getRouteMap(getDefaultControllers(
+    tracker,
+    models
+));
 
 process.on('exit', c => {
     console.log(' [-] Worker Terminated PID ' + process.pid);

@@ -1,4 +1,5 @@
 import bcrypt           from "bcrypt";
+import Sequelize        from "sequelize";
 
 import {
     uuid
@@ -10,7 +11,8 @@ import {
 
 export default class SessionController {
 
-    constructor(models) {
+    constructor(tracker, models) {
+        this.tracker = tracker;
         this.models = models;
 
         this.routes = createRoutes(this, {
@@ -21,16 +23,13 @@ export default class SessionController {
         });
     }
 
-    async register(message) {
-        // TODO: Move this elsewhere, not session management
-    }
-
     async login(message) {
 
         var { payload, context } = message;
         var { username, password } = payload;
+        var { connection } = context;
 
-        let user = await models.User.findOne({
+        let user = await this.models.User.findOne({
             where: Sequelize.or(
                 {username: username},
                 {email: username}
@@ -46,13 +45,18 @@ export default class SessionController {
             throw new Error('Username of Password* not correct.');
         }
 
-        var token = uid();
-        let s = await models.Auth.create({
+        var token = uuid();
+        let s = await this.models.Auth.create({
             user_id: user.id,
             token,
             created: Date.now(),
             last: Date.now()
         });
+
+        // Update state
+        this.tracker
+            .connection(connection)
+            .attachSession(token, user.id);
 
         return { user: user.id, token };
     }

@@ -20,18 +20,18 @@ import {
 
 // Application Imports
 import SocketServer         from "./io/SocketServer";
+import {
+    getControllers
+}                           from "./routing";
 
 // Configuration
 import * as config from "config";
-import { getControllers } from "./routing";
 
 // Attach the default handler
 handleDefaultRejections();
 
 let store = newStore();
 let routeMap = getRouteMap(getControllers(store));
-
-console.log(routeMap);
 
 let broadcast = new BroadcastClient({
     path: config.rabbit.host,
@@ -46,12 +46,6 @@ Promise
     .all([broadcast.listen(), bridge.listen()])
     .then(x => {
         console.log(' [+] Bridge Started, listening on port ' + config.bridge.port);
-
-        setInterval(() => {
-            //console.log('========== Clients ==========', bridge.clients);
-            //console.log('========== Tracker ==========', tracker.tracked);
-            console.log("========== State ==========", store.getState());
-        }, 30000);
 
         store.subscribe(() => {
             console.log("========== Update =========", store.getState());

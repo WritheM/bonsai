@@ -5,9 +5,6 @@ export const ActionTypes = {
 
     CONNECTION_ATTACH: 'CONNECTION_ATTACH',
     CONNECTION_DETACH: 'CONNECTION_DETACH',
-
-    SESSION_ATTACH: 'SESSION_ATTACH',
-    SESSION_DETACH: 'SESSION_DETACH'
 };
 
 export const StateEvents = {

@@ -7,11 +7,7 @@ import {
 }                           from "./helpers";
 
 function reduceSessionAttach(connection, action) {
-
-    console.log('>>> Attach <<<', connection, action);
-
     if (connection.id !== action.id) {
-        console.log('>>> DOES NOT MATCH <<<', connection.id, action.id);
         return null;
     }
 
@@ -20,8 +16,6 @@ function reduceSessionAttach(connection, action) {
         session: action.session,
         user: action.user
     };
-
-    console.log('>>> DONE <<<', a);
 
     return a;
 }
@@ -53,9 +47,6 @@ function connectionCollectionFactory(state, action) {
 
 
 function connectionCollectionItemReducer(connection, action) {
-
-    console.log(">>>>>>>>>>>>> Reducer", connection);
-
     switch(action.type) {
         case ActionTypes.CONNECTION_ATTACH:
             return reduceSessionAttach(connection, action);

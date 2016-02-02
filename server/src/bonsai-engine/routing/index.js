@@ -1,8 +1,3 @@
-import Controller   from "./Controller";
-import Route        from "./Route";
-import RouteNode    from "./RouteNode";
-import Router       from "./Router";
-
 import { debug, isPromise } from "../utilities";
 
 /**
@@ -10,7 +5,7 @@ import { debug, isPromise } from "../utilities";
  * @param controllers {*[]}
  * @returns {*}
  */
-function getRouteMap(controllers) {
+export function getRouteMap(controllers) {
 
     debug(' [*] ROUTING Getting Route Map For Controllers: ', controllers);
 
@@ -34,7 +29,7 @@ function getRouteMap(controllers) {
  * @param data The data
  * @returns Promise
  */
-function route(routeMap, path, data) {
+export function route(routeMap, path, data) {
 
     if (!routeMap[path]) {
         return Promise.reject();
@@ -66,7 +61,7 @@ function route(routeMap, path, data) {
  * @param priority (Optional) the priority to execute in
  * @returns {{path: *, func: *, priority: number}}
  */
-function createRoute(path, target, func, priority = 0) {
+export function createRoute(path, target, func, priority = 0) {
     return {
         path,
         func: func.bind(target),
@@ -80,7 +75,7 @@ function createRoute(path, target, func, priority = 0) {
  * @param routes The route mapping
  * @returns {Array} A collection of routes
  */
-function createRoutes(target, routes) {
+export function createRoutes(target, routes) {
 
     if (!routes) {
         throw new Error('You must provide routes.');
@@ -147,16 +142,4 @@ function mapToPromise(route, data) {
             rej(e);
         }
     });
-}
-
-export {
-    createRoute,
-    createRoutes,
-    getRouteMap,
-    route,
-
-    Controller,
-    Route, // Not sure if i should keep this, for now it stays.
-    RouteNode,
-    Router
 }

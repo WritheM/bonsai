@@ -128,9 +128,9 @@ describe('Engine: State: Connections Reducer', () => {
                     user: null
                 }
             }, {
-                type: ActionTypes.SESSION_ATTACH,
-                id: 'sessA',
-                connection: 'abcd',
+                type: ActionTypes.CONNECTION_ATTACH,
+                id: 'abcd',
+                session: 'sessA',
                 user: 'userA'
             });
 
@@ -162,8 +162,8 @@ describe('Engine: State: Connections Reducer', () => {
                     user: 'userO'
                 }
             }, {
-                type: ActionTypes.SESSION_DETACH,
-                id: 'sessA'
+                type: ActionTypes.CONNECTION_DETACH,
+                id: 'abcd'
             });
 
             expect(result).to.exist;

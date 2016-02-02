@@ -24,7 +24,7 @@ import * as config          from "config";
 
 import {
     getDefaultControllers,
-}                           from "./controller";
+}                           from "./routing";
 import { debug }            from "./utilities";
 
 handleDefaultRejections();

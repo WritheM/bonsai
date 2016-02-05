@@ -19,7 +19,6 @@
   "dependencies": {
     "amqplib": "^0.4.0",
     "babel": "^5.8.23",
-    "bcrypt": "^0.8.5",
     "bcryptjs": "^2.3.0",
     "bluebird": "^2.10.1",
     "config": "^1.16.0",

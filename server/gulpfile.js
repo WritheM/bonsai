@@ -60,8 +60,17 @@ gulp.task('js-clean', function() {
 gulp.task('js-incremental', function() {
 
     var babelOptions = {
-        nonStandard: true,
-        stage: 0
+        presets: [
+            'es2015',
+
+            // ES7 Stage 2+
+            'stage-2'
+        ],
+
+        plugins: [
+            "syntax-class-properties",
+            "transform-class-properties"
+        ]
     };
 
     return gulp
@@ -92,8 +101,17 @@ gulp.task('tests-clean', function() {
 gulp.task('tests-incremental', function() {
 
     var babelOptions = {
-        nonStandard: true,
-        stage: 0
+        presets: [
+            'es2015',
+
+            // ES7 Stage 2+
+            'stage-2'
+        ],
+
+        plugins: [
+            "syntax-class-properties",
+            "transform-class-properties"
+        ]
     };
 
     return gulp

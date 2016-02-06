@@ -5,5 +5,5 @@
 // the polyfill before launching the app.
 
 require('app-module-path').addPath(__dirname);
-require('babel/polyfill');
+require('babel-polyfill');
 require('bonsai-worker');

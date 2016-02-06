@@ -3,7 +3,7 @@ import models from "bonsai-engine/db/models"
 import Controller from "./../../bonsai-engine/routing/Controller";
 
 export default class Playlists extends Controller {
-    @Route("playlist:create")
+    //@Route("playlist:create")
     async add(msg, conn) {
 
         let playlist = await models.Playlist.create({
@@ -13,14 +13,14 @@ export default class Playlists extends Controller {
         return playlist;
     }
 
-    @Route("playlist:delete")
+    //@Route("playlist:delete")
     async del(msg, conn) {
         let playlist = await models.Playlist.findById(msg.id);
         return await playlist.destroy();
     }
 
-    @Route("playlist:patch")
-    @Route("playlist:update")
+    //@Route("playlist:patch")
+    //@Route("playlist:update")
     async patch(msg, conn) {
         let playlist = await models.Playlist.findById(msg.id);
         if (msg.name)
@@ -28,7 +28,7 @@ export default class Playlists extends Controller {
         return await playlist.save();
     }
 
-    @Route("playlist.read")
+    //@Route("playlist.read")
     async list(msg, conn) {
         let playlists = await models.Playlist.findAll({
             where: {

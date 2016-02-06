@@ -3,7 +3,7 @@ import models from "bonsai-engine/db/models"
 import Controller from "./../../bonsai-engine/routing/Controller";
 
 export default class PlaylistMedia extends Controller {
-    @Route("playlist.media:read")
+    //@Route("playlist.media:read")
     async list(msg, conn) {
         let [playlist,media] = await Promise.all([
             models.Playlist.findById(msg.playlist_id),
@@ -42,7 +42,7 @@ export default class PlaylistMedia extends Controller {
         return list;
     }
 
-    @Route("playlist.media:add")
+    //@Route("playlist.media:add")
     async add(msg, conn) {
         let playlist = await models.Playlist.findById(msg.playlist_id);
         //permissions checks here
@@ -96,8 +96,8 @@ export default class PlaylistMedia extends Controller {
         await Promise.all(save);
     }
 
-    @Route("playlist.media:patch")
-    @Route("playlist.media:update")
+    //@Route("playlist.media:patch")
+    //@Route("playlist.media:update")
     async patch(msg, conn) {
         let playlist = await models.PlaylistMedia.findById(msg.id);
 
@@ -111,7 +111,7 @@ export default class PlaylistMedia extends Controller {
         return await playlist.save();
     }
 
-    @Route("playlist.media:delete")
+    //@Route("playlist.media:delete")
     async del(msg, conn) {
         //see if this can be optimised?
         // current approach:

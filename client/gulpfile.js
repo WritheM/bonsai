@@ -217,10 +217,26 @@ gulp.task('app-clean', function(cb) {
 gulp.task('app-incremental', function() {
 
     var babelOptions = {
-        nonStandard: true,
-        stage: 0,
-        modules: "amd",
-        externalHelpers: true
+
+        presets: [
+            "es2015",
+            "react",
+
+            // ES7 Stage 2+
+            "stage-2"
+        ],
+
+        plugins: [
+            "transform-es2015-modules-amd",
+            // Currently there's a new process for building this,
+            // We will leave it out for now.
+            //"external-helpers",
+
+            // Right now this is stage 1, we'll keep it here until we can clean it up
+            "syntax-class-properties",
+            "transform-class-properties"
+        ]
+
     };
 
     var glob = [
@@ -357,8 +373,24 @@ gulp.task('tests-clean', function(cb) {
 gulp.task('tests-incremental', function(cb) {
 
     var babelOptions = {
-        nonStandard: true,
-        stage: 0
+
+        presets: [
+            "es2015",
+            "react",
+
+            // ES7 Stage 2+
+            "stage-2"
+        ],
+
+        plugins: [
+            "transform-es2015-modules-amd",
+            "external-helpers",
+
+            // Right now this is stage 1, we'll keep it here until we can clean it up
+            "syntax-class-properties",
+            "transform-class-properties"
+        ]
+
     };
 
     var glob = paths.src.tests + '**/*.js';

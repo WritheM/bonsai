@@ -1,3 +1,7 @@
+// BABEL, Why U Do Dis
+// (Workaround for known issue)
+typeof undefined;
+
 import React from "react"
 
 import * as Utilities from "./Utilities"
@@ -88,10 +92,7 @@ function detachStoreListeners(stores, storeListeners) {
  */
 export class BaseComponent extends React.Component {
 
-    constructor() {
-        super(...arguments);
-    }
-
+    // Static Properties
     static contextTypes = {
         flux: React.PropTypes.any.isRequired
     };
@@ -99,6 +100,10 @@ export class BaseComponent extends React.Component {
     static childContextTypes = {
         flux: React.PropTypes.any.isRequired
     };
+
+    constructor() {
+        super(...arguments);
+    }
 
     get socket() {
         return this.context.flux.socket;

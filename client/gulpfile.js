@@ -28,6 +28,8 @@ var gulp            = require('gulp'),
     // Helpers
     cli             = gulpUtil.env;
 
+require("./tasks/webpack");
+
 function barrier(count, callback) {
     var i = 0;
 

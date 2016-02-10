@@ -9,6 +9,32 @@ export const Actions = {
     UI:         'ACTIONS_UI'
 };
 
+export const Action = {
+    Player: {
+        PLAY: "ACTION::PLAYER::PLAY",
+        PAUSE: "ACTION::PLAYER::PAUSE",
+        PLAY_PAUSE: "ACTION::PLAYER::PLAY_PAUSE",
+        UPDATE_POSITION: "ACTION::PLAYER::UPDATE_POSITION"
+    },
+    Queue: {
+        PLAY_SONG: "ACTION::QUEUE::PLAY_SONG"
+    },
+    Session: {
+        UPDATE_SESSION: "ACTION::SESSION::UPDATE_SESSION",
+        REGISTER_UPDATE_VIEW: "ACTION::SESSION::REGISTER_UPDATE_VIEW",
+        LOGIN_UPDATE_VIEW: "ACTION::SESSION::LOGIN_UPDATE_VIEW",
+        UPDATE: "ACTION::SESSION::UPDATE"
+    },
+    System: {
+        INITIALIZE: "ACTION::SYSTEM::INITIALIZE",
+        CONNECTION_STATE_CHANGED: "ACTION::SYSTEM::CONNECTION_STATE_CHANGED",
+        CONNECTION_ERROR: "ACTION::SYSTEM::CONNECTION_ERROR"
+    },
+    UI: {
+        TOGGLE_MENU: "ACTION::UI::TOGGLE_MENU"
+    }
+};
+
 export const Stores = {
     PLAYER:     'STORES_PLAYER',
     QUEUE:      'STORES_QUEUE',

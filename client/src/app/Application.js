@@ -1,31 +1,43 @@
-import React from "react"
+import React                    from "react";
+import { Provider }             from "react-redux";
+import {
+    createStore,
+    applyMiddleware
+}                               from "redux";
+import thunk                    from "redux-thunk";
 
-import * as Validators  from "./Validators"
-import Routes           from "./Routes"
+import reducer                  from "./reducers";
+import Routes                   from "./Routes"
 
-/**
- * Root Component for the site, it's primary job is to inject
- * the flux (Alt) instance into the context so all it's children
- * can access it if needed to fetch stores / actions.
- */
 export default class Application extends React.Component {
 
-    static propTypes = {
-        flux: Validators.isBonsaiInstance
+    static childContextTypes = {
+        store: (a) => !!a,
+        socket: (s) => !!s
     };
 
-    static childContextTypes = {
-        flux: Validators.isBonsaiInstance
-    };
+    constructor() {
+        super(...arguments);
+
+        this.store = createStore(
+            reducer,
+            applyMiddleware(thunk)
+        );
+    }
 
     getChildContext() {
         return {
-            flux: this.props.flux
+            store: this.store,
+            socket: this.props.socket
         }
     }
 
     render() {
-        return Routes;
+        return (
+            <Provider store={this.store}>
+                {Routes}
+            </Provider>
+        );
     }
 
 }

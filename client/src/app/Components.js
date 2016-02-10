@@ -92,27 +92,8 @@ function detachStoreListeners(stores, storeListeners) {
  */
 export class BaseComponent extends React.Component {
 
-    // Static Properties
-    static contextTypes = {
-        flux: React.PropTypes.any.isRequired
-    };
-
-    static childContextTypes = {
-        flux: React.PropTypes.any.isRequired
-    };
-
     constructor() {
         super(...arguments);
-    }
-
-    get socket() {
-        return this.context.flux.socket;
-    }
-
-    getChildContext() {
-        return {
-            flux: this.context.flux
-        }
     }
 
     /**
@@ -185,6 +166,10 @@ export class DumbComponent extends BaseComponent {
  */
 export class SmartComponent extends BaseComponent {
 
+    static contextTypes = {
+        store: (s) => !!s
+    };
+
     constructor(props, context) {
         super(props, context);
 
@@ -197,8 +182,13 @@ export class SmartComponent extends BaseComponent {
         ]);
     }
 
+    get globalState() {
+        return this.context.getState();
+    }
+
     addActions(actionMap) {
 
+        /*
         Object
             .keys(actionMap)
             .forEach((key) => {
@@ -209,12 +199,13 @@ export class SmartComponent extends BaseComponent {
 
                 this.actions[key] = actionCollection;
             });
+        */
 
     }
 
     addStores(storeMap) {
 
-        Object
+        /*Object
             .keys(storeMap)
             .forEach((key) => {
                 var storeId = storeMap[key];
@@ -223,7 +214,7 @@ export class SmartComponent extends BaseComponent {
                     throw "Unable to find store '" + storeId + "'.";
 
                 this.stores[key] = storeInstance;
-            })
+            })*/
 
     }
 

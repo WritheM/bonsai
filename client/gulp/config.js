@@ -52,6 +52,12 @@ function getBabelConfiguration() {
 
 module.exports = {
 
+    watch: {
+        // We use the interval approach
+        // for backwards compatibility
+        interval: 1000
+    },
+
     paths: paths,
     includePaths: includePaths,
 

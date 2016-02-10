@@ -79,6 +79,10 @@ function buildWebpackConfig(settings) {
     return {
 
         watch: webpackConfig.watch,
+        watchOptions: {
+            poll: true,
+            aggregateTimeout: 500 // TODO: Config
+        },
 
         devtool: devtool,
 
@@ -146,4 +150,14 @@ gulp.task("app-clean", function() {
         config.paths.output.app + "*.js",
         config.paths.output.app + "*.map"
     ]);
+});
+
+gulp.task("app-watch", ["app-clean"], function() {
+
+    return gulp.src(config.paths.src.root + "main.js")
+        .pipe(plumber())
+        .pipe(named())
+        .pipe(webpack(buildWebpackConfig({ pack: !!cli.production, watch: true })))
+        .pipe(gulp.dest(config.paths.output.app));
+
 });

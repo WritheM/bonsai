@@ -1,3 +1,5 @@
-/**
- * Created by aren on 09/02/16.
- */
+var gulp        = require("gulp");
+
+// TODO: Re-Implement
+gulp.task("images", []);
+gulp.task("images-watch", []);

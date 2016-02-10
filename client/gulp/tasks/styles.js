@@ -52,7 +52,7 @@ function buildComponentStyles() {
         .pipe(processScss());
 }
 
-gulp.task("styles", ["clean-styles"], function() {
+gulp.task("styles", ["styles-clean"], function() {
 
     var allStyles = streamqueue(
         { objectMode: true },
@@ -72,9 +72,24 @@ gulp.task("styles", ["clean-styles"], function() {
 
 });
 
-gulp.task("clean-styles", function() {
+gulp.task("styles-clean", function() {
     return del([
         config.paths.output.styles + "*.css",
         config.paths.output.styles + "*.map"
     ]);
+});
+
+gulp.task("styles-watch", ["styles"], function(cb) {
+
+    gulp.watch(
+        [
+            config.paths.src.styles + "*.scss",
+            config.paths.src.app + "components/**/*.Component.scss"
+        ],
+        { interval: config.watch.interval },
+        ["styles"]
+    );
+
+    cb();
+
 });

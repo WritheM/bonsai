@@ -39,4 +39,19 @@ gulp.task("static-html-clean", function() {
     ]);
 });
 
+gulp.task("static-watch", ["static"], function(cb) {
+
+    // HTML
+    gulp.watch(
+        [
+            config.paths.src.static + "*.html"
+        ],
+        { interval: config.watch.interval },
+        ["static-html"]
+    );
+
+    cb();
+
+});
+
 gulp.task("static", ["static-html"]);

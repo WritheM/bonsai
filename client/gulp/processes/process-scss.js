@@ -6,7 +6,6 @@
 var gulp            = require("gulp"),
     util            = require("gulp-util"),
     sourcemaps      = require('gulp-sourcemaps'),
-    newer           = require('gulp-newer'),
     sass            = require('gulp-sass'),
 
     lazypipe        = require('lazypipe'),

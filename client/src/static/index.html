@@ -5,9 +5,7 @@
     <title></title>
 
     <!-- @if PRODUCTION=true -->
-    <link href="/compiled/site.min.css" rel="stylesheet" type="text/css" media="screen" />
-
-    <script src="/compiled/deps.min.js"></script>
+    <link href="/styles/site.min.css" rel="stylesheet" type="text/css" media="screen" />
     <!-- @endif -->
     <!-- @if PRODUCTION=false -->
     <link href="/styles/common.css" rel="stylesheet" type="text/css" media="screen" />
@@ -22,15 +20,10 @@
     </div>
 
     <!-- @if PRODUCTION=true -->
-    <script src="/compiled/main.js"></script>
+    <script src="/js/main.min.js"></script>
     <!-- @endif -->
     <!-- @if PRODUCTION=false -->
-    <script src="/deps/babel-core/external-helpers.js"></script>
+    <script src="/js/main.js"></script>
     <!-- @endif -->
-    <script>
-        require(["config"], function(cfg) {
-            require(["main"], function() { });
-        });
-    </script>
 </body>
 </html>

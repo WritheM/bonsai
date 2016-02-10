@@ -60,7 +60,7 @@ function buildWebpackConfig(settings) {
 
     var plugins = [
         new DedupePlugin(),
-        new CommonsChunkPlugin("commons", commonsName)
+        new CommonsChunkPlugin("commons", commonsName, Infinity)
     ];
 
     if (webpackConfig.pack) {
@@ -104,8 +104,7 @@ function buildWebpackConfig(settings) {
                 "jquery",
 
                 // Other
-                "socket.io-client",
-                "youtube"
+                "socket.io-client"
             ]
         },
 

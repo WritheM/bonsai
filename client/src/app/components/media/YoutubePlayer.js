@@ -1,8 +1,9 @@
 import React, { PropTypes } from "react"
-import YT                   from "youtube"
 
 import { DumbComponent }    from "../../Components"
 import * as Utilities       from "../../Utilities"
+
+// Dependency: global.YT;
 
 export default class YoutubePlayer extends DumbComponent {
 

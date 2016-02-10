@@ -26,18 +26,10 @@ export default class Content extends SmartComponent {
 
 
     onNewState(state) {
-        if (state.ui) {
-            this.setState({
-                pageComponent: state.ui.pageComponent
-            });
-        }
+
     }
 
     render() {
-
-        var PageComponent = this.state.pageComponent;
-        var page = PageComponent ? <PageComponent /> : null;
-
         return (
             <div className="c-content">
                 <div className="e-menu">
@@ -48,7 +40,7 @@ export default class Content extends SmartComponent {
                         <Player />
                     </div>
                     <div className="e-page">
-                        {page}
+                        {this.props.children}
                     </div>
                     <div className="e-queue">
                         Queue Standin

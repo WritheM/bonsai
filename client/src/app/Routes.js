@@ -1,11 +1,14 @@
 import React            from "react"
 import ReactRouter, {
     Route,
-    DefaultRoute,
+    Router,
+    IndexRoute,
     NotFoundRoute,
     Redirect,
     HashLocation,
     RouteHandler }      from "react-router"
+
+import Shell            from "./components/Shell";
 
 // Temp
 import * as Constants       from "./Constants"
@@ -87,8 +90,10 @@ class Page extends React.Component {
 /******************************************/
 
 export default (
-    <Route path="/" handler={RoutingRoot}>
-        <DefaultRoute handler={Dashboard} />
-        <Route path="page" handler={Page} />
-    </Route>
+    <Router>
+        <Route path="/" component={Shell}>
+            <IndexRoute component={Dashboard} />
+            <Route path="page" component={Page} />
+        </Route>
+    </Router>
 );

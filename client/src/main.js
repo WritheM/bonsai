@@ -1,5 +1,6 @@
 // Libraries
-import React from "react"
+import React        from "react"
+import ReactDOM     from "react-dom"
 
 // App Logic
 import * as socket          from "./api/socket"
@@ -24,11 +25,7 @@ let UIActions = flux.getActions(Constants.Actions.UI);
 
 window.Bonsai = flux; // Throw it somewhere publically for now so we can fiddle if needed.
 
-ReactRouter.run(Routes, HashLocation, function(Handler) {
-    UIActions.updatePageComponent(Handler);
-});
-
-React.render(
+ReactDOM.render(
     <BonsaiApplication flux={flux} />,
     document.getElementById('root')
 );

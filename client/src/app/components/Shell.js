@@ -44,7 +44,9 @@ export default class Shell extends SmartComponent {
                         <Header />
                     </div>
                     <div className="e-content">
-                        <Content />
+                        <Content>
+                            {this.props.children}
+                        </Content>
                     </div>
                     <div className="e-footer">
                         <Footer />

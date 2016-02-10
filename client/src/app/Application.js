@@ -1,7 +1,7 @@
 import React from "react"
 
 import * as Validators  from "./Validators"
-import Shell            from "./components/Shell"
+import Routes           from "./Routes"
 
 /**
  * Root Component for the site, it's primary job is to inject
@@ -25,7 +25,7 @@ export default class Application extends React.Component {
     }
 
     render() {
-        return <Shell />;
+        return Routes;
     }
 
 }

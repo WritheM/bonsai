@@ -7,34 +7,16 @@ import Header               from "./common/Header"
 import Content              from "./common/Content"
 import Footer               from "./common/Footer"
 
-import OverlayWindow        from "./common/OverlayWindow"
-
-import Connecting           from "./common/Connecting"
-import RegisterOverlay      from "./session/RegisterOverlay"
-import LoginOverlay         from "./session/LoginOverlay"
+import OverlayWindow        from "./common/OverlayWindow";
 
 
-export default class Shell extends SmartComponent {
+export default class Shell extends React.Component {
 
     constructor() {
         super(...arguments);
-
-        this.addActions({
-            'session': Constants.Actions.SESSION
-        });
     }
 
     render() {
-
-        var isRegisterShown     = (state) => state.session.register.state !== Constants.RegisterStates.NONE;
-        var isLoginShown        = (state) => state.session.login.state !== Constants.LoginStates.NONE;
-        var isConnectingShown   = (state) => state.system.connectionState === Constants.ConnectionStates.CONNECTING;
-
-        var cancelRegister      = () => this.actions.session.registerCancel();
-        var cancelLogin         = () => this.actions.session.loginCancel();
-
-        var sessionStores       = {'session': Constants.Stores.SESSION};
-        var systemStores        = {'system': Constants.Stores.SYSTEM};
 
         return (
 
@@ -53,18 +35,7 @@ export default class Shell extends SmartComponent {
                     </div>
                 </div>
 
-                <OverlayWindow requiredStores={sessionStores} isShown={isRegisterShown} exit={cancelRegister}>
-                    <RegisterOverlay />
-                </OverlayWindow>
-
-                <OverlayWindow requiredStores={sessionStores} isShown={isLoginShown} exit={cancelLogin}>
-                    <LoginOverlay />
-                </OverlayWindow>
-
-                <OverlayWindow requiredStores={systemStores} isShown={isConnectingShown} preventExit={true}>
-                    <Connecting />
-                </OverlayWindow>
-
+                <OverlayWindow />
             </div>
 
         );

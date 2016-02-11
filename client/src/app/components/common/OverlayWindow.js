@@ -1,77 +1,72 @@
-import React from "react"
+import React                from "react";
+import { connect }          from "react-redux";
 
-import { SmartComponent } from "../../Components"
+import {
+    ConnectionStates,
+    LoginStates,
+    RegisterStates
+}                           from "../../Constants";
 
-/**
- * Renders an overlay window when a condition is met
- *
- * Example:
- *
- * var isShown = (key, state) => state.x == 'yes';
- * var requiredStores = {'store': Constants.Stores.SYSTEM}
- *
- * <OverlayWindow isShown={isShown} requiredStores={requiredStores}>
- *     <ControlToRender />
- * </OverlayWindow>
- */
-export default class OverlayWindow extends SmartComponent {
+import Connecting           from "./Connecting";
 
-    static propTypes = {
-        isShown: React.PropTypes.func.isRequired,
-        requiredStores: React.PropTypes.object.isRequired,
-        preventExit: React.PropTypes.bool,
-        exit: React.PropTypes.func
-    };
+import LoginOverlay         from "../session/LoginOverlay";
+import RegisterOverlay      from "../session/RegisterOverlay";
 
-    constructor(props, context) {
-        super(props, context);
+class OverlayWindow extends React.Component {
 
-        this.addStores(props.requiredStores);
-
-        this.state = {
-            show: false
-        }
+    get showConnecting() {
+        return this.props.connectionState != ConnectionStates.CONNECTED;
     }
 
+    get showRegister() {
+        return this.props.register.state != RegisterStates.NONE;
+    }
 
-    onNewState(state) {
-        var newShown = this.props.isShown(state);
-        if (newShown !== null) {
-            this.setState({
-                show: newShown === true // Normalize
-            })
+    get showLogin() {
+        return this.props.login.state != LoginStates.NONE;
+    }
+
+    renderOverlay() {
+        if (this.showConnecting) {
+            return (<Connecting />);
         }
+
+        if (this.showRegister) {
+            return (<RegisterOverlay />);
+        }
+
+        if (this.showLogin) {
+            return (<LoginOverlay />);
+        }
+
+        return null;
+    }
+
+    exit() {
+        // TODO:
     }
 
     render() {
 
-        var preventBubble = (ev) => ev.stopPropagation();
-        var exitOverlay = (ev) => {
+        let exitOverlay = () => this.exit();
+        let preventBubble = (ev) => ev.stopPropagation();
 
-            if (this.props.preventExit) {
-                return;
-            }
-
-            if (this.props.exit) {
-                this.props.exit();
-            } else {
-                this.setState({
-                    show: false
-                });
-            }
-        };
-
-        if (this.state.show) {
+        if (this.showConnecting || this.showRegister || this.showLogin) {
             return (
                 <div className="c-overlay-window" onClick={exitOverlay}>
                     <div className="e-content" onClick={preventBubble}>
-                        {this.props.children}
+                        {this.renderOverlay()}
                     </div>
                 </div>
-            )
-        } else {
-            return null;
+            );
         }
 
+        return null;
     }
 }
+
+export default connect(state => ({
+    register: state.session.register,
+    login: state.session.login,
+    connectionState: state.system.connectionState
+}))(OverlayWindow);

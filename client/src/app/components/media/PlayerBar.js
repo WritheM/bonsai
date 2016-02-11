@@ -1,130 +1,86 @@
-import React            from "react"
+import React            from "react";
+import { connect }     from "react-redux";
 
-import * as Constants           from "../../Constants"
-import { SmartComponent }       from "../../Components"
+import * as QueueActionCreators     from "../../actions/queue";
+import * as PlayerActionCreators    from "../../actions/player";
 
-import PlayerControls       from "./PlayerControls"
-import PlayerProgress       from "./PlayerProgress"
-import PlayerActions        from "./PlayerActions"
+import PlayerControls               from "./PlayerControls"
+import PlayerProgress               from "./PlayerProgress"
+import PlayerActions                from "./PlayerActions"
 
 /**
  * The smart component that coordinates the player bar at the bottom of the screen.
  */
-export default class PlayerBar extends SmartComponent {
+class PlayerBar extends React.Component {
 
-    constructor() {
-        super(...arguments);
+    get currentSong() {
+        let { queue } = this.props;
 
-        this.addActions({
-            // TODO: Add Actions
-            'player': Constants.Actions.PLAYER,
-            'queue': Constants.Actions.QUEUE
-        });
-
-        this.addStores({
-            // TODO: Add Stores
-            'player': Constants.Stores.PLAYER,
-            'queue': Constants.Stores.QUEUE
-        });
-
-        this.selfBindMethods([
-            // Control Callbacks
-            this.onBackPressed,
-            this.onPlayPausePressed,
-            this.onNextPressed,
-            this.onQueuePressed,
-            this.onTheatrePressed,
-            // Action Callbacks
-            this.onLeafPressed,
-            this.onSparkPressed,
-            this.onMuteTogglePressed,
-            this.onShufflePressed,
-            this.onRepeatPressed
-        ]);
-
-        this.state = {
-            song: {
+        if (!queue.song) {
+            return {
                 title: '',
                 artist: ''
-            },
-            player: {
-                isPlaying: false,
-                current: 0,
-                total: 1
-            }
-        };
+            };
+        } else {
+            return {
+                ...this.props.queue.song
+            };
+        }
     }
 
+    get playerState() {
+        let { player } = this.props;
 
-    onNewState(state) {
-
-        if (state.player) {
-            this.setState({
-                player: {
-                    isPlaying: state.player.isPlaying,
-                    current: state.player.position,
-                    total: state.player.total
-                }
-            });
-        }
-
-        if (state.queue) {
-
-            let title = state.queue.current ? state.queue.current.title : '';
-            let artist = state.queue.current ? state.queue.current.artist : '';
-
-            this.setState({
-                song: {
-                    title: title,
-                    artist: artist
-                }
-            })
-        }
+        return {
+            isPlaying: player.isPlaying,
+            current: player.position,
+            total: player.total
+        };
     }
 
 // Controls
 
-    onBackPressed() {
-        this.actions.queue.prev();
-    }
+    onBackPressed = () => {
+        this.props.dispatch(QueueActionCreators.prev());
+    };
 
-    onPlayPausePressed() {
-        this.actions.player.playPause();
-    }
+    onNextPressed = () => {
+        this.props.dispatch(QueueActionCreators.next());
+    };
 
-    onNextPressed() {
-        this.actions.queue.next();
-    }
+    onPlayPausePressed = () => {
+        this.props.dispatch(PlayerActionCreators.playPause());
+    };
 
-    onQueuePressed() {
+    onQueuePressed = () => {
         // TODO: Wire into Action
-    }
+    };
 
-    onTheatrePressed() {
+    onTheatrePressed = () => {
         // TODO: Wire into Action
-    }
+    };
 
     // Actions
 
-    onLeafPressed() {
+    onLeafPressed = () => {
         // TODO: Wire into Action
-    }
+    };
 
-    onSparkPressed() {
+    onSparkPressed = () => {
         // TODO: Wire into Action
-    }
+    };
 
-    onMuteTogglePressed() {
+    onMuteTogglePressed = () => {
         // TODO: Wire into Action
-    }
+    };
 
-    onShufflePressed() {
+    onShufflePressed = () => {
         // TODO: Wire into Action
-    }
+    };
 
-    onRepeatPressed() {
+    onRepeatPressed = () => {
         // TODO: Wire into Action
-    }
+    };
 
     renderControls() {
         var controlCallbacks = {
@@ -137,7 +93,7 @@ export default class PlayerBar extends SmartComponent {
 
         var controlProps = {
             callbacks: controlCallbacks,
-            isPlaying: this.state.player.isPlaying,
+            isPlaying: this.playerState.isPlaying,
             isQueueOpen: false,
             isTheatreOpen: false
         };
@@ -150,10 +106,10 @@ export default class PlayerBar extends SmartComponent {
     renderProgress() {
 
         var progressProps = {
-            title: this.state.song.title,
-            artist: this.state.song.artist,
-            current: this.state.player.current,
-            total: this.state.player.total
+            title: this.currentSong.title,
+            artist: this.currentSong.artist,
+            current: this.playerState.current,
+            total: this.playerState.total
         };
 
         return (
@@ -198,3 +154,8 @@ export default class PlayerBar extends SmartComponent {
 
     }
 }
+
+export default connect(state => ({
+    player: state.player,
+    queue: state.queue
+}))(PlayerBar);

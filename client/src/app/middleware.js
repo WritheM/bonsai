@@ -1,16 +1,28 @@
 // Examples from Redux Documentation:
 // https://rackt.org/redux/docs/advanced/Middleware.html
 
+import {
+    NoisyActions
+}                       from "./Constants";
+
 /**
  * Logs all actions and states after they are dispatched.
  */
 export const logger = store => next => action => {
+
+    // Ignore noisy actions, we don't want
+    // to overload ourselves.
+    if (NoisyActions[action.type]) {
+        return next(action);
+    }
+
     console.group(action.type);
     console.info('dispatching', action);
     let result = next(action);
     console.log('next state', store.getState());
     console.groupEnd(action.type);
     return result
+
 };
 
 /**

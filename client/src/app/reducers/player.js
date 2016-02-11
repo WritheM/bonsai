@@ -34,6 +34,11 @@ export default function(state = playerDefaults, action) {
                 position: action.position,
                 total: action.total
             };
+        case Action.Queue.PLAY_SONG:
+            return {
+                ...state,
+                isPlaying: true
+            };
         default:
             return {...state};
     }

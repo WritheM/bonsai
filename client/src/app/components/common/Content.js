@@ -1,33 +1,10 @@
-import React                from "react"
-
-import * as Constants       from "../../Constants"
-import { SmartComponent }   from "../../Components"
+import React                from "react";
+import { connect }          from "react-redux";
 
 import Player               from "../media/Player"
 import SocialPane           from "../social/SocialPane"
 
-export default class Content extends SmartComponent {
-
-    constructor() {
-        super(...arguments);
-
-        this.addActions({
-            'session': Constants.Actions.SESSION
-        });
-
-        this.addStores({
-            'ui': Constants.Stores.UI
-        });
-
-        this.state = {
-            pageComponent: null
-        };
-    }
-
-
-    onNewState(state) {
-
-    }
+class Content extends React.Component {
 
     render() {
         return (
@@ -50,8 +27,11 @@ export default class Content extends SmartComponent {
                     <SocialPane />
                 </div>
             </div>
-        )
-
+        );
     }
 
 }
+
+export default connect(state => ({
+    // TODO
+}))(Content);

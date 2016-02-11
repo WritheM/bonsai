@@ -35,6 +35,13 @@ export const Action = {
     }
 };
 
+export const NoisyActions = [
+    Action.Player.UPDATE_POSITION
+].reduce((lookup, key) => {
+    lookup[key] = true;
+    return lookup;
+}, {});
+
 export const Stores = {
     PLAYER:     'STORES_PLAYER',
     QUEUE:      'STORES_QUEUE',

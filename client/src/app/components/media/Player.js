@@ -1,37 +1,36 @@
-import React from "react"
+import React            from "react";
+import { connect }      from "react-redux";
 
-import * as Constants       from "../../Constants"
-import { SmartComponent }   from "../../Components"
+import * as PlayerActionCreators from "../../actions/player";
+
 import YoutubePlayer        from "./YoutubePlayer"
 
-export default class Player extends SmartComponent {
+class Player extends React.Component {
 
     constructor() {
         super(...arguments);
 
-        this.selfBindMethods([
-            this.updatePosition,
-            this.updateIsPlaying
-        ]);
-
-        this.addActions({
-            'player': Constants.Actions.PLAYER,
-            'queue': Constants.Actions.QUEUE
-        });
-
-        this.addStores({
-            'player': Constants.Stores.PLAYER,
-            'queue': Constants.Stores.QUEUE
-        });
-
-        this.state = {
-            song: null,
-            start: -1,
-            volume: 100,
-            isPlaying: false
-        };
-
         this._yt = null;
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        let { current, player } = this.props;
+
+        // If the song has changed
+        let noSongsYet = !nextProps.current.song && !current.song;
+
+        let songChanged =
+            (nextProps.current.song && !current.song) ||
+            (!nextProps.current.song && current.song) ||
+            (!noSongsYet && nextProps.current.song.id != current.song.id);
+
+        // All the conditions that would let a full re-render
+        // happen for the player.
+        return songChanged || false /* TODO More Conditions */;
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setPlayerPlaying(nextProps.player.isPlaying);
     }
 
     // Player Actions
@@ -50,84 +49,28 @@ export default class Player extends SmartComponent {
 
     }
 
-    // ---
+    updatePosition = (position, total) => {
+        this.props.dispatch(PlayerActionCreators.updatePosition(position, total));
+    };
 
-    onNewState(state) {
-
-        if (state.player) {
-
-            let player = state.player;
-
-            // Non-State Reactions
-            if (this.state.isPlaying != player.isPlaying) {
-                this.setPlayerPlaying(player.isPlaying);
-            }
-
-            let newState = {
-                isPlaying: player.isPlaying
-            };
-
-            // TODO: Conditional augments
-
-            this.setState(newState);
-
+    updateIsPlaying = (isPlaying) => {
+        if (this.props.player.isPlaying != isPlaying) {
+            this.props.dispatch(PlayerActionCreators.updateIsPlaying(isPlaying));
         }
-
-        if (state.queue) {
-
-            let newState = {
-                song: state.queue.current,
-                start: state.queue.currentStartPosition
-            };
-
-            this.setState(newState);
-
-        }
-
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-
-        // If the song has changed
-        let noSongsYet = !nextState.song && !this.state.song;
-
-        let songChanged =
-            (nextState.song && !this.state.song) ||
-            (!nextState.song && this.state.song) ||
-            (!noSongsYet && nextState.song.id != this.state.song.id);
-
-        // All the conditions that would let a full re-render
-        // happen for the player.
-        return songChanged || false /* TODO More Conditions */;
-
-    }
-
-    updatePosition(position, total) {
-        this.actions.player.updatePosition(position, total);
-    }
-
-    updateIsPlaying(isPlaying) {
-
-        // Setting this state early will abort the signal into the player.
-        this.setState({
-            isPlaying: isPlaying
-        });
-
-        this.actions.player.updateIsPlaying(isPlaying);
-    }
+    };
 
     render() {
 
         // Clear the reference, it'll be updated later.
         this._yt = null;
 
-        let ytProps = {
+        let { current } = this.props;
 
-            video: this.state.song ? this.state.song.mediaCode : '',
-            start: this.state.start,
+        let ytProps = {
+            video: current.song ? current.song.mediaCode : '',
+            start: current.startPosition,
             updatePosition: this.updatePosition,
             updateIsPlaying: this.updateIsPlaying
-
         };
 
         return (
@@ -141,3 +84,8 @@ export default class Player extends SmartComponent {
         );
     }
 }
+
+export default connect(state => ({
+    player: state.player,
+    current: state.queue.current
+}))(Player);

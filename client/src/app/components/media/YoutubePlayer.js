@@ -32,10 +32,10 @@ export default class YoutubePlayer extends DumbComponent {
     componentWillMount() {
 
         this._interval = setInterval(() => {
-            if (this._player) {
+            if (this._player && this._player.getCurrentTime) {
                 this.props.updatePosition(this._player.getCurrentTime(), this._player.getDuration());
             }
-        }, 100);
+        }, 250);
 
     }
 

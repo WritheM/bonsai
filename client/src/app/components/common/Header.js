@@ -1,59 +1,22 @@
-import React from "react"
+import React        from "react";
+import { connect }  from "react-redux";
 
-import * as Constants       from "../../Constants"
-import { SmartComponent }   from "../../Components"
+import * as UIActions       from "../../actions/ui";
 
 import HeaderBanner         from "./HeaderBanner"
 import Search               from "./Search"
 import Notifications        from "./Notifications"
 import ProfileMenu          from "./ProfileMenu"
 
-export default class Header extends SmartComponent {
+class Header extends React.Component {
 
-    constructor() {
-        super(...arguments);
+    onMenuToggle = () => {
+        this.props.dispatch(UIActions.toggleMenu());
+    };
 
-        this.addActions({
-            'ui': Constants.Actions.UI
-        });
-
-        this.addStores({
-            'ui': Constants.Stores.UI,
-            'user': Constants.Stores.USER
-        });
-
-        this.selfBindMethods([
-            this.onMenuToggle
-        ]);
-
-        this.state = {
-            isBannerExpanded: false,
-            currentUser: null
-        };
-    }
-
-    onNewState(state) {
-
-        let {ui, user} = state;
-
-        if (ui) {
-            this.setState({
-                isBannerExpanded: ui.menu.isOpen
-            });
-        }
-
-        if (user) {
-            let currentUser = user.users[user.current] || null;
-
-            this.setState({
-                currentUser: currentUser
-            });
-        }
-
-    }
-
-    onMenuToggle() {
-        this.actions.ui.toggleMenu();
+    get currentUser() {
+        let { user } = this.props;
+        return user.collection.find(e => e.id == user.current.id);
     }
 
     render() {
@@ -61,7 +24,7 @@ export default class Header extends SmartComponent {
 
             <div id="bonsaiHeader" className="c-shell-header">
                 <div className="e-banner">
-                    <HeaderBanner isExpanded={this.state.isBannerExpanded} />
+                    <HeaderBanner isExpanded={this.props.ui.menu.isOpen} />
                 </div>
                 <div className="e-search">
                     <Search onMenuToggle={this.onMenuToggle} />
@@ -70,10 +33,15 @@ export default class Header extends SmartComponent {
                     <Notifications />
                 </div>
                 <div className="e-user">
-                    <ProfileMenu user={this.state.currentUser} />
+                    <ProfileMenu user={this.currentUser} />
                 </div>
             </div>
 
         );
     }
 }
+
+export default connect((state) => ({
+    ui: state.ui,
+    user: state.user
+}))(Header);

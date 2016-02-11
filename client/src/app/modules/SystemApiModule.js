@@ -14,7 +14,7 @@ export default class SystemApiModule extends ApiModule {
 
     constructor(dispatch) {
         super();
-        
+
         this.dispatch = dispatch;
     }
 

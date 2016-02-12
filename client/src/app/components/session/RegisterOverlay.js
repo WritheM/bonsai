@@ -1,7 +1,6 @@
 import React                from "react"
 
 import * as Constants       from "../../Constants"
-import { SmartComponent }   from "../../Components"
 
 import SessionOverlay       from "./SessionOverlay"
 import SessionFormButton    from "./SessionFormButton"
@@ -23,10 +22,11 @@ let formDataTemplate = {
     isReady: false
 };
 
-export default class RegisterOverlay extends SmartComponent {
+export default class RegisterOverlay extends React.Component {
     constructor() {
         super(...arguments);
 
+        /*
         this.state = {
             isConfirming: false,
             isRegistering: false,
@@ -47,9 +47,10 @@ export default class RegisterOverlay extends SmartComponent {
             this.onSubmit,
             this.onSigninInstead
         ]);
+        */
     }
 
-
+    
     onNewState(state) {
         if (state.session) {
             var registrationState = state.session.register.state;

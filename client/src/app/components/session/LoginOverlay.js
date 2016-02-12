@@ -1,7 +1,6 @@
 import React                from "react"
 
 import * as Constants       from "../../Constants"
-import { SmartComponent }   from "../../Components"
 
 import SessionOverlay       from "./SessionOverlay"
 import SessionFormButton    from "./SessionFormButton"
@@ -19,7 +18,7 @@ let formDataTemplate = {
     isReady: false
 };
 
-export default class LoginOverlay extends SmartComponent {
+export default class LoginOverlay extends React.Component {
     constructor() {
         super(...arguments);
 

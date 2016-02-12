@@ -2,11 +2,10 @@ import React        from "react"
 import classnames   from "classnames"
 
 import * as Constants       from "../../Constants"
-import { SmartComponent }   from "../../Components"
 
 import SocialBar            from "./SocialBar"
 
-export default class SocialPane extends SmartComponent {
+export default class SocialPane extends React.Component {
 
     render() {
 

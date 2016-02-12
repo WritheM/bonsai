@@ -12,7 +12,6 @@ import Shell            from "./components/Shell";
 
 // Temp
 import * as Constants       from "./Constants"
-import { SmartComponent }   from "./Components"
 
 /*************** POLYFILLS *****************/
 
@@ -24,11 +23,12 @@ class RoutingRoot extends React.Component {
     }
 }
 
-class Dashboard extends SmartComponent {
+class Dashboard extends React.Component {
 
     constructor() {
         super(...arguments);
 
+        /*
         this.addActions({
             'queue': Constants.Actions.QUEUE,
             'session': Constants.Actions.SESSION
@@ -40,6 +40,7 @@ class Dashboard extends SmartComponent {
             this.logout,
             this.register
         ]);
+        */
     }
 
     clicked() {

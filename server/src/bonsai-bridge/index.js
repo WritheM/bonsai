@@ -31,7 +31,7 @@ import * as config from "config";
 handleDefaultRejections();
 
 let store = newStore();
-let routeMap = getRouteMap(getControllers(store));
+let routeMap = [];
 
 let broadcast = new BroadcastClient({
     path: config.rabbit.host,
@@ -41,6 +41,11 @@ let broadcast = new BroadcastClient({
 
 let tracker = new Tracker(broadcast, store);
 let bridge = new SocketServer(tracker, config.bridge.port);
+
+routeMap = getRouteMap(getControllers(
+    store,
+    tracker
+));
 
 Promise
     .all([broadcast.listen(), bridge.listen()])

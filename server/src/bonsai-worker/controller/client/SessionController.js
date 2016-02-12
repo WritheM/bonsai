@@ -2,6 +2,7 @@ import bcrypt           from "bcryptjs";
 import Sequelize        from "sequelize";
 
 import {
+    makeFailure,
     uuid
 }                       from "bonsai-engine/utilities";
 
@@ -17,7 +18,7 @@ export default class SessionController {
 
         this.routes = createRoutes(this, {
             'client.session.login': this.login,
-            'client.session.loginToken': this.loginToken,
+            'client.session.login-token': this.loginToken,
             'client.session.logout': this.logout,
             'client.session.ping': this.ping
         });
@@ -38,11 +39,15 @@ export default class SessionController {
 
         // TODO: Remove User/Password Indicator as it's not secure, this is for development purposes.
         if (!user) {
-            throw new Error('Username* or Password not correct.');
+            return makeFailure(
+                `Username* or Password is not correct.`
+            );
         }
 
         if (!bcrypt.compareSync(password, user.password)) {
-            throw new Error('Username of Password* not correct.');
+            return makeFailure(
+                `Username or Password* is not correct.`
+            );
         }
 
         var token = uuid();
@@ -58,22 +63,29 @@ export default class SessionController {
             .connection(connection)
             .attachSession(token, user.id);
 
-        return { user: user.id, token };
+        return { success: true };
     }
 
     async loginToken(message) {
 
         var { payload, context } = message;
         var { token } = payload;
+        var { connection } = context;
 
-        let session = await models.Auth.findOne({where: {token: token}});
+        let session = await this.models.Auth.findOne({where: {token: token}});
         if (!session) {
-            throw new Error('No Session ' + msg.token);
+            return makeFailure(
+                `No Session '${msg.token}' found.`
+            );
         }
 
-        let user = await models.User.findById(session.user_id);
+        let user = await this.models.User.findById(session.user_id);
 
-        return { user: user.id, token };
+        this.tracker
+            .connection(connection)
+            .attachSession(token, user.id);
+
+        return { success: true };
     }
 
     async logout(message) {
@@ -81,22 +93,24 @@ export default class SessionController {
         var { payload, context } = message;
         var { token } = payload;
 
-        var token = conn.session.token || msg.token;
+        var token = context.session;
 
         if (!token) {
-            throw new Error("Unknown Session, cannot log out session.");
+            return makeFailure(
+                `Connection has no session data, cannot log out.`
+            );
         }
 
         let s = await models.Auth.findOne({where: {token: token}});
-
         if (!s) {
-            throw new Error("Cannot find session.");
+            return makeFailure(
+                `Unable to find session, cannot log out.`
+            );
         }
 
         await s.destroy();
 
-        return this.getLoginSnapshot();
-
+        return { success: true };
     }
 
     async ping(message) {

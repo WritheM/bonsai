@@ -8,7 +8,8 @@ import { debug } from "../utilities";
 
 var mapping = {
     "Session:register": "client.user.register",
-    "Session:login" : "client.session.login"
+    "Session:login" : "client.session.login",
+    "Session:loginToken": "client.session.login-token"
 };
 
 function mapEvent(event) {

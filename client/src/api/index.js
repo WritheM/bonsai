@@ -71,22 +71,22 @@ export default class BonsaiApi {
         this.socket.off(event, callback);
     }
 
-    send(path, payload) {
+    send(path, data) {
         if (!this.socket || this.socket.io.readyState !== "open") {
             return Promise.reject(
                 `Error sending message to socket. The socket is not ready.`
             );
         }
 
-        var payload = {path: method, data: data};
+        var payload = {path, data};
 
         return new Promise((resolve, reject) => {
             this.socket.emit("rpc", payload, function(response) {
-                if (response.status === "ok") {
-                    resolve(response.data);
+                if (response.success) {
+                    resolve(response);
                 }
                 else {
-                    reject(response.status);
+                    reject(response);
                 }
             });
         });

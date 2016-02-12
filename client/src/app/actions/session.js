@@ -7,6 +7,10 @@ import {
     RegisterStates
 }                       from "../Constants";
 
+import {
+    ensureString
+}                       from "../Utilities";
+
 export function updateSession(token, user) {
     return {
         type: Action.Session.UPDATE_SESSION,
@@ -16,6 +20,9 @@ export function updateSession(token, user) {
 }
 
 export function registerUpdateView(state, message = null) {
+    ensureString("state", state);
+    ensureString("message", message, true);
+
     return {
         type: Action.Session.REGISTER_UPDATE_VIEW,
         state,
@@ -31,40 +38,14 @@ export function registerCancel() {
     return registerUpdateView(RegisterStates.NONE);
 }
 
-export function register(username, displayname, email, language, password) {
-    return (dispatch) => {
-        dispatch(registerUpdateView(RegisterStates.REGISTERING));
-
-        var payload = {
-            username: username,
-            displayname: displayname,
-            email: email,
-            language: language,
-            password: password
-        };
-
-        // TODO: Socket IO
-        var action = new Promise(function(resolve, reject) {
-
-        })
-        .then(result => {
-            var state = RegisterStates.CONFIRMING;
-            var message = null;
-
-            if (!result.success) {
-                state = RegisterStates.OPEN;
-                message = result.message;
-            }
-
-            dispatch(registerUpdateView(state, message));
-        })
-        .catch(reason => {
-            dispatch(registerUpdateView(RegisterStates.OPEN, reason));
-        });
-    };
+export function registerWaiting() {
+    return registerUpdateView(RegisterStates.REGISTERING);
 }
 
 export function loginUpdateView(state, message = null) {
+    ensureString("state", state);
+    ensureString("message", message, true);
+
     return {
         type: Action.Session.LOGIN_UPDATE_VIEW,
         state,
@@ -80,21 +61,8 @@ export function loginCancel() {
     return loginUpdateView(LoginStates.NONE);
 }
 
-export function login(username, password) {
-    return (dispatch) => {
-        dispatch(LoginStates.AUTHENTICATING);
-
-        // TODO: Socket.IO
-        new Promise((res, rej) => {})
-            .then(result => {
-                // State changes come as a broadcast, close the
-                // dialog and wait.
-                dispatch(loginCancel());
-            })
-            .catch(reason => {
-                dispatch(loginUpdateView(LoginStates.OPEN, reason));
-            });
-    };
+export function loginWaiting() {
+    return loginUpdateView(LoginStates.AUTHENTICATING);
 }
 
 export function loginAuto() {

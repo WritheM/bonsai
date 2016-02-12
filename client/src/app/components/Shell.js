@@ -1,7 +1,6 @@
 import React                from "react"
 
 import * as Constants       from "../Constants"
-import { SmartComponent }   from "../Components"
 
 import Header               from "./common/Header"
 import Content              from "./common/Content"

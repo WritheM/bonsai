@@ -8,20 +8,42 @@ import {
     debug
 }                           from "../Utilities";
 
-import * as SystemActions   from "../../app/actions/system";
+import {
+    SessionActions,
+    SystemActions
+}                           from "../actions";
 
 export default class SystemApiModule extends ApiModule {
 
-    constructor(dispatch) {
+    constructor(dispatch, getState) {
         super();
 
         this.dispatch = dispatch;
+        this.getState = getState;
     }
+
+    onRpc = (payload) => {
+        let { path, data } = payload;
+
+        console.group(`>> RPC ${path}`);
+        console.info("Payload Data", data);
+        console.groupEnd();
+    };
+
+    onBroadcast = (payload) => {
+        let { event, data } = payload;
+
+        console.group(`<< BROADCAST ${event}`);
+        console.info("Payload Data", data);
+        console.groupEnd();
+    };
 
     onConnect = () => {
         debug("[SYSTEM]: Connected");
 
         this.dispatch(SystemActions.connectionStateChanged(ConnectionStates.CONNECTED));
+
+        this.reconnectIfToken();
     };
 
     onDisconnect = () => {
@@ -35,5 +57,17 @@ export default class SystemApiModule extends ApiModule {
 
         this.dispatch(SystemActions.connectionStateChanged(ConnectionStates.CONNECTING));
     };
+
+    reconnectIfToken() {
+        let { session } = this.getState();
+
+        if (session.token && this.isAttached) {
+
+            this.api
+                .session
+                .loginToken(session.token);
+
+        }
+    }
 
 }

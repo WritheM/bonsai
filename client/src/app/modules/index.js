@@ -1,7 +1,12 @@
-import SystemApiModule from "./SystemApiModule";
+import SessionApiModule     from "./SessionApiModule";
+import SystemApiModule      from "./SystemApiModule";
 
-export function appModulesFactory(dispatch) {
+export function appModulesFactory(
+    dispatch,
+    getState
+) {
     return [
-        new SystemApiModule(dispatch)
+        new SessionApiModule(dispatch),
+        new SystemApiModule(dispatch, getState)
     ];
 }

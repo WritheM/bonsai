@@ -1,6 +1,11 @@
 import React                from "react"
+import { connect }          from "react-redux"
 
-import * as Constants       from "../../Constants"
+import {
+    RegisterStates
+}                           from "../../Constants"
+
+import * as SessionActions  from "../../actions/session"
 
 import SessionOverlay       from "./SessionOverlay"
 import SessionFormButton    from "./SessionFormButton"
@@ -22,46 +27,26 @@ let formDataTemplate = {
     isReady: false
 };
 
-export default class RegisterOverlay extends React.Component {
-    constructor() {
-        super(...arguments);
+class RegisterOverlay extends React.Component {
 
-        /*
+    static contextTypes = {
+        api: React.PropTypes.object.isRequired
+    };
+
+    constructor(props, context) {
+        super(props, context);
+
         this.state = {
-            isConfirming: false,
-            isRegistering: false,
-            formData: Object.assign({}, formDataTemplate),
-            message: null
+            formData: {...formDataTemplate}
         };
-
-        this.addActions({
-            'session': Constants.Actions.SESSION
-        });
-
-        this.addStores({
-            'session': Constants.Stores.SESSION
-        });
-
-        this.selfBindMethods([
-            this.onValueChanged,
-            this.onSubmit,
-            this.onSigninInstead
-        ]);
-        */
     }
 
-    
-    onNewState(state) {
-        if (state.session) {
-            var registrationState = state.session.register.state;
-            var message = state.session.register.errorMessage;
+    get isConfirming() {
+        return this.props.register.state == RegisterStates.CONFIRMING;
+    }
 
-            this.setState({
-                isConfirming: registrationState == Constants.RegisterStates.CONFIRMING,
-                isRegistering: registrationState == Constants.RegisterStates.REGISTERING,
-                message: message
-            });
-        }
+    get isRegistering() {
+        return this.props.register.state == RegisterStates.REGISTERING;
     }
 
     validateNewData(data) {
@@ -78,22 +63,40 @@ export default class RegisterOverlay extends React.Component {
         }
 
         var hasAllFields =
-            data.username.value &&
-            data.displayname.value &&
-            data.email.value &&
-            data.language.value &&
-            data.password.value &&
-            data.passwordAgain.value;
+            !!data.username.value &&
+            !!data.displayname.value &&
+            !!data.email.value &&
+            !!data.language.value &&
+            !!data.password.value &&
+            !!data.passwordAgain.value;
 
         var isAllValid =
-            data.username.isValid &&
-            data.displayname.isValid &&
-            data.email.isValid &&
-            data.language.isValid &&
-            data.password.isValid &&
-            data.passwordAgain.isValid;
+            !!data.username.isValid &&
+            !!data.displayname.isValid &&
+            !!data.email.isValid &&
+            !!data.language.isValid &&
+            !!data.password.isValid &&
+            !!data.passwordAgain.isValid;
 
         data.isReady = hasAllFields && isAllValid;
+    }
+
+    emitError(error) {
+        this.props.dispatch(SessionActions.registerUpdateView(
+            RegisterStates.OPEN,
+            error
+        ));
+    }
+
+    emitConfirming() {
+        if (this.props.register.state != RegisterStates.REGISTERING) {
+            return;
+        }
+
+        this.props.dispatch(SessionActions.registerUpdateView(
+            RegisterStates.CONFIRMING,
+            null
+        ));
     }
 
     onValueChanged(key, value) {
@@ -115,26 +118,37 @@ export default class RegisterOverlay extends React.Component {
     }
 
     onSigninInstead() {
-        this.actions.session.registerCancel();
-        this.actions.session.loginBegin();
+        this.props.dispatch(SessionActions.registerCancel());
+        this.props.dispatch(SessionActions.loginBegin());
     }
 
     onSubmit() {
-
         var data = this.state.formData;
 
         if (!data.isReady) {
             return;
         }
 
-        this.actions.session.register(
-            data.username.value,
-            data.displayname.value,
-            data.email.value,
-            data.language.value,
-            data.password.value
-        );
+        this.props.dispatch(SessionActions.registerWaiting());
 
+        this.context
+            .api
+            .session
+            .register(
+                data.username.value,
+                data.displayname.value,
+                data.email.value,
+                data.language.value,
+                data.password.value
+            )
+            .then(
+                response => {
+                    this.emitConfirming();
+                },
+                response => {
+                    this.emitError(response.message);
+                }
+            );
     }
 
     render() {
@@ -148,14 +162,14 @@ export default class RegisterOverlay extends React.Component {
                     <SessionFormButton
                         type="alternate"
                         text="Sign In"
-                        onClick={this.onSigninInstead} />
+                        onClick={this.onSigninInstead.bind(this)} />
                 </div>
             </div>
         );
 
         var overlayAttributes = {
             overlayText: 'Registering',
-            overlayShown: this.state.isRegistering,
+            overlayShown: this.isRegistering,
             infoElement: info
         };
 
@@ -167,7 +181,7 @@ export default class RegisterOverlay extends React.Component {
     }
 
     renderInner() {
-        if (this.state.isConfirming) {
+        if (this.isConfirming) {
             return (
                 <div>
                     <strong>Thank you for registering!</strong> We've received your registration, please check
@@ -178,10 +192,14 @@ export default class RegisterOverlay extends React.Component {
             return (
                 <RegisterForm
                     data={this.state.formData}
-                    message={this.state.message}
-                    onValueChanged={this.onValueChanged}
-                    onSubmit={this.onSubmit} />
+                    message={this.props.register.errorMessage}
+                    onValueChanged={this.onValueChanged.bind(this)}
+                    onSubmit={this.onSubmit.bind(this)} />
             )
         }
     }
 }
+
+export default connect(state => ({
+    register: state.session.register
+}))(RegisterOverlay);

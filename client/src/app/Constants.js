@@ -9,6 +9,14 @@ export const Actions = {
     UI:         'ACTIONS_UI'
 };
 
+export const Api = {
+    Session: {
+        LOGIN: "Session:login",
+        LOGIN_TOKEN: "Session:loginToken",
+        REGISTER: "Session:register"
+    }
+};
+
 export const Action = {
     Player: {
         PLAY: "ACTION::PLAYER::PLAY",
@@ -31,6 +39,7 @@ export const Action = {
         CONNECTION_ERROR: "ACTION::SYSTEM::CONNECTION_ERROR"
     },
     UI: {
+        EXIT_OVERLAY: "ACTION::UI::EXIT_OVERLAY",
         TOGGLE_MENU: "ACTION::UI::TOGGLE_MENU"
     }
 };

@@ -13,6 +13,10 @@ import {
 }                               from "../api/modules";
 
 import {
+    SessionActions
+}                               from "./actions/index";
+
+import {
     logger,
     crashReporter
 }                               from "./middleware";
@@ -52,7 +56,11 @@ export default class Application extends React.Component {
             this.api.addModule(module);
         }
 
-        let appModules = appModulesFactory(action => this.store.dispatch(action));
+        let appModules = appModulesFactory(
+            action => this.store.dispatch(action),
+            () => this.store.getState()
+        );
+
         for(let module of appModules) {
             this.api.addModule(module);
         }

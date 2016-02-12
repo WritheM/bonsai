@@ -55,9 +55,18 @@ export default class ApiModule {
         return null;
     }
 
+    /**
+     * Returns a boolean denoting if we're attached to an api.
+     * @returns {boolean}
+     */
+    get isAttached() {
+        return !!this.api;
+    }
+
     attach(api) {
         this.api = api;
 
+        attachHandler(this, "rpc", this.onRpc);
         attachHandler(this, "broadcast", this.onBroadcast);
 
         attachHandler(this, "connect", this.onConnect);
@@ -85,6 +94,7 @@ export default class ApiModule {
             unmount(this);
         }
 
+        detachHandler(this, "rpc", this.onRpc);
         detachHandler(this, "broadcast", this.onBroadcast);
 
         detachHandler(this, "connect", this.onConnect);

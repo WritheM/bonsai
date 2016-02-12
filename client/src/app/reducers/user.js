@@ -21,8 +21,12 @@ function collection(state = collectionDefaults, action) {
 
     switch(action.type) {
         case Action.Session.UPDATE:
-            let user = action.user;
-            clone.push({...user});
+            let user = {
+                id: action.user,
+                name: `User-${action.user}`,
+                displayname: `User #${action.user}`
+            };
+            clone.push(user);
             return clone;
         default:
             return clone;
@@ -38,10 +42,7 @@ const currentDefaults = {
 function current(state = currentDefaults, action) {
     switch(action.type) {
         case Action.Session.UPDATE:
-            let id = action.user
-                ? action.user.id
-                : 0;
-
+            let id = action.user;
             let isGuest = id === 0;
 
             return {

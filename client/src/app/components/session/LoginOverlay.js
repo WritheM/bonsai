@@ -1,10 +1,15 @@
 import React                from "react"
+import { connect }          from "react-redux"
 
-import * as Constants       from "../../Constants"
+import {
+    LoginStates
+}                           from "../../Constants"
 
 import SessionOverlay       from "./SessionOverlay"
 import SessionFormButton    from "./SessionFormButton"
 import LoginForm            from "./LoginForm"
+
+import * as SessionActions  from "../../actions/session";
 
 let formFieldTemplate = {
     value: '',
@@ -18,52 +23,33 @@ let formDataTemplate = {
     isReady: false
 };
 
-export default class LoginOverlay extends React.Component {
+class LoginOverlay extends React.Component {
+
+    static contextTypes = {
+        api: React.PropTypes.object.isRequired
+    };
+
     constructor() {
         super(...arguments);
 
         this.state = {
-            isAuthenticating: false,
-            formData: Object.assign({}, formDataTemplate),
-            message: null
+            formData: {...formDataTemplate}
         };
-
-        this.addActions({
-            'session': Constants.Actions.SESSION
-        });
-
-        this.addStores({
-            'session': Constants.Stores.SESSION
-        });
-
-        this.selfBindMethods([
-            this.onValueChanged,
-            this.onSubmit,
-            this.onSignupInstead
-        ]);
     }
 
-    onNewState(state) {
-        if (state.session) {
-
-            var isAuthenticating = state.session.login.state === Constants.LoginStates.AUTHENTICATING;
-
-            this.setState({
-                isAuthenticating: isAuthenticating,
-
-            });
-        }
+    get isAuthenticating() {
+        return this.props.login.state == LoginStates.AUTHENTICATING;
     }
 
     validateNewData(data) {
 
         var hasAllFields =
-            data.username.value &&
-            data.password.value;
+            !!data.username.value &&
+            !!data.password.value;
 
         var isAllValid =
-            data.username.isValid &&
-            data.password.isValid;
+            !!data.username.isValid &&
+            !!data.password.isValid;
 
         data.isReady = hasAllFields && isAllValid;
     }
@@ -87,8 +73,19 @@ export default class LoginOverlay extends React.Component {
     }
 
     onSignupInstead() {
-        this.actions.session.loginCancel();
-        this.actions.session.registerBegin();
+        this.props.dispatch(SessionActions.loginCancel());
+        this.props.dispatch(SessionActions.registerCancel());
+    }
+
+    emitClose() {
+        this.props.dispatch(SessionActions.loginCancel());
+    }
+
+    emitError(message) {
+        this.props.dispatch(SessionActions.loginUpdateView(
+            LoginStates.OPEN,
+            message
+        ));
     }
 
     onSubmit() {
@@ -99,10 +96,23 @@ export default class LoginOverlay extends React.Component {
             return;
         }
 
-        this.actions.session.login(
-            data.username.value,
-            data.password.value
-        );
+        this.props.dispatch(SessionActions.loginWaiting());
+
+        this.context
+            .api
+            .session
+            .login(
+                data.username.value,
+                data.password.value
+            )
+            .then(
+                response => {
+                    this.emitClose();
+                },
+                response => {
+                    this.emitError(response.message);
+                }
+            );
 
     }
 
@@ -122,14 +132,14 @@ export default class LoginOverlay extends React.Component {
                     <SessionFormButton
                         type="alternate"
                         text="Create an account"
-                        onClick={this.onSignupInstead} />
+                        onClick={this.onSignupInstead.bind(this)} />
                 </div>
             </div>
         );
 
         var overlayAttributes = {
             overlayText: 'Logging In...',
-            overlayShown: this.state.isAuthenticating,
+            overlayShown: this.isAuthenticating,
             infoElement: info
         };
 
@@ -137,9 +147,14 @@ export default class LoginOverlay extends React.Component {
             <SessionOverlay {...overlayAttributes}>
                 <LoginForm
                     data={this.state.formData}
-                    onValueChanged={this.onValueChanged}
-                    onSubmit={this.onSubmit} />
+                    message={this.props.login.errorMessage}
+                    onValueChanged={this.onValueChanged.bind(this)}
+                    onSubmit={this.onSubmit.bind(this)} />
             </SessionOverlay>
         )
     }
 }
+
+export default connect(state => ({
+    login: state.session.login
+}))(LoginOverlay);

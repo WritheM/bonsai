@@ -7,6 +7,8 @@ import {
     RegisterStates
 }                           from "../../Constants";
 
+import * as UIActions       from "../../actions/ui";
+
 import Connecting           from "./Connecting";
 
 import LoginOverlay         from "../session/LoginOverlay";
@@ -43,7 +45,7 @@ class OverlayWindow extends React.Component {
     }
 
     exit() {
-        // TODO:
+        this.props.dispatch(UIActions.exitOverlay());
     }
 
     render() {

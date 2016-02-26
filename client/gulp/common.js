@@ -13,7 +13,7 @@ module.exports = {
      * @param error The error
      */
     emitError: function(error) {
-        gulpUtil.log(error.toString());
+        util.log(error.toString());
 
         this.emit('end');
     }

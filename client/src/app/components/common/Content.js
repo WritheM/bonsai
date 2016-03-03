@@ -39,7 +39,7 @@ class Content extends React.Component {
                         {this.props.children}
                     </div>
                     <div className="e-queue">
-                        Queue Standin
+                        {/* Queue Standin */}
                     </div>
                 </div>
                 <div className="e-social">

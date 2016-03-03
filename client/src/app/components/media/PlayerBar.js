@@ -13,30 +13,7 @@ import PlayerActions                from "./PlayerActions"
  */
 class PlayerBar extends React.Component {
 
-    get currentSong() {
-        let { queue } = this.props;
 
-        if (!queue.song) {
-            return {
-                title: '',
-                artist: ''
-            };
-        } else {
-            return {
-                ...this.props.queue.song
-            };
-        }
-    }
-
-    get playerState() {
-        let { playback } = this.props.player;
-
-        return {
-            isPlaying: playback.isPlaying,
-            current: playback.position,
-            total: playback.total
-        };
-    }
 
 // Controls
 
@@ -57,7 +34,7 @@ class PlayerBar extends React.Component {
     };
 
     onTheatrePressed = () => {
-        // TODO: Wire into Action
+        this.props.dispatch(PlayerActionCreators.toggleMode());
     };
 
     // Actions
@@ -83,6 +60,9 @@ class PlayerBar extends React.Component {
     };
 
     renderControls() {
+
+        let { playState } = this.props;
+
         var controlCallbacks = {
             back: this.onBackPressed,
             playPause: this.onPlayPausePressed,
@@ -93,7 +73,7 @@ class PlayerBar extends React.Component {
 
         var controlProps = {
             callbacks: controlCallbacks,
-            isPlaying: this.playerState.isPlaying,
+            isPlaying: playState.isPlaying,
             isQueueOpen: false,
             isTheatreOpen: false
         };
@@ -105,11 +85,15 @@ class PlayerBar extends React.Component {
 
     renderProgress() {
 
+        let { song, playState } = this.props;
+
         var progressProps = {
-            title: this.currentSong.title,
-            artist: this.currentSong.artist,
-            current: this.playerState.current,
-            total: this.playerState.total
+            id: song.id,
+            title: song.title,
+            artist: song.artist,
+
+            current: playState.current,
+            total: playState.total
         };
 
         return (
@@ -155,7 +139,27 @@ class PlayerBar extends React.Component {
     }
 }
 
-export default connect(state => ({
-    player: state.player,
-    queue: state.queue
-}))(PlayerBar);
+const mapStateToProps = (state) => {
+    let current = state.queue.current;
+    let playback = state.player.playback;
+
+    let song = current.song
+        ? current.song
+        : {
+            title: "",
+            artist: ""
+        };
+
+    return {
+        song,
+        playState: {
+            current: playback.position,
+            total: playback.total,
+            isPlaying: playback.isPlaying
+        }
+    };
+};
+
+export default connect(
+    mapStateToProps
+)(PlayerBar);

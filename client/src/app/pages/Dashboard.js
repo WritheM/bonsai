@@ -6,10 +6,10 @@ import * as sessionActions from "../actions/session";
 
 const dummySong = {
     'id': '1337',
-    'title': 'Public Domain Music: Aquasky (Electronica)',
-    'artist': 'TheEyeThatSees',
+    'title': 'Requiem',
+    'artist': 'Motzart',
     'mediaType': 'youtube',
-    'mediaCode': '6JMuxTR1d20'
+    'mediaCode': 'Zi8vJ_lMxQI'
 };
 
 const Dashboard = ({ doRegister, doLogin, doLogout, doPlay }) => (

@@ -45,6 +45,30 @@ $handle-size: in-rems(24);
 
     width: $youtube-min-width;
     height: $youtube-min-height;
+
+    &.m-anchor-top_left
+    {
+      top: 0;
+      left: 0;
+    }
+
+    &.m-anchor-top_right
+    {
+      top: 0;
+      right: 0;
+    }
+
+    &.m-anchor-bottom_left
+    {
+      bottom: 0;
+      left: 0;
+    }
+
+    &.m-anchor-bottom_right
+    {
+      bottom: 0;
+      right: 0;
+    }
   }
 
   &.m-size-normal

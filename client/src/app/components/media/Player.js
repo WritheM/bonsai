@@ -31,6 +31,8 @@ class Player extends React.Component {
         let { current, player } = this.props;
 
         let playerModeChanged = nextProps.player.display.mode != player.display.mode;
+        let playerAnchorChanged = nextProps.player.display.anchor != player.display.anchor;
+
         let playerMoved =
             nextProps.player.display.location.x != player.display.location.x ||
             nextProps.player.display.location.y != player.display.location.y ||
@@ -47,6 +49,7 @@ class Player extends React.Component {
         // happen for the player.
         return songChanged ||
             playerModeChanged ||
+            playerAnchorChanged ||
             playerMoved;
     }
 
@@ -85,7 +88,7 @@ class Player extends React.Component {
         this._yt = null;
 
         let { current, player, ui } = this.props;
-        let { mode, location } = player.display;
+        let { mode, anchor, location } = player.display;
 
         let ytProps = {
             video: current.song ? current.song.mediaCode : '',
@@ -96,22 +99,29 @@ class Player extends React.Component {
         };
 
         let playerSizeClass = `m-size-${mode.toLowerCase()}`;
+        let playerAnchorClass = `m-anchor-${anchor.toLowerCase()}`;
 
-        let playerClasses = classnames({
-            "c-player": true,
-            [playerSizeClass]: true,
-            "m-with-menu": ui.isMenuVisible,
-            "m-with-social": ui.isSocialPaneVisible
-        });
+        let playerClasses = classnames(
+            "c-player",
+            playerSizeClass,
+            playerAnchorClass,
+            {
+                "m-with-menu":      ui.isMenuVisible,
+                "m-with-social":    ui.isSocialPaneVisible
+            }
+        );
 
+        /*
+         * TODO: Figure out a better drag model.
         let playerStyles = mode == PlayerModes.MIN
             ? {
                 left: (location.x + this.state.offset.x) + 'px',
                 top: (location.y + this.state.offset.y) + 'px'
             }
             : { };
+         */
 
-
+        let playerStyles = {}; // TEMP
 
         return (
 
@@ -175,9 +185,12 @@ class Player extends React.Component {
         }
 
         let props = {
+            /*
             onBegin: this.onMoveBegin.bind(this),
             onEnd: this.onMoveEnd.bind(this),
             onDrag: this.onMove.bind(this)
+            */
+            onClick: (e) => this.props.dispatch(PlayerActionCreators.nextAnchor())
         };
 
         return (

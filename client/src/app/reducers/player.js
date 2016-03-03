@@ -5,7 +5,8 @@ import { combineReducers }      from "redux";
 
 import {
     Action,
-    PlayerModes
+    PlayerModes,
+    PlayerAnchors
 }                               from "../Constants";
 
 const playerDefaults = {
@@ -15,7 +16,8 @@ const playerDefaults = {
         isPlaying: false
     },
     display: {
-        mode: PlayerModes.NORMAL,
+        mode: PlayerModes.MIN,
+        anchor: PlayerAnchors.TOP_RIGHT,
         location: {
             x: 0,
             y: 0
@@ -56,6 +58,21 @@ function playback(state = playerDefaults.playback, action) {
     }
 }
 
+function cycleAnchor(lastAnchor) {
+    switch(lastAnchor) {
+        case PlayerAnchors.TOP_LEFT:
+            return PlayerAnchors.TOP_RIGHT;
+        case PlayerAnchors.TOP_RIGHT:
+            return PlayerAnchors.BOTTOM_RIGHT;
+        case PlayerAnchors.BOTTOM_RIGHT:
+            return PlayerAnchors.BOTTOM_LEFT;
+        case PlayerAnchors.BOTTOM_LEFT:
+            return PlayerAnchors.TOP_LEFT;
+        default:
+            return lastAnchor;
+    }
+}
+
 function display(state = playerDefaults.display, action) {
     // Since we have nested elements here, we will
     // pre clone this object so we deal with nested
@@ -70,6 +87,11 @@ function display(state = playerDefaults.display, action) {
             return {
                 ...state,
                 mode: action.mode
+            };
+        case Action.Player.NEXT_ANCHOR:
+            return {
+                ...state,
+                anchor: cycleAnchor(state.anchor)
             };
         default:
             return {...state};

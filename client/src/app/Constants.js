@@ -22,6 +22,7 @@ export const Action = {
         PLAY: "ACTION::PLAYER::PLAY",
         PAUSE: "ACTION::PLAYER::PAUSE",
         PLAY_PAUSE: "ACTION::PLAYER::PLAY_PAUSE",
+        NEXT_ANCHOR: "ACTION::PLAYER::NEXT_ANCHOR",
         UPDATE_POSITION: "ACTION::PLAYER::UPDATE_POSITION",
         UPDATE_MODE: "ACTION::PLAYER::UPDATE_MODE",
         UPDATE_LOCATION: "ACTION::PLAYER::UPDATE_LOCATION"
@@ -103,4 +104,11 @@ export const PlayerModes = {
     MIN:            'MIN',
     NORMAL:         'NORMAL',
     THEATRE:        'THEATRE'
+};
+
+export const PlayerAnchors = {
+    TOP_LEFT:       'TOP_LEFT',
+    TOP_RIGHT:      'TOP_RIGHT',
+    BOTTOM_RIGHT:   'BOTTOM_RIGHT',
+    BOTTOM_LEFT:    'BOTTOM_LEFT'
 };

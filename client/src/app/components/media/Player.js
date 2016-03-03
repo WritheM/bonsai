@@ -28,23 +28,20 @@ class Player extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-
-        return true;
-
         let { current, player } = this.props;
 
         let playerModeChanged = nextProps.player.display.mode != player.display.mode;
         let playerMoved =
             nextProps.player.display.location.x != player.display.location.x ||
-            nextProps.player.display.location.y != player.display.location.y;
+            nextProps.player.display.location.y != player.display.location.y ||
+            nextState.offset.x != this.state.offset.x ||
+            nextState.offset.y != this.state.offset.y;
 
         // If the song has changed
         let noSongsYet = !nextProps.current.song && !current.song;
 
         let songChanged =
-            (nextProps.current.song && !current.song) ||
-            (!nextProps.current.song && current.song) ||
-            (!noSongsYet && nextProps.current.song.id != current.song.id);
+            current.syncToken !== nextProps.current.syncToken;
 
         // All the conditions that would let a full re-render
         // happen for the player.
@@ -84,7 +81,6 @@ class Player extends React.Component {
     };
 
     render() {
-
         // Clear the reference, it'll be updated later.
         this._yt = null;
 
@@ -94,6 +90,7 @@ class Player extends React.Component {
         let ytProps = {
             video: current.song ? current.song.mediaCode : '',
             start: current.startPosition,
+            syncToken: current.syncToken,
             updatePosition: this.updatePosition,
             updateIsPlaying: this.updateIsPlaying
         };

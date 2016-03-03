@@ -1,0 +1,25 @@
+.c-youtube-player
+{
+  @include flex(1 1 auto);
+
+  @include display(flex);
+  @include flex-wrap();
+  @include flex-direction(column);
+
+  & > .e-player
+  {
+    @include flex(1 1 auto);
+
+    @include display(flex);
+    @include flex-wrap();
+    @include flex-direction(column);
+
+    & > iframe
+    {
+      min-width: $youtube-min-width;
+      min-height: $youtube-min-height;
+
+      @include flex(1 1 auto);
+    }
+  }
+}

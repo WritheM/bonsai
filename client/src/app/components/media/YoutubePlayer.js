@@ -22,7 +22,6 @@ export default class YoutubePlayer extends DumbComponent {
 
         this._container = null;
         this._player = null;
-        this._lastVideo = null;
 
         this.selfBindMethods([
             this.onYTReady
@@ -47,11 +46,17 @@ export default class YoutubePlayer extends DumbComponent {
     }
 
     shouldComponentUpdate(newProps, newState) {
-        return newProps !== this._lastVideo;
+
+        let isNewSyncToken = newProps.syncToken !== this.props.syncToken;
+        if (isNewSyncToken) {
+            Utilities.debug(`Got new Sync Token '${newProps.syncToken}', doesn't match old token '${this.syncToken}'`);
+        }
+
+        return isNewSyncToken;
     }
 
     componentWillUpdate(nextProps, nextState) {
-        this._lastVideo = this.props.video;
+        this._lastVideo = this.props.syncToken;
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -92,8 +97,14 @@ export default class YoutubePlayer extends DumbComponent {
                 this._player.seekTo(this.props.start);
             } else {
                 this._player = new YT.Player(domNode, {
+                    width: '100%',
+                    height: '100%',
                     videoId: this.props.video,
                     startSeconds: this.props.start,
+                    playerVars: {
+                        controls: 0,
+                        fs: 0
+                    },
                     events: {
                         'onReady': (event) => {
                             event.target.seekTo(this.props.start);
@@ -143,7 +154,6 @@ export default class YoutubePlayer extends DumbComponent {
     }
 
     render() {
-
         return (
 
             <div className="c-youtube-player">

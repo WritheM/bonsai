@@ -7,3 +7,8 @@ $typeface-base-family: Arial;
 $theme-edge-width: in-rems(60);
 $theme-menu-width: in-rems(180);
 $theme-social-width: in-rems(250);
+
+// Exact Minimum 16:9 Dimensions for an embedded
+// youtube player for TOS compliance.
+$youtube-min-width:  in-rems(355); // 355px converted to rems
+$youtube-min-height: in-rems(200); // 200px converted to rems

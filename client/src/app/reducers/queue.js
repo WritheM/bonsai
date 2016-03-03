@@ -4,6 +4,7 @@
 import { combineReducers }      from "redux";
 
 import { Action }               from "../Constants";
+import { randHexString }        from "../Utilities";
 
 function queue(state = [], action) {
     return []; // TODO
@@ -11,7 +12,8 @@ function queue(state = [], action) {
 
 const currentDefaults = {
     song: null,
-    startPosition: null
+    startPosition: null,
+    syncToken: null
 };
 
 function current(state = currentDefaults, action) {
@@ -20,7 +22,8 @@ function current(state = currentDefaults, action) {
             return {
                 ...state,
                 song: action.song,
-                startPosition: action.start
+                startPosition: action.start,
+                syncToken: randHexString(8)
             };
         default:
             return {...state};

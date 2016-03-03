@@ -3,15 +3,27 @@
 
 import { combineReducers }      from "redux";
 
-import { Action }               from "../Constants";
+import {
+    Action,
+    PlayerModes
+}                               from "../Constants";
 
 const playerDefaults = {
-    position: 0,
-    total: 0,
-    isPlaying: false
+    playback: {
+        position: 0,
+        total: 0,
+        isPlaying: false
+    },
+    display: {
+        mode: PlayerModes.NORMAL,
+        location: {
+            x: 0,
+            y: 0
+        }
+    }
 };
 
-export default function(state = playerDefaults, action) {
+function playback(state = playerDefaults.playback, action) {
     switch(action.type) {
         case Action.Player.PLAY:
             return {
@@ -43,3 +55,40 @@ export default function(state = playerDefaults, action) {
             return {...state};
     }
 }
+
+function display(state = playerDefaults.display, action) {
+    // Since we have nested elements here, we will
+    // pre clone this object so we deal with nested
+    // immutability.
+    state = {
+        ...state,
+        location: displayLocation(state.location, action)
+    };
+
+    switch(action.type) {
+        case Action.Player.UPDATE_MODE:
+            return {
+                ...state,
+                mode: action.mode
+            };
+        default:
+            return {...state};
+    }
+}
+
+function displayLocation(state = playerDefaults.display.location, action) {
+    switch(action.type) {
+        case Action.Player.UPDATE_LOCATION:
+            return {
+                x: action.x,
+                y: action.y
+            };
+        default:
+            return {...state}
+    }
+}
+
+export default combineReducers({
+    playback,
+    display
+});

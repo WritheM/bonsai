@@ -1,0 +1,13 @@
+.c-player-handle
+{
+  position: relative;
+  z-index: 500;
+
+  .e-icon
+  {
+    width: 24px;
+    height: 24px;
+    background-color: white;
+    opacity: 0.5;
+  }
+}

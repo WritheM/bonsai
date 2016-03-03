@@ -23,3 +23,18 @@ export function updatePosition(position, total) {
         total
     };
 }
+
+export function updateMode(mode) {
+    return {
+        type: Action.Player.UPDATE_MODE,
+        mode
+    };
+}
+
+export function updateLocation(x, y) {
+    return {
+        type: Action.Player.UPDATE_LOCATION,
+        x,
+        y
+    };
+}

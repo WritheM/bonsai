@@ -1,0 +1,61 @@
+// Exact Minimum 16:9 Dimensions for an embedded
+// youtube player for TOS compliance.
+$min-youtube-width:  in-rems(355); // 355px converted to rems
+$min-youtube-height: in-rems(200); // 200px converted to rems
+
+$handle-size: in-rems(24);
+
+.c-player
+{
+  @include display(flex);
+  @include flex-wrap();
+  @include flex-direction(column);
+
+  min-width: $min-youtube-width;
+  min-height: $min-youtube-height;
+
+  pointer-events: all;
+
+  & > .e-header,
+  & > .e-footer
+  {
+    width: 100%;
+    height: auto;
+  }
+
+  & > .e-screen
+  {
+    @include flex(1 1 auto);
+
+    background-color: #0b97c4;
+    opacity: 0.2;
+  }
+
+  & > .e-handle
+  {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    width: $handle-size;
+    height: $handle-size;
+  }
+
+  &.m-size-min
+  {
+    position: absolute;
+
+    width: $min-youtube-width;
+    height: $min-youtube-height;
+  }
+
+  &.m-size-normal
+  {
+    position: absolute;
+
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
+}

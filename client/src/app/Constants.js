@@ -22,7 +22,9 @@ export const Action = {
         PLAY: "ACTION::PLAYER::PLAY",
         PAUSE: "ACTION::PLAYER::PAUSE",
         PLAY_PAUSE: "ACTION::PLAYER::PLAY_PAUSE",
-        UPDATE_POSITION: "ACTION::PLAYER::UPDATE_POSITION"
+        UPDATE_POSITION: "ACTION::PLAYER::UPDATE_POSITION",
+        UPDATE_MODE: "ACTION::PLAYER::UPDATE_MODE",
+        UPDATE_LOCATION: "ACTION::PLAYER::UPDATE_LOCATION"
     },
     Queue: {
         PLAY_SONG: "ACTION::QUEUE::PLAY_SONG"
@@ -73,7 +75,6 @@ export const ConnectionStates = {
     CONNECTED:      'CONNECTED'
 };
 
-
 export const SessionState = {
     ANONYMOUS:      'ANONYMOUS',
     AUTHENTICATED:  'AUTHENTICATED'
@@ -96,4 +97,10 @@ export const SocialPaneStates = {
     MIN:            'MIN',
     COMPACT:        'COMPACT',
     MAX:            'MAX'
-}
+};
+
+export const PlayerModes = {
+    MIN:            'MIN',
+    NORMAL:         'NORMAL',
+    THEATRE:        'THEATRE'
+};

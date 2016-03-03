@@ -29,12 +29,12 @@ class PlayerBar extends React.Component {
     }
 
     get playerState() {
-        let { player } = this.props;
+        let { playback } = this.props.player;
 
         return {
-            isPlaying: player.isPlaying,
-            current: player.position,
-            total: player.total
+            isPlaying: playback.isPlaying,
+            current: playback.position,
+            total: playback.total
         };
     }
 

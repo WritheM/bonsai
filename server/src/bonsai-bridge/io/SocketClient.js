@@ -9,7 +9,8 @@ import { debug } from "../utilities";
 var mapping = {
     "Session:register": "client.user.register",
     "Session:login" : "client.session.login",
-    "Session:loginToken": "client.session.login-token"
+    "Session:loginToken": "client.session.login-token",
+    "Session:logout": "client.session.logout"
 };
 
 function mapEvent(event) {

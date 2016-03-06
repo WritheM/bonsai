@@ -114,4 +114,18 @@ export default class SessionApiModule extends ApiModule {
         );
     }
 
+    /**
+     * API: Session - Logout
+     *
+     * Logout of the current session.
+     *
+     * @returns {*}
+     */
+    logout() {
+        return this.send(
+            Api.Session.LOGOUT,
+            {}
+        );
+    }
+
 }

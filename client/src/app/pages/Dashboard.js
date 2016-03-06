@@ -25,7 +25,7 @@ const Dashboard = ({ doRegister, doLogin, doLogout, doPlay }) => (
 const mapDispatchToProps = (dispatch) => ({
     doRegister: () => dispatch(sessionActions.registerBegin()),
     doLogin: () => dispatch(sessionActions.loginBegin()),
-    doLogout: () => dispatch(sessionActions.logout()),
+    doLogout: () => dispatch(sessionActions.apiLogout()),
     doPlay: () => dispatch(queueActions.playSong(dummySong))
 });
 

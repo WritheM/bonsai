@@ -17,6 +17,7 @@ import {
 }                               from "./actions/index";
 
 import {
+    createApiMiddleware,
     logger,
     crashReporter
 }                               from "./middleware";
@@ -38,15 +39,6 @@ export default class Application extends React.Component {
     constructor() {
         super(...arguments);
 
-        this.store = createStore(
-            reducer,
-            applyMiddleware(
-                logger,
-                crashReporter,
-                thunk
-            )
-        );
-
         this.api = new BonsaiApi({
             // TODO: Configuration
         });
@@ -64,6 +56,16 @@ export default class Application extends React.Component {
         for(let module of appModules) {
             this.api.addModule(module);
         }
+
+        this.store = createStore(
+            reducer,
+            applyMiddleware(
+                crashReporter,
+                logger,
+                createApiMiddleware(this.api),
+                thunk
+            )
+        );
     }
 
     getChildContext() {

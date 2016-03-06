@@ -2,6 +2,7 @@
 // https://rackt.org/redux/docs/advanced/Middleware.html
 
 import {
+    Action,
     NoisyActions
 }                       from "./Constants";
 
@@ -36,4 +37,56 @@ export const crashReporter = store => next => action => {
 
         throw err;
     }
+};
+
+/**
+ * Creates a middleware that intercepts api actions and maps them
+ * into the provided api instance.
+ */
+export const createApiMiddleware = api => store => next => action => {
+    if (action.type !== Action.API.CALL) {
+        return next(action);
+    }
+
+    let context = {
+        api,
+        dispatch: store.dispatch,
+        getState: store.getState
+    };
+
+    let {
+        module,
+        method,
+        args,
+        onSuccess,
+        onFailure
+    } = action;
+
+    if (!module || !method) {
+        throw new Error("Api Calls must specify at least a module / method.");
+    }
+
+    let apiModule = api[module];
+    if (!apiModule) {
+        throw new Error(`Cannot find API module '${module}'.`);
+    }
+
+    let apiMethod = apiModule[method];
+    if (!apiMethod || typeof apiMethod !== "function") {
+        throw new Error(`Invalid API method '${method}' on module '${module}'.`);
+    }
+
+    apiMethod
+        .apply(apiModule, args)
+        .then(
+            result => {
+                if (typeof onSuccess === "function") {
+                    onSuccess(result, context);
+                }
+            },
+            error => {
+                if (typeof onFailure === "function") {
+                    onFailure(error, context);
+                }
+            });
 };

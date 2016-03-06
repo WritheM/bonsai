@@ -8,8 +8,13 @@ import {
 }                       from "../Constants";
 
 import {
+    debug,
     ensureString
 }                       from "../Utilities";
+
+import {
+    apiCall
+}                       from "./common";
 
 export function updateSession(token, user) {
     return {
@@ -65,15 +70,24 @@ export function loginWaiting() {
     return loginUpdateView(LoginStates.AUTHENTICATING);
 }
 
-export function loginAuto() {
-    return {};
+export function apiLogin() {
+    return {}; // TODO: Move API Call here
 }
 
-export function logout() {
-    // State changes come as a broadcast, so we will trigger
-    // the logout and dispatch a blank action
+export function apiLoginAuto() {
+    return {}; // TODO: Move API Call here
+}
 
-    return {};
+export function apiLogout() {
+    return apiCall(
+        "session",
+        "logout",
+        [],
+        null,
+        (error) => {
+            debug("Logout Failure", error);
+        }
+    );
 }
 
 export function update(user, session, perms) {

@@ -13,11 +13,15 @@ export const Api = {
     Session: {
         LOGIN: "Session:login",
         LOGIN_TOKEN: "Session:loginToken",
-        REGISTER: "Session:register"
+        REGISTER: "Session:register",
+        LOGOUT: "Session:logout"
     }
 };
 
 export const Action = {
+    API: {
+        CALL: "ACTION::API::CALL"
+    },
     Player: {
         PLAY: "ACTION::PLAYER::PLAY",
         PAUSE: "ACTION::PLAYER::PAUSE",

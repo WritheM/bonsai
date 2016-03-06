@@ -75,7 +75,7 @@ export default class SessionController {
         let session = await this.models.Auth.findOne({where: {token: token}});
         if (!session) {
             return makeFailure(
-                `No Session '${msg.token}' found.`
+                `No Session '${token}' found.`
             );
         }
 
@@ -90,10 +90,10 @@ export default class SessionController {
 
     async logout(message) {
 
-        var { payload, context } = message;
-        var { token } = payload;
+        var { context } = message;
+        var { connection, session } = context;
 
-        var token = context.session;
+        var token = session;
 
         if (!token) {
             return makeFailure(
@@ -101,14 +101,26 @@ export default class SessionController {
             );
         }
 
-        let s = await models.Auth.findOne({where: {token: token}});
+        let s = await this.models.Auth.findOne({where: {token: token}});
         if (!s) {
+            // The session was missing from the database but the connection
+            // still thinks it's connected, let's clean this up.
+
+            this.tracker
+                .connection(connection)
+                .detachSession();
+
             return makeFailure(
                 `Unable to find session, cannot log out.`
             );
         }
 
         await s.destroy();
+
+        // Notify the system.
+        this.tracker
+            .connection(connection)
+            .detachSession();
 
         return { success: true };
     }

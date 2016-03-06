@@ -20,7 +20,8 @@ export const Api = {
 
 export const Action = {
     API: {
-        CALL: "ACTION::API::CALL"
+        CALL: "ACTION::API::CALL",
+        CALLBACK: "ACTION::API:CALLBACK"
     },
     Player: {
         PLAY: "ACTION::PLAYER::PLAY",

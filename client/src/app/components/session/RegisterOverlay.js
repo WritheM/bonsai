@@ -130,25 +130,22 @@ class RegisterOverlay extends React.Component {
         }
 
         this.props.dispatch(SessionActions.registerWaiting());
-
-        this.context
-            .api
-            .session
-            .register(
-                data.username.value,
-                data.displayname.value,
-                data.email.value,
-                data.language.value,
-                data.password.value
-            )
-            .then(
-                response => {
-                    this.emitConfirming();
-                },
-                response => {
-                    this.emitError(response.message);
-                }
-            );
+        this.props.dispatch(SessionActions.apiRegister(
+            data.username.value,
+            data.displayname.value,
+            data.email.value,
+            data.language.value,
+            data.password.value,
+            operation => operation
+                .then(
+                    response => {
+                        this.emitConfirming();
+                    },
+                    response => {
+                        this.emitError(response.message);
+                    }
+                )
+        ));
     }
 
     render() {

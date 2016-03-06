@@ -39,21 +39,9 @@ export const crashReporter = store => next => action => {
     }
 };
 
-/**
- * Creates a middleware that intercepts api actions and maps them
- * into the provided api instance.
- */
-export const createApiMiddleware = api => store => next => action => {
-    if (action.type !== Action.API.CALL) {
-        return next(action);
-    }
-
-    let context = {
-        api,
-        dispatch: store.dispatch,
-        getState: store.getState
-    };
-
+function apiMiddlewareCall(context, action) {
+    let { api } = context;
+    
     let {
         module,
         method,
@@ -89,4 +77,38 @@ export const createApiMiddleware = api => store => next => action => {
                     onFailure(error, context);
                 }
             });
+}
+
+function apiMiddlewareCallback(context, action) {
+    let {
+        callback
+    } = action;
+
+    if (typeof callback !== "function") {
+        throw new Error("Api Callback must be a function.");
+    }
+
+    callback(context);
+}
+
+/**
+ * Creates a middleware that intercepts api actions and maps them
+ * into the provided api instance.
+ */
+export const createApiMiddleware = api => store => next => action => {
+    let context = {
+        api,
+        dispatch: store.dispatch,
+        getState: store.getState
+    };
+
+    if (action.type === Action.API.CALL) {
+        return apiMiddlewareCall(context, action);
+    }
+
+    if (action.type === Action.API.CALLBACK) {
+        return apiMiddlewareCallback(context, action);
+    }
+
+    return next(action);
 };

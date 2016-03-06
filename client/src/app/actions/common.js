@@ -33,3 +33,18 @@ export function apiCall(
         onFailure
     };
 }
+
+/**
+ * Call an api operation via callback.
+ *
+ * @param callback The callback to execute.
+ * @returns {{type: *, callback: *}}
+ */
+export function apiCallback(
+    callback
+) {
+    return {
+        type: Action.API.CALLBACK,
+        callback
+    };
+}

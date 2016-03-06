@@ -97,23 +97,19 @@ class LoginOverlay extends React.Component {
         }
 
         this.props.dispatch(SessionActions.loginWaiting());
-
-        this.context
-            .api
-            .session
-            .login(
-                data.username.value,
-                data.password.value
-            )
-            .then(
-                response => {
-                    this.emitClose();
-                },
-                response => {
-                    this.emitError(response.message);
-                }
-            );
-
+        this.props.dispatch(SessionActions.apiLogin(
+            data.username.value,
+            data.password.value,
+            operation => operation
+                .then(
+                    response => {
+                        this.emitClose();
+                    },
+                    response => {
+                        this.emitError(response.message);
+                    }
+                )
+        ));
     }
 
     render() {

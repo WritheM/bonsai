@@ -13,7 +13,8 @@ import {
 }                       from "../Utilities";
 
 import {
-    apiCall
+    apiCall,
+    apiCallback
 }                       from "./common";
 
 export function updateSession(token, user) {
@@ -47,6 +48,35 @@ export function registerWaiting() {
     return registerUpdateView(RegisterStates.REGISTERING);
 }
 
+export function apiRegister(
+    username,
+    displayname,
+    email,
+    language,
+    password,
+    onPromise = null
+) {
+    return apiCallback(
+        (context) => {
+            let { api } = context;
+
+            let operation = api
+                .session
+                .register(
+                    username,
+                    displayname,
+                    email,
+                    language,
+                    password
+                );
+
+            if (typeof onPromise === "function") {
+                operation = onPromise(operation);
+            }
+        }
+    );
+}
+
 export function loginUpdateView(state, message = null) {
     ensureString("state", state);
     ensureString("message", message, true);
@@ -70,12 +100,24 @@ export function loginWaiting() {
     return loginUpdateView(LoginStates.AUTHENTICATING);
 }
 
-export function apiLogin() {
-    return {}; // TODO: Move API Call here
-}
+export function apiLogin(
+    username,
+    password,
+    onPromise = null) {
 
-export function apiLoginAuto() {
-    return {}; // TODO: Move API Call here
+    return apiCallback(
+        (context) => {
+            let { api } = context;
+
+            let operation = api
+                .session
+                .login(username, password);
+
+            if (typeof onPromise === "function") {
+                operation = onPromise(operation);
+            }
+        }
+    );
 }
 
 export function apiLogout() {
